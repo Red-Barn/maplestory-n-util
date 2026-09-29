@@ -1,5 +1,7 @@
 import "server-only";
 
+import { unstable_cache } from "next/cache";
+
 // MSU (MapleStory N) Open API — https://docs.msu.io/msu-open-api/introduction
 // The API key must never reach the browser; only call these from Route Handlers / Server Components.
 
@@ -21,7 +23,18 @@ type MsuEnvelope<T> =
 
 type Query = Record<string, string | number | boolean | undefined>;
 
-export async function msuFetch<T>(path: string, query: Query = {}, revalidate = 60): Promise<T> {
+// Default tier is 2 RPS. Space out request starts within this server instance. Results are
+// cached with unstable_cache (below), so the gate only costs time on cache misses.
+const MIN_GAP_MS = 520;
+let nextSlot = 0;
+async function rateGate() {
+  const now = Date.now();
+  const wait = Math.max(0, nextSlot - now);
+  nextSlot = Math.max(now, nextSlot) + MIN_GAP_MS;
+  if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+}
+
+async function fetchUncached<T>(path: string, query: Query): Promise<T> {
   const apiKey = process.env.MSU_API_KEY;
   if (!apiKey) throw new MsuApiError("MSU_API_KEY 환경변수가 설정되지 않았습니다.", 500);
 
@@ -30,9 +43,10 @@ export async function msuFetch<T>(path: string, query: Query = {}, revalidate = 
     if (v !== undefined && v !== "") url.searchParams.set(k, String(v));
   }
 
+  await rateGate();
   const res = await fetch(url, {
     headers: { "Content-Type": "application/json", "x-nxopen-api-key": apiKey },
-    next: { revalidate },
+    cache: "no-store",
   });
 
   let body: MsuEnvelope<T> | undefined;
@@ -51,6 +65,18 @@ export async function msuFetch<T>(path: string, query: Query = {}, revalidate = 
     throw new MsuApiError(message, res.status === 200 ? 502 : res.status, body?.trace_id);
   }
   return body.data;
+}
+
+// One cached wrapper per revalidate period; path and query are part of the cache key.
+const cachedByTtl = new Map<number, (path: string, query: Query) => Promise<unknown>>();
+
+export function msuFetch<T>(path: string, query: Query = {}, revalidate = 60): Promise<T> {
+  let cached = cachedByTtl.get(revalidate);
+  if (!cached) {
+    cached = unstable_cache(fetchUncached, ["msu", String(revalidate)], { revalidate });
+    cachedByTtl.set(revalidate, cached);
+  }
+  return cached(path, query) as Promise<T>;
 }
 
 export function errorResponse(e: unknown): Response {

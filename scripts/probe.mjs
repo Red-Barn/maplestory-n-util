@@ -2,6 +2,7 @@
 // can be written against actual field names (the docs don't enumerate them).
 //
 // Usage: node --env-file=.env.local scripts/probe.mjs <walletAddress> [characterName]
+// Without a name the first character in the wallet is used.
 
 import { mkdir, writeFile } from "node:fs/promises";
 
@@ -35,17 +36,42 @@ await mkdir("docs/samples", { recursive: true });
 const list = await get(`/accounts/${wallet}/characters?size=10`);
 await save("account-characters", list);
 
-const first = list?.data?.characters?.[0];
-const assetKey = first?.assetKey ?? first?.asset_key ?? first?.tokenId;
+let target = list?.data?.characters?.[0];
+if (name) {
+  const byName = await get(`/accounts/${wallet}/characters?name=${encodeURIComponent(name)}`);
+  target = byName?.data?.characters?.find((c) => c.name === name) ?? target;
+}
+const assetKey = target?.assetKey;
 if (!assetKey) {
   console.error("캐릭터를 찾지 못했습니다. account-characters.json을 확인하세요.");
   process.exit(1);
 }
+console.log("target:", target.name, assetKey);
 
-await save("character", await get(`/characters/${assetKey}`));
+const detail = await get(`/characters/${assetKey}`);
+await save("character", detail);
 await save("character-items", await get(`/characters/${assetKey}/items`));
 await save("character-skills", await get(`/characters/${assetKey}/skills`));
 await save("character-hyper-skill", await get(`/characters/${assetKey}/hyper-skill`));
-if (name) await save("search-characters", await get(`/search/characters?filter.name=${encodeURIComponent(name)}`));
+
+// Item list has no option values; /items/{assetKey} does.
+const equip = detail?.data?.character?.wearing?.equip ?? {};
+const itemDetails = {};
+for (const [slot, it] of Object.entries(equip)) {
+  if (it?.assetKey) itemDetails[slot] = (await get(`/items/${it.assetKey}`))?.data?.item ?? null;
+}
+await save("item-details", itemDetails);
+
+// Set effects, one lookup per set via any equipped piece.
+const setPieces = new Map();
+for (const it of Object.values(itemDetails)) if (it?.common?.setItemId) setPieces.set(it.common.setItemId, it.common.itemId);
+const itemSets = {};
+for (const [setId, itemId] of setPieces) itemSets[setId] = (await get(`/gamemeta/items/${itemId}/set`))?.data?.itemSet ?? null;
+await save("item-sets", itemSets);
+
+// Market search ignores the name filter in practice; keep a small sample only.
+const search = await get(`/search/characters?filter.name=${encodeURIComponent(name ?? target.name)}`);
+if (search?.data?.characters) search.data.characters = search.data.characters.slice(0, 2);
+await save("search-characters", search);
 
 console.log("done → docs/samples/");

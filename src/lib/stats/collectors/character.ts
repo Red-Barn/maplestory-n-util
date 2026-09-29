@@ -1,0 +1,36 @@
+import type { CharacterDetail } from "@/types/msu";
+import { parseOption } from "../parseOption";
+import { MAIN_STATS, type MainStat, type StatContribution, type StatKey } from "../types";
+
+// Hyper stat and arcane symbol main stats are not multiplied by stat %.
+const toFixed = (stat: StatKey): StatKey =>
+  (MAIN_STATS as readonly string[]).includes(stat) ? (`${stat as MainStat}_FIXED` as StatKey) : stat;
+
+export function collectHyperStats(character: CharacterDetail): StatContribution[] {
+  return Object.values(character.hyperStat)
+    .filter((h) => h && h.level > 0)
+    .flatMap((h) =>
+      parseOption(h!.desc).map((e) => ({ stat: toFixed(e.stat), value: e.value, source: "hyper" as const, label: h!.desc })),
+    );
+}
+
+export function collectAbility(character: CharacterDetail): StatContribution[] {
+  return Object.values(character.ability)
+    .filter((a) => a != null)
+    .flatMap((a) => parseOption(a.desc).map((e) => ({ ...e, source: "ability" as const, label: a.desc })));
+}
+
+export function collectArcane(character: CharacterDetail): StatContribution[] {
+  const map: Record<string, StatKey> = { str: "STR_FIXED", dex: "DEX_FIXED", int: "INT_FIXED", luk: "LUK_FIXED", hp: "HP" };
+  return character.wearing.arcaneSymbols.slots
+    .filter((s) => s.itemId)
+    .flatMap((s) =>
+      Object.entries(s.stat).map(([k, v]) => ({
+        stat: map[k],
+        value: v ?? 0,
+        source: "arcane" as const,
+        label: `Arcane Symbol Lv.${s.level} (${s.itemId})`,
+      })),
+    )
+    .filter((c) => c.stat);
+}
