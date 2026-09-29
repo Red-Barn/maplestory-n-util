@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { apStatToFinal, calibrate, collectCharacter, computeStats } from "..";
+import { apStatToFinal, calibrate, collectCharacter, collectUnion, computeStats } from "..";
 import { collectSets } from "../collectors/sets";
 import { redBarn } from "./fixtures";
 
@@ -50,4 +50,28 @@ describe("RedBarn (Bowmaster Lv.244)", () => {
     expect(on).toBe(Math.floor(t.ATT! * (1 + (t["ATT%"]! + 17) / 100)));
     expect(on).toBeGreaterThan(off);
   });
+});
+
+describe("union raider input", () => {
+  const base = [...c.permanent, ...defaultBuffs];
+  const union = collectUnion({ DEX: 500, STR: 200 });
+
+  test("adds %-unaffected stat one-for-one", () => {
+    const before = computeStats(base, c.ap).final;
+    const after = computeStats([...base, ...union], c.ap).final;
+    expect(after.DEX - before.DEX).toBe(500);
+    expect(after.STR - before.STR).toBe(200);
+  });
+
+  test("shrinks the calibration gap by the same amount", () => {
+    const gap = (list: typeof base) => calibrate(list, c.ap, api).find((x) => x.stat === "DEX_FIXED")?.value ?? 0;
+    expect(gap(base) - gap([...base, ...union])).toBe(500);
+  });
+});
+
+test("stat % totals used by the stat panel", () => {
+  const t = computeStats(c.permanent, c.ap).totals;
+  expect(t["DEX%"]).toBeGreaterThan(0);
+  expect(t["ALL%"]).toBeGreaterThan(0);
+  expect(t["ATT%"]).toBeGreaterThan(0);
 });

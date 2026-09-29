@@ -25,4 +25,6 @@ export function collectCharacter(bundle: CharacterBundle) {
 
 export { apStatToFinal, calibrate, CALIBRATION_LABEL, computeStats, estimateAp } from "./compute";
 export type { FinalStats } from "./compute";
-export type { ComputedStats, StatContribution, StatKey } from "./types";
+export { collectUnion, type UnionInput } from "./collectors/union";
+export { MAIN_STATS } from "./types";
+export type { ComputedStats, MainStat, StatContribution, StatKey } from "./types";

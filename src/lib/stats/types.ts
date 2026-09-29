@@ -42,6 +42,7 @@ export type StatSource =
   | "job-buff"
   | "consumable"
   | "synergy"
+  | "union"
   | "custom"
   | "calibration";
 

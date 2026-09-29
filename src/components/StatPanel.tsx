@@ -1,33 +1,90 @@
 "use client";
 
 import { Fragment, useEffect, useMemo, useState } from "react";
+import type { JobData } from "@/data/jobs";
 import { load, pushRecent, save } from "@/lib/client/storage";
 import {
   apStatToFinal,
   calibrate,
   collectCharacter,
+  collectUnion,
   computeStats,
+  MAIN_STATS,
+  type ComputedStats,
   type FinalStats,
+  type MainStat,
   type StatContribution,
   type StatKey,
+  type UnionInput,
 } from "@/lib/stats";
 import type { CharacterBundle } from "@/types/msu";
 
-const ROWS: { key: keyof FinalStats; label: string; pct?: boolean; parts: StatKey[] }[] = [
-  { key: "STR", label: "STR", parts: ["STR", "STR%", "ALL%", "STR_FIXED", "AP%"] },
-  { key: "DEX", label: "DEX", parts: ["DEX", "DEX%", "ALL%", "DEX_FIXED", "AP%"] },
-  { key: "INT", label: "INT", parts: ["INT", "INT%", "ALL%", "INT_FIXED", "AP%"] },
-  { key: "LUK", label: "LUK", parts: ["LUK", "LUK%", "ALL%", "LUK_FIXED", "AP%"] },
-  { key: "ATT", label: "공격력", parts: ["ATT", "ATT%"] },
-  { key: "MATT", label: "마력", parts: ["MATT", "MATT%"] },
-  { key: "DMG%", label: "데미지", pct: true, parts: ["DMG%"] },
-  { key: "BOSS%", label: "보스 데미지", pct: true, parts: ["BOSS%"] },
-  { key: "NORMAL%", label: "일반 몬스터 데미지", pct: true, parts: ["NORMAL%"] },
-  { key: "IED%", label: "방어율 무시", pct: true, parts: ["IED%"] },
-  { key: "CRIT%", label: "크리티컬 확률", pct: true, parts: ["CRIT%"] },
-  { key: "CDMG%", label: "크리티컬 데미지", pct: true, parts: ["CDMG%"] },
-  { key: "FD%", label: "최종 데미지", pct: true, parts: ["FD%"] },
-];
+type Row = {
+  id: string;
+  label: string;
+  /** small text under the label, e.g. how a % total is made up */
+  note?: (r: ComputedStats) => string;
+  pct?: boolean;
+  parts: StatKey[];
+  value: (r: ComputedStats) => number;
+  /** in-game stat window value, when the API has one */
+  inGame?: keyof FinalStats;
+};
+
+const final = (key: keyof FinalStats, label: string, parts: StatKey[], pct?: boolean): Row => ({
+  id: key,
+  label,
+  pct,
+  parts,
+  value: (r) => r.final[key],
+  inGame: key,
+});
+
+const mainStatRow = (s: MainStat, role?: string) =>
+  final(s, role ? `${s} (${role})` : s, [s, `${s}%`, "ALL%", `${s}_FIXED`, "AP%"]);
+
+const n = (r: ComputedStats, k: StatKey) => Math.round((r.totals[k] ?? 0) * 100) / 100;
+
+// Stat % rows count 올스탯% in, since it applies the same way.
+const statPctRow = (s: MainStat, role?: string): Row => ({
+  id: `${s}%`,
+  label: role ? `${role} % (${s})` : `${s} %`,
+  note: (r) => `${s}% ${n(r, `${s}%`)} + 올스탯% ${n(r, "ALL%")}`,
+  pct: true,
+  parts: [`${s}%`, "ALL%"],
+  value: (r) => (r.totals[`${s}%`] ?? 0) + (r.totals["ALL%"] ?? 0),
+});
+
+const attPctRow = (key: "ATT%" | "MATT%"): Row => ({
+  id: key,
+  label: key === "ATT%" ? "공격력 %" : "마력 %",
+  pct: true,
+  parts: [key],
+  value: (r) => r.totals[key] ?? 0,
+});
+
+function buildRows(job: JobData | undefined): Row[] {
+  const others = MAIN_STATS.filter((s) => s !== job?.mainStat && !job?.subStats.includes(s));
+  const statRows = job
+    ? [mainStatRow(job.mainStat, "주스탯"), ...job.subStats.map((s) => mainStatRow(s, "부스탯")), ...others.map((s) => mainStatRow(s))]
+    : MAIN_STATS.map((s) => mainStatRow(s));
+  const pctRows = job
+    ? [statPctRow(job.mainStat, "주스탯"), ...job.subStats.map((s) => statPctRow(s, "부스탯")), attPctRow(job.attackType === "ATT" ? "ATT%" : "MATT%")]
+    : [...MAIN_STATS.map((s) => statPctRow(s)), attPctRow("ATT%"), attPctRow("MATT%")];
+  return [
+    ...statRows,
+    ...pctRows,
+    final("ATT", "공격력", ["ATT", "ATT%"]),
+    final("MATT", "마력", ["MATT", "MATT%"]),
+    final("DMG%", "데미지", ["DMG%"], true),
+    final("BOSS%", "보스 데미지", ["BOSS%"], true),
+    final("NORMAL%", "일반 몬스터 데미지", ["NORMAL%"], true),
+    final("IED%", "방어율 무시", ["IED%"], true),
+    final("CRIT%", "크리티컬 확률", ["CRIT%"], true),
+    final("CDMG%", "크리티컬 데미지", ["CDMG%"], true),
+    final("FD%", "최종 데미지", ["FD%"], true),
+  ];
+}
 
 const SOURCE_NAMES: Record<StatContribution["source"], string> = {
   base: "기본",
@@ -44,32 +101,39 @@ const SOURCE_NAMES: Record<StatContribution["source"], string> = {
   "job-buff": "버프",
   consumable: "소비 버프",
   synergy: "시너지",
+  union: "유니온",
   custom: "사용자 입력",
   calibration: "API 미제공 보정",
 };
 
-const fmt = (n: number, pct?: boolean) =>
-  pct ? `${Math.round(n * 100) / 100}%` : Math.round(n).toLocaleString();
-const signed = (n: number, pct?: boolean) => (n > 0 ? "+" : "") + fmt(n, pct);
+const fmt = (v: number, pct?: boolean) =>
+  pct ? `${Math.round(v * 100) / 100}%` : Math.round(v).toLocaleString();
+const signed = (v: number, pct?: boolean) => (v > 0 ? "+" : "") + fmt(v, pct);
+
+type Saved = { buffs?: Record<string, boolean>; calibration?: boolean; union?: UnionInput };
 
 export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
   const { character } = bundle;
   const storageKey = `msn:stat-panel:${character.assetKey}`;
 
   const base = useMemo(() => collectCharacter(bundle), [bundle]);
+  const rows = useMemo(() => buildRows(base.job), [base.job]);
   const inGame = useMemo(() => apStatToFinal(character.apStat), [character.apStat]);
   const defaults = useMemo(() => Object.fromEntries(base.buffs.map((b) => [b.id, b.defaultOn])), [base.buffs]);
+  const unionStats: MainStat[] = base.job ? [base.job.mainStat, ...base.job.subStats] : [...MAIN_STATS];
 
   const [buffs, setBuffs] = useState<Record<string, boolean>>(defaults);
   const [useCalibration, setUseCalibration] = useState(true);
-  const [open, setOpen] = useState<keyof FinalStats>();
+  const [union, setUnion] = useState<UnionInput>({});
+  const [open, setOpen] = useState<string>();
 
   useEffect(() => {
-    // restore per-character toggles and record this visit (localStorage is client-only)
-    const saved = load<{ buffs?: Record<string, boolean>; calibration?: boolean }>(storageKey, {});
+    // restore per-character settings and record this visit (localStorage is client-only)
+    const saved = load<Saved>(storageKey, {});
     /* eslint-disable react-hooks/set-state-in-effect */
     if (saved.buffs) setBuffs({ ...defaults, ...saved.buffs });
     if (saved.calibration !== undefined) setUseCalibration(saved.calibration);
+    if (saved.union) setUnion(saved.union);
     /* eslint-enable react-hooks/set-state-in-effect */
     pushRecent({
       assetKey: character.assetKey,
@@ -80,20 +144,22 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
     });
   }, [storageKey, defaults, character]);
 
-  const persist = (next: { buffs?: Record<string, boolean>; calibration?: boolean }) =>
-    save(storageKey, { buffs, calibration: useCalibration, ...next });
+  const persist = (next: Saved) => save(storageKey, { buffs, calibration: useCalibration, union, ...next });
+
+  // Known-but-unfetchable stats the user entered; they shrink the calibration gap.
+  const known = useMemo(() => [...base.permanent, ...collectUnion(union)], [base.permanent, union]);
 
   // The in-game snapshot is taken with the default buff set; calibrate against that baseline.
   const baseline = useMemo(
-    () => [...base.permanent, ...base.buffs.filter((b) => b.defaultOn).flatMap((b) => b.contributions)],
-    [base],
+    () => [...known, ...base.buffs.filter((b) => b.defaultOn).flatMap((b) => b.contributions)],
+    [known, base.buffs],
   );
   const calibration = useMemo(() => calibrate(baseline, base.ap, inGame), [baseline, base.ap, inGame]);
 
   const active = useMemo(() => {
     const on = base.buffs.filter((b) => buffs[b.id]).flatMap((b) => b.contributions);
-    return [...base.permanent, ...on, ...(useCalibration ? calibration : [])];
-  }, [base, buffs, useCalibration, calibration]);
+    return [...known, ...on, ...(useCalibration ? calibration : [])];
+  }, [known, base.buffs, buffs, useCalibration, calibration]);
 
   const result = useMemo(() => computeStats(active, base.ap), [active, base.ap]);
   const reference = useMemo(
@@ -115,31 +181,39 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
             </tr>
           </thead>
           <tbody>
-            {ROWS.map((row) => {
-              const v = result.final[row.key];
-              const delta = v - reference.final[row.key];
-              const err = v - inGame[row.key];
+            {rows.map((row) => {
+              const v = row.value(result);
+              const delta = v - row.value(reference);
+              const game = row.inGame && inGame[row.inGame];
+              const err = game === undefined ? undefined : v - game;
               return (
-                <Fragment key={row.key}>
+                <Fragment key={row.id}>
                   <tr
-                    onClick={() => setOpen(open === row.key ? undefined : row.key)}
-                    className={`cursor-pointer border-t border-black/5 hover:bg-black/[.03] dark:border-white/10 dark:hover:bg-white/[.04] ${open === row.key ? "bg-black/[.03] dark:bg-white/[.04]" : ""}`}
+                    onClick={() => setOpen(open === row.id ? undefined : row.id)}
+                    className={`cursor-pointer border-t border-black/5 hover:bg-black/[.03] dark:border-white/10 dark:hover:bg-white/[.04] ${open === row.id ? "bg-black/[.03] dark:bg-white/[.04]" : ""}`}
                   >
-                  <td className="px-3 py-1.5">{row.label}</td>
-                  <td className="px-3 py-1.5 text-right font-medium tabular-nums">{fmt(v, row.pct)}</td>
-                  <td
-                    className={`px-3 py-1.5 text-right tabular-nums ${delta > 0 ? "text-green-600" : delta < 0 ? "text-red-600" : "text-zinc-400"}`}
-                  >
-                    {Math.abs(delta) < 0.005 ? "–" : signed(delta, row.pct)}
-                  </td>
-                  <td className="px-3 py-1.5 text-right tabular-nums text-zinc-500">{fmt(inGame[row.key], row.pct)}</td>
-                  {!useCalibration && (
-                    <td className={`px-3 py-1.5 text-right tabular-nums ${Math.abs(err) < 0.005 ? "text-zinc-400" : "text-amber-600"}`}>
-                      {Math.abs(err) < 0.005 ? "0" : signed(err, row.pct)}
+                    <td className="px-3 py-1.5">
+                      {row.label}
+                      {row.note && <span className="block text-[11px] text-zinc-500">{row.note(result)}</span>}
                     </td>
-                  )}
+                    <td className="px-3 py-1.5 text-right font-medium tabular-nums">{fmt(v, row.pct)}</td>
+                    <td
+                      className={`px-3 py-1.5 text-right tabular-nums ${delta > 0 ? "text-green-600" : delta < 0 ? "text-red-600" : "text-zinc-400"}`}
+                    >
+                      {Math.abs(delta) < 0.005 ? "–" : signed(delta, row.pct)}
+                    </td>
+                    <td className="px-3 py-1.5 text-right tabular-nums text-zinc-500">
+                      {game === undefined ? "–" : fmt(game, row.pct)}
+                    </td>
+                    {!useCalibration && (
+                      <td
+                        className={`px-3 py-1.5 text-right tabular-nums ${err === undefined || Math.abs(err) < 0.005 ? "text-zinc-400" : "text-amber-600"}`}
+                      >
+                        {err === undefined ? "–" : Math.abs(err) < 0.005 ? "0" : signed(err, row.pct)}
+                      </td>
+                    )}
                   </tr>
-                  {open === row.key && (
+                  {open === row.id && (
                     <Breakdown
                       colSpan={useCalibration ? 4 : 5}
                       contributions={result.contributions.filter((c) => row.parts.includes(c.stat))}
@@ -190,6 +264,37 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
         </section>
 
         <section className="rounded-lg border border-black/10 p-3 dark:border-white/15">
+          <h3 className="text-sm font-semibold">유니온 공격대원</h3>
+          <p className="mb-2 text-[11px] text-zinc-500">
+            인게임 유니온 창의 공격대원 효과 스탯 합계를 입력하세요. 스탯%가 적용되지 않는 스탯으로 더합니다.
+          </p>
+          <div className="space-y-1.5">
+            {unionStats.map((s, i) => (
+              <label key={s} className="flex items-center justify-between gap-2 text-sm">
+                <span>
+                  {s}
+                  {base.job && <span className="ml-1 text-[11px] text-zinc-500">{i === 0 ? "주스탯" : "부스탯"}</span>}
+                </span>
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  min={0}
+                  value={union[s] ?? ""}
+                  placeholder="0"
+                  onChange={(e) => {
+                    const v = Math.max(0, Math.floor(Number(e.target.value) || 0));
+                    const next = { ...union, [s]: v || undefined };
+                    setUnion(next);
+                    persist({ union: next });
+                  }}
+                  className="w-24 rounded border border-black/15 bg-transparent px-2 py-1 text-right tabular-nums dark:border-white/20"
+                />
+              </label>
+            ))}
+          </div>
+        </section>
+
+        <section className="rounded-lg border border-black/10 p-3 dark:border-white/15">
           <label className="flex cursor-pointer items-start gap-2 text-sm">
             <input
               type="checkbox"
@@ -203,7 +308,7 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
             <span>
               API 미제공 스탯 보정
               <span className="block text-[11px] text-zinc-500">
-                유니온·링크·길드·칭호 등 API에 없는 스탯을 인게임 값과의 차이로 채웁니다. 끄면 계산 오차가 보입니다.
+                위에 입력하지 않은 링크·길드·칭호 등 API에 없는 스탯을 인게임 값과의 차이로 채웁니다. 끄면 계산 오차가 보입니다.
               </span>
             </span>
           </label>

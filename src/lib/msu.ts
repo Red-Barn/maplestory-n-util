@@ -23,15 +23,35 @@ type MsuEnvelope<T> =
 
 type Query = Record<string, string | number | boolean | undefined>;
 
-// Default tier is 2 RPS. Space out request starts within this server instance. Results are
-// cached with unstable_cache (below), so the gate only costs time on cache misses.
-const MIN_GAP_MS = 520;
-let nextSlot = 0;
+// Default tier is 2 RPS. Space out request starts across the whole server process: the gate lives
+// on globalThis because pages and route handlers can load separate copies of this module (and
+// background cache revalidation fires many requests at once). Leave headroom below the limit.
+// Results are cached with unstable_cache (below), so the gate only costs time on cache misses.
+const MIN_GAP_MS = 650;
+const MAX_RETRIES = 3;
+const gate = ((globalThis as { __msuGate?: { nextSlot: number } }).__msuGate ??= { nextSlot: 0 });
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 async function rateGate() {
   const now = Date.now();
-  const wait = Math.max(0, nextSlot - now);
-  nextSlot = Math.max(now, nextSlot) + MIN_GAP_MS;
-  if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+  const wait = Math.max(0, gate.nextSlot - now);
+  gate.nextSlot = Math.max(now, gate.nextSlot) + MIN_GAP_MS;
+  if (wait > 0) await sleep(wait);
+}
+
+/** Gated fetch that backs off and retries on 429. */
+async function gatedFetch(url: URL, apiKey: string): Promise<Response> {
+  for (let attempt = 0; ; attempt++) {
+    await rateGate();
+    const res = await fetch(url, {
+      headers: { "Content-Type": "application/json", "x-nxopen-api-key": apiKey },
+      cache: "no-store",
+    });
+    if (res.status !== 429 || attempt >= MAX_RETRIES) return res;
+    // push every queued request back too, not just this one
+    gate.nextSlot = Math.max(gate.nextSlot, Date.now() + 1000 * (attempt + 1));
+  }
 }
 
 async function fetchUncached<T>(path: string, query: Query): Promise<T> {
@@ -43,11 +63,7 @@ async function fetchUncached<T>(path: string, query: Query): Promise<T> {
     if (v !== undefined && v !== "") url.searchParams.set(k, String(v));
   }
 
-  await rateGate();
-  const res = await fetch(url, {
-    headers: { "Content-Type": "application/json", "x-nxopen-api-key": apiKey },
-    cache: "no-store",
-  });
+  const res = await gatedFetch(url, apiKey);
 
   let body: MsuEnvelope<T> | undefined;
   try {
