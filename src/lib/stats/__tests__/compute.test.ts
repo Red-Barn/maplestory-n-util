@@ -82,6 +82,11 @@ describe("user inputs", () => {
     expect(after.STR - before.STR).toBe(200);
   });
 
+  test("union raider crit rate / crit damage add directly", () => {
+    const got = collectUnion({ "CRIT%": 4, "CDMG%": 6 }).map((x) => `${x.stat}=${x.value}`);
+    expect(got).toEqual(["CRIT%=4", "CDMG%=6"]);
+  });
+
   test("collection expands all stats and ATT/MATT", () => {
     const got = collectCollection({ ALL: 10, ATT: 5, "BOSS%": 3, DEX: 20 }).map((x) => `${x.stat}=${x.value}`);
     expect(got).toEqual(["STR=10", "DEX=10", "INT=10", "LUK=10", "ATT=5", "MATT=5", "BOSS%=3", "DEX=20"]);

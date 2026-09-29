@@ -1,16 +1,18 @@
 import type { MainStat, StatContribution, StatKey } from "../types";
 
 /** User-entered union raider stats (the API doesn't expose union). */
-export type UnionInput = Partial<Record<MainStat, number>>;
+export type UnionInput = Partial<Record<MainStat | "CRIT%" | "CDMG%", number>>;
 
 export const UNION_LABEL = "유니온 공격대원";
 
-// Union raider stats are not multiplied by stat %, like hyper stats and arcane symbols.
+// Union raider main stats are not multiplied by stat %, like hyper stats and arcane symbols.
+const raiderStat = (key: keyof UnionInput): StatKey => (key.endsWith("%") ? (key as StatKey) : `${key as MainStat}_FIXED`);
+
 export function collectUnion(input: UnionInput): StatContribution[] {
-  return Object.entries(input)
+  return (Object.entries(input) as [keyof UnionInput, number | undefined][])
     .filter(([, v]) => v)
-    .map(([stat, value]) => ({
-      stat: `${stat as MainStat}_FIXED` as const,
+    .map(([key, value]) => ({
+      stat: raiderStat(key),
       value: value!,
       source: "union" as const,
       label: UNION_LABEL,

@@ -140,6 +140,14 @@ function statFields(job: JobData | undefined): Field<MainStat>[] {
     : MAIN_STATS.map((s) => ({ key: s, label: s }));
 }
 
+function unionRaiderFields(job: JobData | undefined): Field<keyof UnionInput>[] {
+  return [
+    ...statFields(job),
+    { key: "CRIT%", label: "크리티컬 확률", pct: true },
+    { key: "CDMG%", label: "크리티컬 데미지", pct: true },
+  ];
+}
+
 function collectionFields(job: JobData | undefined): Field<keyof CollectionInput>[] {
   return [
     { key: "ALL", label: "올스탯" },
@@ -392,8 +400,8 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
 
         <NumberFields
           title="유니온 공격대원"
-          hint="공격대원 효과 스탯 합계를 입력하세요. 스탯%가 적용되지 않습니다."
-          fields={statFields(base.job)}
+          hint="공격대원 효과 합계를 입력하세요. 주스탯·부스탯은 스탯%가 적용되지 않습니다."
+          fields={unionRaiderFields(base.job)}
           values={union}
           onChange={(next) => {
             setUnion(next);
