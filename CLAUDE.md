@@ -13,8 +13,10 @@
 - API에서 확인된 사실 (`docs/samples/`는 gitignore, 커밋용은 `scripts/make-fixture.mjs`로 만든 `src/lib/stats/__tests__/fixtures/`):
   - `/characters/{key}/items`에는 옵션이 없음 → 슬롯별 `/items/{assetKey}`로 잠재·에디셔널 라벨, `stats.*.{base,enhance,extra}`(기본/스타포스/추옵) 획득
   - 세트 효과: `/gamemeta/items/{itemId}/set`, 장착 아이템 `common.setItemId`로 개수 계산
-  - `apStat`이 인게임 최종 스탯. 최종뎀·데미지%는 기본 버프(메용·샤프·에코·스톰) 켠 상태와 일치
-  - 유니온·링크·길드·칭호·민팅불가 아이템(훈장 등)은 API에 없음 → `calibrate()`가 차이를 "API 미제공 보정" 항목으로 채움
+  - `apStat`이 인게임 최종 스탯. **시즌 버프(보약)와 도감은 포함**, 스킬 버프(메용·샤프·에코 등)는 **미포함** (사용자 확인)
+    → 시즌 버프만 기본 체크, 스킬 버프는 기본 해제 후 체크 시 더함. 오차 = 기본 버프 상태 계산값 − apStat
+  - 유니온·도감은 사용자 입력칸, 링크·길드·칭호·민팅불가 아이템(훈장 등)은 아직 미반영 (사용자가 직접 하나씩 추가 예정 — 자동 보정은 쓰지 않음)
+  - 스탯 표는 직업의 주스탯/부스탯/공격 타입만 표시, 일반 몬스터 데미지는 표시하지 않음
   - 마켓 이름 검색(`filter.name`)은 OAuth(`msu-authorization`) 없이는 필터가 무시됨 → 이름 검색은 지갑 내 `name` 필터로 대체
   - 캐시: `msuFetch`는 `unstable_cache`로 감쌈 (게이트 520ms는 캐시 미스에만). 첫 조회 ~15초, 이후 즉시
 - 다음 할 일:

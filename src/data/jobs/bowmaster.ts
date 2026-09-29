@@ -24,6 +24,7 @@ export const bowmaster: JobData = {
     { name: "Armor Break", pick: ["IED%"] },
     { name: "Enchanted Quiver", pick: ["FD%"] },
   ],
+  // Maple Warrior / Sharp Eyes are not in the API stat snapshot, so all buffs start unchecked.
   buffs: [
     {
       id: "maple-warrior",
@@ -31,7 +32,7 @@ export const bowmaster: JobData = {
       // "Increases all stats assigned APs by 15%" at Lv.30; the text isn't a "<stat>: +N" form
       skills: [{ name: "Maple Warrior", pick: [] }],
       effects: [{ stat: "AP%", value: 15 }],
-      defaultOn: true,
+      defaultOn: false,
     },
     {
       id: "sharp-eyes",
@@ -41,7 +42,7 @@ export const bowmaster: JobData = {
         { name: "Sharp Eyes - Guardbreak", pick: ["IED%"] },
         { name: "Sharp Eyes - Critical Chance", pick: ["CRIT%"] },
       ],
-      defaultOn: true,
+      defaultOn: false,
     },
     {
       id: "quiver-barrage",

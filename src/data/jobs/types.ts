@@ -13,7 +13,12 @@ export type BuffDef = {
   skills?: SkillRef[];
   /** Fixed effects when the text can't be parsed (e.g. Maple Warrior's "AP by 15%"). */
   effects?: StatEffect[];
-  /** Permanent/long-duration buffs start on; burst buffs start off. */
+  /** Shown instead of the effect list, e.g. for effects the engine does not model. */
+  description?: string;
+  /**
+   * Whether the API stat snapshot already includes this buff. Those start checked, so the
+   * computed stats line up with the in-game values; the rest start unchecked and add on top.
+   */
   defaultOn: boolean;
 };
 

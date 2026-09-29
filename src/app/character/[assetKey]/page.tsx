@@ -49,7 +49,7 @@ export default async function CharacterPage({ params }: PageProps<"/character/[a
         <h2 className="text-lg font-semibold">장착 장비</h2>
         {missing > 0 && (
           <p className="text-xs text-zinc-500">
-            민팅 불가 아이템 {missing}개는 API가 상세 옵션을 제공하지 않아 스탯 계산에서 빠집니다 (보정치에 포함됨).
+            민팅 불가 아이템 {missing}개는 API가 상세 옵션을 제공하지 않아 스탯 계산에서 빠집니다.
           </p>
         )}
         <EquipmentGrid equip={character.wearing.equip} items={items} />

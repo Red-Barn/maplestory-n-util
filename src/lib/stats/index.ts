@@ -23,8 +23,9 @@ export function collectCharacter(bundle: CharacterBundle) {
   return { job, level, ap: estimateAp(level, job), permanent, buffs: resolveBuffs(skills, job) };
 }
 
-export { apStatToFinal, calibrate, CALIBRATION_LABEL, computeStats, estimateAp } from "./compute";
+export { apStatToFinal, computeStats, estimateAp } from "./compute";
 export type { FinalStats } from "./compute";
 export { collectUnion, type UnionInput } from "./collectors/union";
+export { collectCollection, type CollectionInput } from "./collectors/collection";
 export { MAIN_STATS } from "./types";
 export type { ComputedStats, MainStat, StatContribution, StatKey } from "./types";

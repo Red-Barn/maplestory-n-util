@@ -86,34 +86,3 @@ export function apStatToFinal(ap: ApStat): FinalStats {
     "FD%": ap.finalDamage.total,
   };
 }
-
-export const CALIBRATION_LABEL = "API 미제공 스탯 (유니온·링크·길드·칭호 등)";
-
-/**
- * Contributions that close the gap between our computed stats and the in-game values, so later
- * calculators (stat equivalence, gear swaps) start from the real numbers. Main-stat gaps are
- * modelled as %-unaffected flat stat (union/legion style), ATT gaps as flat ATT before ATT%.
- */
-export function calibrate(contributions: StatContribution[], ap: Record<MainStat, number>, target: FinalStats): StatContribution[] {
-  const cur = computeStats(contributions, ap);
-  const t = cur.totals;
-  const out: StatContribution[] = [];
-  const add = (stat: StatKey, value: number) => {
-    const v = round2(value);
-    if (v !== 0) out.push({ stat, value: v, source: "calibration", label: CALIBRATION_LABEL });
-  };
-
-  for (const s of MAIN_STATS) add(`${s}_FIXED`, target[s] - cur.final[s]);
-  for (const [flat, pct] of [["ATT", "ATT%"], ["MATT", "MATT%"]] as const) {
-    const mult = 1 + (t[pct] ?? 0) / 100;
-    // One flat ATT is worth `mult` final ATT, so an integer bonus can overshoot; aim for the
-    // middle of the target's floor bucket instead.
-    add(flat, (target[flat] + 0.5) / mult - (t[flat] ?? 0));
-  }
-  for (const k of ["DMG%", "BOSS%", "NORMAL%", "CRIT%", "CDMG%"] as const) add(k, target[k] - cur.final[k]);
-  const ied = t["IED%"] ?? 0;
-  if (target["IED%"] > ied) add("IED%", (1 - (1 - target["IED%"] / 100) / (1 - ied / 100)) * 100);
-  const fd = t["FD%"] ?? 0;
-  if (target["FD%"] !== round2(fd)) add("FD%", ((1 + target["FD%"] / 100) / (1 + fd / 100) - 1) * 100);
-  return out;
-}

@@ -43,8 +43,8 @@ export type StatSource =
   | "consumable"
   | "synergy"
   | "union"
-  | "custom"
-  | "calibration";
+  | "collection"
+  | "custom";
 
 export type StatEffect = { stat: StatKey; value: number };
 
