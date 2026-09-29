@@ -78,6 +78,11 @@ describe("RedBarn (Bowmaster Lv.244)", () => {
     expect(ring.sort()).toEqual(["ATT=4", "DEX=4", "INT=4", "LUK=4", "MATT=4", "STR=4"]);
   });
 
+  test("Marksmanship gives IED 25% and ATT 25%", () => {
+    const m = c.permanent.filter((x) => x.label.startsWith("Marksmanship")).map((x) => `${x.stat}=${x.value}`);
+    expect(m).toEqual(["IED%=25", "ATT%=25"]);
+  });
+
   test("main stat AP is 5 × level + 18", () => {
     expect(c.ap.DEX).toBe(1238);
     expect(c.ap.STR).toBe(4);
@@ -168,7 +173,7 @@ describe("link skills and union grid", () => {
     const got = collectPresets(LINK_SKILLS, defaultPresetInput(LINK_SKILLS), "link");
     const sum = (k: string) => got.filter((x) => x.stat === k).reduce((a, x) => a + x.value, 0);
     expect(sum("CRIT%")).toBe(25); // 궁수 10 + 팬텀 15
-    expect(sum("IED%")).toBe(15);
+    expect(sum("IED%")).toBe(25); // 루미너스 15 + 호영 10 (raw values; combined multiplicatively in computeStats)
     expect(sum("ATT")).toBe(25);
     expect(sum("MATT")).toBe(25);
     expect(sum("DEX")).toBe(70);

@@ -6,6 +6,7 @@ export const LINK_SKILLS: PresetDef[] = [
   { id: "bowman", name: "궁수 링크", tag: "Lv.6", effects: [{ key: "CRIT%", value: 10 }] },
   { id: "phantom", name: "팬텀 링크", tag: "Lv.2", effects: [{ key: "CRIT%", value: 15 }] },
   { id: "luminous", name: "루미너스 링크", tag: "Lv.2", effects: [{ key: "IED%", value: 15 }] },
+  { id: "hoyoung", name: "호영 링크", effects: [{ key: "IED%", value: 10 }] },
   { id: "cygnus", name: "시그너스 링크", tag: "Lv.10", effects: [{ key: "ATT_MATT", value: 25 }] },
   { id: "pirate", name: "해적 링크", tag: "Lv.6", effects: [{ key: "ALL", value: 70 }] },
   {

@@ -16,7 +16,8 @@ export const bowmaster: JobData = {
     { name: "Physical Training", pick: ["STR", "DEX"] },
     { name: "Soul Arrow: Bow", pick: ["ATT"] },
     { name: "Evasion Boost", pick: ["HP%"] },
-    { name: "Marksmanship", pick: ["ATT%"] },
+    // "ignores 25% of monster's Weapon DEF. Attack Power: +25%" — the DEF part is IED (user-confirmed)
+    { name: "Marksmanship", pick: ["ATT%", "IED%"] },
     { name: "Reckless Hunt: Bow", pick: ["ATT", "FD%"] },
     { name: "Bow Expert", pick: ["ATT", "CDMG%"] },
     { name: "Illusion Step", pick: ["DEX"] },

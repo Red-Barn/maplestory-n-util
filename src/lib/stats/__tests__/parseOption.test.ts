@@ -52,6 +52,13 @@ describe("parseOption", () => {
     expect(parseOption("+10% damage to normal monsters")).toEqual([{ stat: "NORMAL%", value: 10 }]);
   });
 
+  test("sentence-style defense ignore (Marksmanship)", () => {
+    expect(parseOption("When attacking, ignores 25% of monster's Weapon DEF. Attack Power: +25%")).toEqual([
+      { stat: "IED%", value: 25 },
+      { stat: "ATT%", value: 25 },
+    ]);
+  });
+
   test("conditional damage is not stat-window damage", () => {
     expect(parseOption("+7% damage when attacking targets inflicted with Abnormal Status.")).toEqual([]);
   });

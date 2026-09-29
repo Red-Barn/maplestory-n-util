@@ -52,6 +52,9 @@ const PER_LEVEL_RE = /^per\s+(\d+)\s+character\s+levels?\s*:?\s*\+?\s*(\d+)/i;
 // e.g. ability "+7% damage when attacking targets inflicted with Abnormal Status."
 const CONDITIONAL_RE = /abnormal status|when attacking/i;
 
+// Sentence-style IED, e.g. Marksmanship "ignores 25% of monster's Weapon DEF".
+const IGNORES_DEF_RE = /^ignores?\s+(\d+(?:\.\d+)?)%\s+of\s+(?:the\s+)?(?:monster|enem(?:y|ies))'?s?'?\s+(?:weapon\s+)?def/i;
+
 export type ParseContext = { level?: number };
 
 /** Parse one "<label> <value>" fragment. */
@@ -59,6 +62,9 @@ function parseFragment(fragment: string, ctx: ParseContext): StatEffect[] {
   if (CONDITIONAL_RE.test(fragment)) return [];
   let s = fragment.trim().replace(PREFIX_RE, "").replace(/[\]]/g, "").trim();
   const lower = s.toLowerCase();
+
+  const ignoresDef = s.match(IGNORES_DEF_RE);
+  if (ignoresDef) return [{ stat: "IED%", value: Number(ignoresDef[1]) }];
 
   // "+10% damage to normal monsters" (value first)
   const valueFirst = lower.match(/^\+?(\d+(?:\.\d+)?)(%)?\s+(.+)$/);
