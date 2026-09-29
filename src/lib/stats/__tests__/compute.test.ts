@@ -23,14 +23,7 @@ const buff = (id: string) => c.buffs.find((b) => b.id === id)!;
 describe("RedBarn (Bowmaster Lv.244)", () => {
   test("detects job and learned buffs", () => {
     expect(c.job?.name).toBe("Bowmaster");
-    expect(c.buffs.map((b) => b.id)).toEqual([
-      "season-tonic",
-      "echo-of-hero",
-      "maple-warrior",
-      "sharp-eyes",
-      "quiver-barrage",
-      "storm-of-arrows",
-    ]);
+    expect(c.buffs.map((b) => b.id)).toEqual(["season-tonic", "echo-of-hero", "maple-warrior", "sharp-eyes"]);
   });
 
   test("only the season buff is on by default (the API snapshot includes it, not skill buffs)", () => {

@@ -4,24 +4,27 @@ import { presetValue, type PresetDef, type PresetInput, type PresetState } from 
 
 export type Field<K extends string> = { key: K; label: string; pct?: boolean; unit?: string };
 
-const inputCls =
-  "w-20 rounded border border-black/15 bg-transparent px-2 py-1 text-right tabular-nums dark:border-white/20";
+// ---- building blocks ----
 
-export function Panel({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
+export function Hint({ children }: { children: React.ReactNode }) {
+  return <p className="mb-2 text-[11px] leading-snug text-zinc-500">{children}</p>;
+}
+
+export function SubHeading({ title, hint }: { title: string; hint?: string }) {
   return (
-    <section className="rounded-lg border border-black/10 p-3 dark:border-white/15">
-      <h3 className="text-sm font-semibold">{title}</h3>
-      {hint && <p className="mb-2 text-[11px] text-zinc-500">{hint}</p>}
-      {children}
-    </section>
+    <div className="mb-1 mt-5 first:mt-0">
+      <h4 className="text-xs font-semibold">{title}</h4>
+      {hint && <p className="text-[11px] leading-snug text-zinc-500">{hint}</p>}
+    </div>
   );
 }
 
-function NumberInput(props: { value?: number; decimal?: boolean; onChange: (v: number | undefined) => void }) {
+function NumberInput(props: { value?: number; decimal?: boolean; onChange: (v: number | undefined) => void; label: string }) {
   return (
     <input
       type="number"
       inputMode="decimal"
+      aria-label={props.label}
       min={0}
       step={props.decimal ? "any" : 1}
       value={props.value ?? ""}
@@ -31,90 +34,156 @@ function NumberInput(props: { value?: number; decimal?: boolean; onChange: (v: n
         const v = props.decimal ? raw : Math.floor(raw);
         props.onChange(v || undefined);
       }}
-      className={inputCls}
+      className="w-16 rounded border border-black/15 bg-transparent px-1.5 py-0.5 text-right text-sm tabular-nums focus:border-orange-500 focus:outline-none dark:border-white/20"
     />
   );
 }
 
-export function NumberFields<K extends string>(props: {
-  title: string;
-  hint: string;
+function Unit({ children }: { children?: string }) {
+  return <span className="w-5 shrink-0 text-[11px] text-zinc-500">{children}</span>;
+}
+
+// ---- tabs ----
+
+export type Tab = { id: string; label: string; badge?: number; content: React.ReactNode };
+
+export function InputTabs({ tabs, active, onChange }: { tabs: Tab[]; active: string; onChange: (id: string) => void }) {
+  const current = tabs.find((t) => t.id === active) ?? tabs[0];
+  return (
+    <div className="rounded-lg border border-black/10 dark:border-white/15">
+      <div role="tablist" className="flex border-b border-black/10 dark:border-white/15">
+        {tabs.map((t) => {
+          const selected = t.id === current.id;
+          return (
+            <button
+              key={t.id}
+              type="button"
+              role="tab"
+              aria-selected={selected}
+              onClick={() => onChange(t.id)}
+              className={`-mb-px flex flex-1 items-center justify-center gap-1 border-b-2 px-1 py-2 text-xs font-medium ${
+                selected ? "border-orange-500 text-current" : "border-transparent text-zinc-500 hover:text-current"
+              }`}
+            >
+              {t.label}
+              {!!t.badge && (
+                <span className="rounded-full bg-black/[.06] px-1.5 text-[10px] tabular-nums dark:bg-white/10">{t.badge}</span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+      <div role="tabpanel" className="p-3 lg:max-h-[calc(100vh-9rem)] lg:overflow-y-auto">
+        {current.content}
+      </div>
+    </div>
+  );
+}
+
+// ---- lists ----
+
+export function FieldList<K extends string>(props: {
   fields: Field<K>[];
   values: Partial<Record<K, number>>;
   onChange: (next: Partial<Record<K, number>>) => void;
 }) {
   return (
-    <Panel title={props.title} hint={props.hint}>
-      <div className="space-y-1.5">
-        {props.fields.map((f) => (
-          <label key={f.key} className="flex items-center justify-between gap-2 text-sm">
-            <span>{f.label}</span>
-            <span className="flex items-center gap-1">
-              <NumberInput
-                value={props.values[f.key]}
-                decimal={f.pct}
-                onChange={(v) => props.onChange({ ...props.values, [f.key]: v })}
-              />
-              <span className="w-5 text-[11px] text-zinc-500">{f.unit ?? (f.pct ? "%" : "")}</span>
+    <ul className="divide-y divide-black/5 dark:divide-white/10">
+      {props.fields.map((f) => (
+        <li key={f.key} className="flex items-center justify-between gap-2 py-1">
+          <span className="text-sm">{f.label}</span>
+          <span className="flex items-center gap-1">
+            <NumberInput
+              label={f.label}
+              value={props.values[f.key]}
+              decimal={f.pct}
+              onChange={(v) => props.onChange({ ...props.values, [f.key]: v })}
+            />
+            <Unit>{f.unit ?? (f.pct ? "%" : "")}</Unit>
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export function CheckList(props: {
+  items: { id: string; name: string; description?: string }[];
+  checked: Record<string, boolean>;
+  onChange: (id: string, on: boolean) => void;
+}) {
+  return (
+    <ul className="divide-y divide-black/5 dark:divide-white/10">
+      {props.items.map((it) => (
+        <li key={it.id} className="py-1.5">
+          <label className="flex cursor-pointer items-start gap-2 text-sm">
+            <input
+              type="checkbox"
+              className="mt-1"
+              checked={!!props.checked[it.id]}
+              onChange={(e) => props.onChange(it.id, e.target.checked)}
+            />
+            <span>
+              {it.name}
+              {it.description && <span className="block text-[11px] leading-snug text-zinc-500">{it.description}</span>}
             </span>
           </label>
-        ))}
-      </div>
-    </Panel>
+        </li>
+      ))}
+    </ul>
   );
 }
 
 const EFFECT_LABEL: Record<string, string> = {
-  "CRIT%": "크리티컬 확률 %",
-  "IED%": "방어율 무시 %",
-  "BOSS%": "보스 데미지 %",
-  "DMG%": "데미지 %",
-  ATT: "공격력 +",
-  ATT_MATT: "공/마 +",
-  ALL: "올스탯 +",
+  "CRIT%": "크확",
+  "CDMG%": "크뎀",
+  "IED%": "방무",
+  "BOSS%": "보공",
+  "DMG%": "데미지",
+  ATT: "공격력",
+  MATT: "마력",
+  ATT_MATT: "공/마",
+  ALL: "올스탯",
 };
 
-/** Checkbox list of fixed-effect bundles (link skills, title, arrows) with editable values. */
-export function PresetList(props: {
-  title: string;
-  hint: string;
-  defs: PresetDef[];
-  values: PresetInput;
-  onChange: (next: PresetInput) => void;
-}) {
+/** Checkbox rows of fixed-effect bundles (link skills, title, arrows) with editable values. */
+export function PresetList(props: { defs: PresetDef[]; values: PresetInput; onChange: (next: PresetInput) => void }) {
   return (
-    <Panel title={props.title} hint={props.hint}>
-      <ul className="space-y-2">
-        {props.defs.map((d) => {
-          const state: PresetState = props.values[d.id] ?? { on: true };
-          const setOn = (on: boolean) => props.onChange({ ...props.values, [d.id]: { ...state, on } });
-          const setValue = (i: number, v: number) => {
-            const values = d.effects.map((_, j) => presetValue(d, state, j));
-            values[i] = v;
-            props.onChange({ ...props.values, [d.id]: { on: state.on, values } });
-          };
-          return (
-            <li key={d.id} className="text-sm">
-              <label className="flex cursor-pointer items-center gap-2">
-                <input type="checkbox" checked={state.on} onChange={(e) => setOn(e.target.checked)} />
-                <span>
-                  {d.name} {d.tag && <span className="text-[11px] text-zinc-500">{d.tag}</span>}
-                </span>
-              </label>
+    <ul className="divide-y divide-black/5 dark:divide-white/10">
+      {props.defs.map((d) => {
+        const state: PresetState = props.values[d.id] ?? { on: true };
+        const setOn = (on: boolean) => props.onChange({ ...props.values, [d.id]: { ...state, on } });
+        const setValue = (i: number, v: number) => {
+          const values = d.effects.map((_, j) => presetValue(d, state, j));
+          values[i] = v;
+          props.onChange({ ...props.values, [d.id]: { on: state.on, values } });
+        };
+        return (
+          <li key={d.id} className="flex items-start justify-between gap-2 py-1.5">
+            <label className="flex min-w-0 cursor-pointer items-start gap-2 pt-0.5 text-sm">
+              <input type="checkbox" className="mt-1" checked={state.on} onChange={(e) => setOn(e.target.checked)} />
+              <span className="min-w-0">
+                <span className="block truncate">{d.name}</span>
+                {d.tag && <span className="block text-[11px] text-zinc-500">{d.tag}</span>}
+              </span>
+            </label>
+            <span className={`flex shrink-0 flex-col items-end gap-1 ${state.on ? "" : "opacity-40"}`}>
               {d.effects.map((e, i) => (
-                <div key={i} className="mt-1 flex items-center justify-between gap-2 pl-6">
+                <span key={i} className="flex items-center gap-1">
                   <span className="text-[11px] text-zinc-500">{EFFECT_LABEL[e.key] ?? e.key}</span>
                   <NumberInput
+                    label={`${d.name} ${EFFECT_LABEL[e.key] ?? e.key}`}
                     value={presetValue(d, state, i)}
                     decimal={e.key.endsWith("%")}
                     onChange={(v) => setValue(i, v ?? 0)}
                   />
-                </div>
+                  <Unit>{e.key.endsWith("%") ? "%" : ""}</Unit>
+                </span>
               ))}
-            </li>
-          );
-        })}
-      </ul>
-    </Panel>
+            </span>
+          </li>
+        );
+      })}
+    </ul>
   );
 }

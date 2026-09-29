@@ -14,6 +14,8 @@ import {
   collectUnionGrid,
   computeStats,
   defaultPresetInput,
+  formatEffect,
+  mergeEffects,
   MAIN_STATS,
   type CollectionInput,
   type ComputedStats,
@@ -27,7 +29,7 @@ import {
   type UnionInput,
 } from "@/lib/stats";
 import type { CharacterBundle } from "@/types/msu";
-import { NumberFields, Panel, PresetList, type Field } from "./StatInputs";
+import { CheckList, FieldList, Hint, InputTabs, PresetList, SubHeading, type Field, type Tab } from "./StatInputs";
 
 /** What the formulas need besides contributions. */
 type Ctx = { ap: Record<MainStat, number> };
@@ -204,6 +206,12 @@ const SOURCE_NAMES: Record<StatContribution["source"], string> = {
 const fmt = (v: number, pct?: boolean) => (pct ? `${r2(v)}%` : Math.round(v).toLocaleString());
 const signed = (v: number, pct?: boolean) => (v > 0 ? "+" : "") + fmt(v, pct);
 
+const TAB_KEY = "msn:stat-input-tab";
+
+const countOn = (defs: { id: string }[], input: PresetInput) => defs.filter((d) => input[d.id]?.on ?? true).length;
+const countFilled = (...inputs: Record<string, number | undefined>[]) =>
+  inputs.reduce((n, i) => n + Object.values(i).filter(Boolean).length, 0);
+
 type Saved = {
   buffs?: Record<string, boolean>;
   union?: UnionInput;
@@ -230,6 +238,7 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
   const [miscItems, setMiscItems] = useState<PresetInput>(() => defaultPresetInput(MISC_ITEMS));
   const [collection, setCollection] = useState<CollectionInput>({});
   const [open, setOpen] = useState<string>();
+  const [tab, setTab] = useState("buffs");
 
   useEffect(() => {
     // restore per-character settings and record this visit (localStorage is client-only)
@@ -241,6 +250,7 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
     if (saved.links) setLinks({ ...defaultPresetInput(LINK_SKILLS), ...saved.links });
     if (saved.miscItems) setMiscItems({ ...defaultPresetInput(MISC_ITEMS), ...saved.miscItems });
     if (saved.collection) setCollection(saved.collection);
+    setTab(load(TAB_KEY, "buffs"));
     /* eslint-enable react-hooks/set-state-in-effect */
     pushRecent({
       assetKey: character.assetKey,
@@ -282,7 +292,7 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
   const reference = useMemo(() => computeStats(baseline, base.ap), [baseline, base.ap]);
 
   return (
-    <div className="grid gap-4 md:grid-cols-[1fr_280px]">
+    <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">
       <div className="overflow-x-auto rounded-lg border border-black/10 dark:border-white/15">
         <table className="w-full text-sm">
           <thead className="bg-black/[.03] text-xs text-zinc-500 dark:bg-white/[.04]">
@@ -349,95 +359,127 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
         </p>
       </div>
 
-      <aside className="space-y-4">
-        <Panel
-          title="버프"
-          hint="시즌 버프는 API 스탯에 포함되어 기본으로 켜져 있습니다. 스킬 버프는 포함되지 않으므로 체크하면 더해집니다."
-        >
-          {base.buffs.length === 0 && (
-            <p className="text-xs text-zinc-500">
-              {base.job ? "배운 버프 스킬이 없습니다." : `${character.common.job.jobName} 직업 데이터가 아직 없습니다.`}
-            </p>
-          )}
-          <ul className="space-y-1">
-            {base.buffs.map((b) => (
-              <li key={b.id}>
-                <label className="flex cursor-pointer items-start gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    className="mt-1"
-                    checked={!!buffs[b.id]}
-                    onChange={(e) => {
-                      const next = { ...buffs, [b.id]: e.target.checked };
-                      setBuffs(next);
-                      persist({ buffs: next });
-                    }}
-                  />
-                  <span>
-                    {b.name}
-                    <span className="block text-[11px] text-zinc-500">
-                      {b.description ?? b.contributions.map((c) => `${c.stat} +${c.value}`).join(", ")}
-                    </span>
-                  </span>
-                </label>
-              </li>
-            ))}
-          </ul>
-        </Panel>
-
-        <PresetList
-          title="링크 스킬"
-          hint="API 스탯에 포함된 링크 스킬 효과입니다. 레벨이 다르면 수치를 고쳐 주세요."
-          defs={LINK_SKILLS}
-          values={links}
-          onChange={(next) => {
-            setLinks(next);
-            persist({ links: next });
+      <aside className="lg:sticky lg:top-4">
+        <InputTabs
+          active={tab}
+          onChange={(id) => {
+            setTab(id);
+            save(TAB_KEY, id);
           }}
-        />
-
-        <PresetList
-          title="칭호·화살"
-          hint="API가 불러오지 못하지만 API 스탯에는 포함된 아이템입니다."
-          defs={MISC_ITEMS}
-          values={miscItems}
-          onChange={(next) => {
-            setMiscItems(next);
-            persist({ miscItems: next });
-          }}
-        />
-
-        <NumberFields
-          title="유니온 점령 효과"
-          hint="공격대 점령 칸 수를 입력하세요. 주스탯·부스탯은 스탯%가 적용됩니다."
-          fields={unionGridFields(base.job)}
-          values={unionGrid}
-          onChange={(next) => {
-            setUnionGrid(next);
-            persist({ unionGrid: next });
-          }}
-        />
-
-        <NumberFields
-          title="유니온 공격대원"
-          hint="공격대원 효과 합계를 입력하세요. 주스탯·부스탯은 스탯%가 적용되지 않습니다."
-          fields={unionRaiderFields(base.job)}
-          values={union}
-          onChange={(next) => {
-            setUnion(next);
-            persist({ union: next });
-          }}
-        />
-
-        <NumberFields
-          title="도감"
-          hint="인게임 도감 효과 합계를 입력하세요."
-          fields={collectionFields(base.job)}
-          values={collection}
-          onChange={(next) => {
-            setCollection(next);
-            persist({ collection: next });
-          }}
+          tabs={
+            [
+              {
+                id: "buffs",
+                label: "버프",
+                badge: base.buffs.filter((b) => buffs[b.id]).length,
+                content: (
+                  <>
+                    <Hint>시즌 버프는 API 스탯에 포함되어 기본으로 켜져 있습니다. 스킬 버프는 포함되지 않으므로 체크하면 더해집니다.</Hint>
+                    {base.buffs.length === 0 ? (
+                      <p className="text-xs text-zinc-500">
+                        {base.job ? "배운 버프 스킬이 없습니다." : `${character.common.job.jobName} 직업 데이터가 아직 없습니다.`}
+                      </p>
+                    ) : (
+                      <CheckList
+                        items={base.buffs.map((b) => ({
+                          id: b.id,
+                          name: b.name,
+                          description: b.description ?? mergeEffects(b.contributions).map(formatEffect).join(", "),
+                        }))}
+                        checked={buffs}
+                        onChange={(id, on) => {
+                          const next = { ...buffs, [id]: on };
+                          setBuffs(next);
+                          persist({ buffs: next });
+                        }}
+                      />
+                    )}
+                  </>
+                ),
+              },
+              {
+                id: "links",
+                label: "링크",
+                badge: countOn(LINK_SKILLS, links),
+                content: (
+                  <>
+                    <Hint>API 스탯에 포함된 링크 스킬 효과입니다. 레벨이 다르면 수치를 고쳐 주세요.</Hint>
+                    <PresetList
+                      defs={LINK_SKILLS}
+                      values={links}
+                      onChange={(next) => {
+                        setLinks(next);
+                        persist({ links: next });
+                      }}
+                    />
+                  </>
+                ),
+              },
+              {
+                id: "union",
+                label: "유니온",
+                badge: countFilled(unionGrid, union),
+                content: (
+                  <>
+                    <SubHeading title="점령 효과 (칸 수)" hint="주스탯·부스탯은 스탯%가 적용됩니다." />
+                    <FieldList
+                      fields={unionGridFields(base.job)}
+                      values={unionGrid}
+                      onChange={(next) => {
+                        setUnionGrid(next);
+                        persist({ unionGrid: next });
+                      }}
+                    />
+                    <SubHeading title="공격대원 효과 (합계)" hint="주스탯·부스탯은 스탯%가 적용되지 않습니다." />
+                    <FieldList
+                      fields={unionRaiderFields(base.job)}
+                      values={union}
+                      onChange={(next) => {
+                        setUnion(next);
+                        persist({ union: next });
+                      }}
+                    />
+                  </>
+                ),
+              },
+              {
+                id: "collection",
+                label: "도감",
+                badge: countFilled(collection),
+                content: (
+                  <>
+                    <Hint>인게임 도감 효과 합계를 입력하세요.</Hint>
+                    <FieldList
+                      fields={collectionFields(base.job)}
+                      values={collection}
+                      onChange={(next) => {
+                        setCollection(next);
+                        persist({ collection: next });
+                      }}
+                    />
+                  </>
+                ),
+              },
+              {
+                id: "misc",
+                label: "기타",
+                badge: countOn(MISC_ITEMS, miscItems),
+                content: (
+                  <>
+                    <SubHeading title="칭호·화살" hint="API가 불러오지 못하지만 API 스탯에는 포함된 아이템입니다." />
+                    <PresetList
+                      defs={MISC_ITEMS}
+                      values={miscItems}
+                      onChange={(next) => {
+                        setMiscItems(next);
+                        persist({ miscItems: next });
+                      }}
+                    />
+                  </>
+                ),
+              },
+            ] satisfies Tab[]
+          }
         />
       </aside>
     </div>
@@ -461,10 +503,7 @@ function Breakdown({ contributions }: { contributions: StatContribution[] }) {
                   {list.map((c, i) => (
                     <li key={i} className="flex justify-between gap-2">
                       <span className="truncate">{c.label}</span>
-                      <span className="shrink-0 tabular-nums">
-                        {c.stat} {c.value > 0 ? "+" : ""}
-                        {r2(c.value)}
-                      </span>
+                      <span className="shrink-0 tabular-nums">{formatEffect(c)}</span>
                     </li>
                   ))}
                 </ul>

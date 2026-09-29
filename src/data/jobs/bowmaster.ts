@@ -45,17 +45,5 @@ export const bowmaster: JobData = {
       ],
       defaultOn: false,
     },
-    {
-      id: "quiver-barrage",
-      name: "Quiver Barrage",
-      skills: [{ name: "Quiver Barrage", pick: ["ATT%"] }],
-      defaultOn: false,
-    },
-    {
-      id: "storm-of-arrows",
-      name: "Storm of Arrows",
-      skills: [{ name: "Storm of Arrows", pick: ["DMG%"] }],
-      defaultOn: false,
-    },
   ],
 };

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { ITEM_EXTRAS } from "@/data/itemExtras";
 import { SPECIAL_RING_SLOT } from "@/lib/manualItems";
+import { formatEffect } from "@/lib/stats/labels";
 import type { MainStat } from "@/lib/stats/types";
 import type { CharacterDetail, ItemDetail, ItemStats, PotentialLines, StatBreakdown } from "@/types/msu";
 
@@ -237,7 +238,7 @@ function ItemDetailDialog({ item, slotName, iconUrl, onClose }: { item: ItemDeta
             <p className="text-xs font-semibold">고유 효과</p>
             {extras.map((e, i) => (
               <p key={i} className="text-xs">
-                {e.stat} +{e.value}
+                {formatEffect(e)}
               </p>
             ))}
           </div>
