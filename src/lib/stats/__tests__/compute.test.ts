@@ -10,7 +10,7 @@ import {
   computeStats,
   defaultLinkInput,
 } from "..";
-import { collectSets } from "../collectors/sets";
+import { collectSets, countSetPieces } from "../collectors/sets";
 import { redBarn } from "./fixtures";
 
 const c = collectCharacter(redBarn);
@@ -40,12 +40,25 @@ describe("RedBarn (Bowmaster Lv.244)", () => {
     expect(computeStats(base, c.ap).final["FD%"]).toBe(api["FD%"]);
   });
 
+  test("lucky hat (Chaos Queen's Tiara) joins every set with 3+ pieces", () => {
+    const { counts, luckyIn } = countSetPieces(redBarn.items);
+    expect(counts.get(249)).toBe(4); // Root Abyss: 3 + lucky
+    expect(counts.get(506)).toBe(5); // AbsoLab: 4 + lucky
+    expect(counts.get(462)).toBe(10); // Boss accessories: 9 + lucky (no 10-piece effect)
+    expect(counts.get(584)).toBe(2); // Seven Days: medal + badge, below the lucky threshold
+    expect(luckyIn.get(249)).toBe("Chaos Queen's Tiara");
+    expect(luckyIn.has(584)).toBe(false);
+  });
+
   test("set effects apply by equipped piece count", () => {
-    const labels = new Set(collectSets(redBarn.items, redBarn.sets).map((x) => x.label.match(/^.*?\d+세트/)![0]));
-    expect(labels).toEqual(
+    const tiers = new Set(
+      collectSets(redBarn.items, redBarn.sets).map((x) => x.label.replace(/ \[.*?\]/, "").match(/^.*?\d+세트/)![0]),
+    );
+    expect(tiers).toEqual(
       new Set([
         "Root Abyss Set (Bowman) 2세트",
         "Root Abyss Set (Bowman) 3세트",
+        "Root Abyss Set (Bowman) 4세트",
         "Boss Accessory Set 3세트",
         "Boss Accessory Set 5세트",
         "Boss Accessory Set 7세트",
@@ -53,6 +66,7 @@ describe("RedBarn (Bowmaster Lv.244)", () => {
         "AbsoLab Set (Bowman) 2세트",
         "AbsoLab Set (Bowman) 3세트",
         "AbsoLab Set (Bowman) 4세트",
+        "AbsoLab Set (Bowman) 5세트",
         // medal (metadata only) + badge
         "Seven Days Set 2세트",
       ]),
