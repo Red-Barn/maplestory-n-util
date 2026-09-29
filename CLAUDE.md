@@ -19,6 +19,8 @@
   - 스탯 표: "구성 스탯"(주/부스탯, %미적용, 공/마, 각종 %) → "총 스탯"(총 주스탯/부스탯/공격력)을 계산해 API와 비교. 직업의 주/부스탯·공격 타입만 표시, 일반 몬스터 데미지 미표시
   - 어빌리티 "상태이상 대상 추가 데미지"는 데미지%가 아님 (`parseOption`에서 조건부 문구 제외)
   - 주스탯 AP = 5×레벨+18 (Lv.244 → 1238, 사용자 확인), 나머지 스탯 AP는 4
+  - 럭키 아이템(카오스 루타 모자 4종, `src/data/luckyItems.ts`)은 3개 이상 착용한 **장비 세트**에만 +1. 장신구 세트(모든 부위가 Accessory)는 제외
+  - 펫: `wearing.pet`에서 펫 수(1/2/3마리 → 공마 3/14/30)와 펫장비 수(개당 공마 5)로 자동 계산. 칭호·화살은 API에 없어 `src/data/miscItems.ts` 프리셋(링크 스킬과 같은 구조)
   - 민팅 불가 아이템(훈장, Pivotal Adventure Ring 등)은 `/gamemeta/items/{itemId}` 메타데이터로 기본 스탯·세트 번호를 얻음 (`src/lib/itemMeta.ts`). 메타데이터에 없는 효과는 이름 기준 `src/data/itemExtras.ts`
   - 마켓 이름 검색(`filter.name`)은 OAuth(`msu-authorization`) 없이는 필터가 무시됨 → 이름 검색은 지갑 내 `name` 필터로 대체
   - 캐시: `msuFetch`는 `unstable_cache`로 감쌈 (게이트 520ms는 캐시 미스에만). 첫 조회 ~15초, 이후 즉시

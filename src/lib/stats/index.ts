@@ -1,6 +1,6 @@
 import { findJob } from "@/data/jobs";
 import type { CharacterBundle } from "@/types/msu";
-import { collectAbility, collectArcane, collectHyperStats } from "./collectors/character";
+import { collectAbility, collectArcane, collectHyperStats, collectPets } from "./collectors/character";
 import { collectEquipment } from "./collectors/equipment";
 import { collectSets } from "./collectors/sets";
 import { collectPassives, resolveBuffs } from "./collectors/skills";
@@ -18,6 +18,7 @@ export function collectCharacter(bundle: CharacterBundle) {
     ...collectArcane(character),
     ...collectHyperStats(character),
     ...collectAbility(character),
+    ...collectPets(character),
     ...collectPassives(skills, job),
   ];
   return { job, level, ap: estimateAp(level, job), permanent, buffs: resolveBuffs(skills, job) };
@@ -33,7 +34,14 @@ export {
   type UnionGridKey,
   type UnionInput,
 } from "./collectors/union";
-export { collectLinks, defaultLinkInput, linkValue, type LinkInput, type LinkState } from "./collectors/links";
+export {
+  collectPresets,
+  defaultPresetInput,
+  presetValue,
+  type PresetDef,
+  type PresetInput,
+  type PresetState,
+} from "./collectors/presets";
 export { collectCollection, type CollectionInput } from "./collectors/collection";
 export { MAIN_STATS } from "./types";
 export type { ComputedStats, MainStat, StatContribution, StatKey } from "./types";

@@ -3,21 +3,22 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import type { JobData } from "@/data/jobs";
 import { LINK_SKILLS } from "@/data/links";
+import { MISC_ITEMS } from "@/data/miscItems";
 import { load, pushRecent, save } from "@/lib/client/storage";
 import {
   apStatToFinal,
   collectCharacter,
   collectCollection,
-  collectLinks,
+  collectPresets,
   collectUnion,
   collectUnionGrid,
   computeStats,
-  defaultLinkInput,
+  defaultPresetInput,
   MAIN_STATS,
   type CollectionInput,
   type ComputedStats,
   type FinalStats,
-  type LinkInput,
+  type PresetInput,
   type MainStat,
   type StatContribution,
   type StatKey,
@@ -26,7 +27,7 @@ import {
   type UnionInput,
 } from "@/lib/stats";
 import type { CharacterBundle } from "@/types/msu";
-import { LinkSkills, NumberFields, Panel, type Field } from "./StatInputs";
+import { NumberFields, Panel, PresetList, type Field } from "./StatInputs";
 
 /** What the formulas need besides contributions. */
 type Ctx = { ap: Record<MainStat, number> };
@@ -194,6 +195,8 @@ const SOURCE_NAMES: Record<StatContribution["source"], string> = {
   synergy: "시너지",
   union: "유니온",
   link: "링크 스킬",
+  pet: "펫",
+  "misc-item": "칭호·화살 등",
   collection: "도감",
   custom: "사용자 입력",
 };
@@ -205,7 +208,8 @@ type Saved = {
   buffs?: Record<string, boolean>;
   union?: UnionInput;
   unionGrid?: UnionGridInput;
-  links?: LinkInput;
+  links?: PresetInput;
+  miscItems?: PresetInput;
   collection?: CollectionInput;
 };
 
@@ -222,7 +226,8 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
   const [buffs, setBuffs] = useState<Record<string, boolean>>(defaults);
   const [union, setUnion] = useState<UnionInput>({});
   const [unionGrid, setUnionGrid] = useState<UnionGridInput>({});
-  const [links, setLinks] = useState<LinkInput>(() => defaultLinkInput(LINK_SKILLS));
+  const [links, setLinks] = useState<PresetInput>(() => defaultPresetInput(LINK_SKILLS));
+  const [miscItems, setMiscItems] = useState<PresetInput>(() => defaultPresetInput(MISC_ITEMS));
   const [collection, setCollection] = useState<CollectionInput>({});
   const [open, setOpen] = useState<string>();
 
@@ -233,7 +238,8 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
     if (saved.buffs) setBuffs({ ...defaults, ...saved.buffs });
     if (saved.union) setUnion(saved.union);
     if (saved.unionGrid) setUnionGrid(saved.unionGrid);
-    if (saved.links) setLinks({ ...defaultLinkInput(LINK_SKILLS), ...saved.links });
+    if (saved.links) setLinks({ ...defaultPresetInput(LINK_SKILLS), ...saved.links });
+    if (saved.miscItems) setMiscItems({ ...defaultPresetInput(MISC_ITEMS), ...saved.miscItems });
     if (saved.collection) setCollection(saved.collection);
     /* eslint-enable react-hooks/set-state-in-effect */
     pushRecent({
@@ -246,7 +252,7 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
   }, [storageKey, defaults, character]);
 
   const persist = (next: Saved) =>
-    save(storageKey, { buffs, union, unionGrid, links, collection, ...next } satisfies Saved);
+    save(storageKey, { buffs, union, unionGrid, links, miscItems, collection, ...next } satisfies Saved);
 
   // API-derived stats plus what the user typed in (the API includes these but doesn't list them).
   const known = useMemo(
@@ -254,10 +260,11 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
       ...base.permanent,
       ...collectUnion(union),
       ...collectUnionGrid(unionGrid),
-      ...collectLinks(LINK_SKILLS, links),
+      ...collectPresets(LINK_SKILLS, links, "link"),
+      ...collectPresets(MISC_ITEMS, miscItems, "misc-item"),
       ...collectCollection(collection),
     ],
-    [base.permanent, union, unionGrid, links, collection],
+    [base.permanent, union, unionGrid, links, miscItems, collection],
   );
 
   // Default buff set = what the API snapshot includes (season buff on, skill buffs off).
@@ -378,12 +385,25 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
           </ul>
         </Panel>
 
-        <LinkSkills
+        <PresetList
+          title="링크 스킬"
+          hint="API 스탯에 포함된 링크 스킬 효과입니다. 레벨이 다르면 수치를 고쳐 주세요."
           defs={LINK_SKILLS}
           values={links}
           onChange={(next) => {
             setLinks(next);
             persist({ links: next });
+          }}
+        />
+
+        <PresetList
+          title="칭호·화살"
+          hint="API가 불러오지 못하지만 API 스탯에는 포함된 아이템입니다."
+          defs={MISC_ITEMS}
+          values={miscItems}
+          onChange={(next) => {
+            setMiscItems(next);
+            persist({ miscItems: next });
           }}
         />
 

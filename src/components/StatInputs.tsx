@@ -1,7 +1,6 @@
 "use client";
 
-import type { LinkSkillDef } from "@/data/links";
-import { linkValue, type LinkInput, type LinkState } from "@/lib/stats";
+import { presetValue, type PresetDef, type PresetInput, type PresetState } from "@/lib/stats";
 
 export type Field<K extends string> = { key: K; label: string; pct?: boolean; unit?: string };
 
@@ -65,24 +64,32 @@ export function NumberFields<K extends string>(props: {
   );
 }
 
-const LINK_KEY_LABEL: Record<string, string> = {
+const EFFECT_LABEL: Record<string, string> = {
   "CRIT%": "크리티컬 확률 %",
   "IED%": "방어율 무시 %",
   "BOSS%": "보스 데미지 %",
   "DMG%": "데미지 %",
+  ATT: "공격력 +",
   ATT_MATT: "공/마 +",
   ALL: "올스탯 +",
 };
 
-export function LinkSkills(props: { defs: LinkSkillDef[]; values: LinkInput; onChange: (next: LinkInput) => void }) {
+/** Checkbox list of fixed-effect bundles (link skills, title, arrows) with editable values. */
+export function PresetList(props: {
+  title: string;
+  hint: string;
+  defs: PresetDef[];
+  values: PresetInput;
+  onChange: (next: PresetInput) => void;
+}) {
   return (
-    <Panel title="링크 스킬" hint="API 스탯에 포함된 링크 스킬 효과입니다. 레벨이 다르면 수치를 고쳐 주세요.">
+    <Panel title={props.title} hint={props.hint}>
       <ul className="space-y-2">
         {props.defs.map((d) => {
-          const state: LinkState = props.values[d.id] ?? { on: true };
+          const state: PresetState = props.values[d.id] ?? { on: true };
           const setOn = (on: boolean) => props.onChange({ ...props.values, [d.id]: { ...state, on } });
           const setValue = (i: number, v: number) => {
-            const values = d.effects.map((_, j) => linkValue(d, state, j));
+            const values = d.effects.map((_, j) => presetValue(d, state, j));
             values[i] = v;
             props.onChange({ ...props.values, [d.id]: { on: state.on, values } });
           };
@@ -91,14 +98,14 @@ export function LinkSkills(props: { defs: LinkSkillDef[]; values: LinkInput; onC
               <label className="flex cursor-pointer items-center gap-2">
                 <input type="checkbox" checked={state.on} onChange={(e) => setOn(e.target.checked)} />
                 <span>
-                  {d.name} <span className="text-[11px] text-zinc-500">Lv.{d.level}</span>
+                  {d.name} {d.tag && <span className="text-[11px] text-zinc-500">{d.tag}</span>}
                 </span>
               </label>
               {d.effects.map((e, i) => (
                 <div key={i} className="mt-1 flex items-center justify-between gap-2 pl-6">
-                  <span className="text-[11px] text-zinc-500">{LINK_KEY_LABEL[e.key] ?? e.key}</span>
+                  <span className="text-[11px] text-zinc-500">{EFFECT_LABEL[e.key] ?? e.key}</span>
                   <NumberInput
-                    value={linkValue(d, state, i)}
+                    value={presetValue(d, state, i)}
                     decimal={e.key.endsWith("%")}
                     onChange={(v) => setValue(i, v ?? 0)}
                   />

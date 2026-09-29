@@ -10,22 +10,28 @@ export type SetCounts = {
   luckyIn: Map<number, string>;
 };
 
+const isAccessory = (item: ItemDetail) => item.category.tier2?.label === "Accessory";
+
 /**
- * A lucky item (only one can be worn — they're all hats) adds one piece to every set that already
- * has LUCKY_MIN_PIECES pieces, except a set it belongs to itself.
+ * A lucky item (only one can be worn — they're all hats) adds one piece to every equipment set
+ * that already has LUCKY_MIN_PIECES pieces, except a set it belongs to itself. Sets whose equipped
+ * pieces are all accessories (Item > Armor > Accessory) don't get it.
  */
 export function countSetPieces(items: Record<string, ItemDetail | null>): SetCounts {
   const equipped = Object.values(items).filter((i): i is ItemDetail => i != null);
   const counts = new Map<number, number>();
+  const equipmentSets = new Set<number>();
   for (const item of equipped) {
     const id = item.common.setItemId;
-    if (id) counts.set(id, (counts.get(id) ?? 0) + 1);
+    if (!id) continue;
+    counts.set(id, (counts.get(id) ?? 0) + 1);
+    if (!isAccessory(item)) equipmentSets.add(id);
   }
   const luckyIn = new Map<number, string>();
   const lucky = equipped.find((i) => LUCKY_ITEMS.has(i.name));
   if (lucky) {
     for (const [id, n] of counts) {
-      if (id === lucky.common.setItemId || n < LUCKY_MIN_PIECES) continue;
+      if (id === lucky.common.setItemId || n < LUCKY_MIN_PIECES || !equipmentSets.has(id)) continue;
       counts.set(id, n + 1);
       luckyIn.set(id, lucky.name);
     }

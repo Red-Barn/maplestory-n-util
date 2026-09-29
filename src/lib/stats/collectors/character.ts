@@ -34,3 +34,20 @@ export function collectArcane(character: CharacterDetail): StatContribution[] {
     )
     .filter((c) => c.stat);
 }
+
+// Pet ATT & Magic ATT by number of pets (total, not per pet), and per pet equipment.
+// Confirmed in-game by the user.
+const PET_ATT_BY_COUNT = [0, 3, 14, 30];
+const PET_EQUIP_ATT = 5;
+
+export function collectPets(character: CharacterDetail): StatContribution[] {
+  const pets = Object.values(character.wearing.pet ?? {}).filter((p) => p?.itemId);
+  const equips = pets.filter((p) => p!.petAcc?.itemId).length;
+  const petAtt = PET_ATT_BY_COUNT[Math.min(pets.length, 3)];
+  const out: StatContribution[] = [];
+  for (const stat of ["ATT", "MATT"] as const) {
+    if (petAtt) out.push({ stat, value: petAtt, source: "pet", label: `펫 ${pets.length}마리` });
+    if (equips) out.push({ stat, value: equips * PET_EQUIP_ATT, source: "pet", label: `펫장비 ${equips}개` });
+  }
+  return out;
+}

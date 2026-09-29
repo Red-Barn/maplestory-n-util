@@ -33,6 +33,8 @@ export type AccountCharactersResponse = {
 export type Category = {
   categoryNo: number;
   label: string;
+  /** e.g. "Armor" vs "Accessory" under Item > Armor */
+  tier2: { code: string; label: string };
   tier3: { code: string; label: string };
 };
 
@@ -99,6 +101,8 @@ export type CharacterDetail = {
   image: { imageUrl: string };
   wearing: {
     equip: Record<string, EquipSlotRef>;
+    /** pet1..pet3; petAcc is the pet's equipment */
+    pet: Record<string, { itemId: number; imageUrl: string; petAcc: { itemId: number; imageUrl: string } | null } | null>;
     arcaneSymbols: { slots: ArcaneSymbol[]; totalArcaneForce: number };
   };
 };

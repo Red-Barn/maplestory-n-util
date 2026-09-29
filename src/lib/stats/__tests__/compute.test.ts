@@ -1,14 +1,15 @@
 import { describe, expect, test } from "vitest";
 import { LINK_SKILLS } from "@/data/links";
+import { MISC_ITEMS } from "@/data/miscItems";
 import {
   apStatToFinal,
   collectCharacter,
   collectCollection,
-  collectLinks,
+  collectPresets,
   collectUnion,
   collectUnionGrid,
   computeStats,
-  defaultLinkInput,
+  defaultPresetInput,
 } from "..";
 import { collectSets, countSetPieces } from "../collectors/sets";
 import { redBarn } from "./fixtures";
@@ -40,14 +41,13 @@ describe("RedBarn (Bowmaster Lv.244)", () => {
     expect(computeStats(base, c.ap).final["FD%"]).toBe(api["FD%"]);
   });
 
-  test("lucky hat (Chaos Queen's Tiara) joins every set with 3+ pieces", () => {
+  test("lucky hat (Chaos Queen's Tiara) joins equipment sets with 3+ pieces only", () => {
     const { counts, luckyIn } = countSetPieces(redBarn.items);
     expect(counts.get(249)).toBe(4); // Root Abyss: 3 + lucky
     expect(counts.get(506)).toBe(5); // AbsoLab: 4 + lucky
-    expect(counts.get(462)).toBe(10); // Boss accessories: 9 + lucky (no 10-piece effect)
-    expect(counts.get(584)).toBe(2); // Seven Days: medal + badge, below the lucky threshold
-    expect(luckyIn.get(249)).toBe("Chaos Queen's Tiara");
-    expect(luckyIn.has(584)).toBe(false);
+    expect(counts.get(462)).toBe(9); // Boss accessories: accessory set, no lucky
+    expect(counts.get(584)).toBe(2); // Seven Days: accessory set, no lucky
+    expect([...luckyIn.keys()].sort()).toEqual([249, 506]);
   });
 
   test("set effects apply by equipped piece count", () => {
@@ -132,9 +132,35 @@ describe("user inputs", () => {
   });
 });
 
+describe("pets", () => {
+  test("3 pets + 3 pet equips = ATT & Magic ATT +30 +15", () => {
+    const pets = c.permanent.filter((x) => x.source === "pet");
+    expect(pets.filter((x) => x.stat === "ATT").map((x) => `${x.label}=${x.value}`)).toEqual(["펫 3마리=30", "펫장비 3개=15"]);
+    expect(pets.filter((x) => x.stat === "MATT").reduce((a, x) => a + x.value, 0)).toBe(45);
+  });
+});
+
+describe("title and arrows", () => {
+  test("defaults", () => {
+    const got = collectPresets(MISC_ITEMS, defaultPresetInput(MISC_ITEMS), "misc-item").map((x) => `${x.stat}=${x.value}`);
+    expect(got).toEqual([
+      // Holy Pink Beanity
+      "STR=10",
+      "DEX=10",
+      "INT=10",
+      "LUK=10",
+      "ATT=5",
+      "MATT=5",
+      "BOSS%=10",
+      // Titanium Arrows for Bow
+      "ATT=9",
+    ]);
+  });
+});
+
 describe("link skills and union grid", () => {
   test("default link skills", () => {
-    const got = collectLinks(LINK_SKILLS, defaultLinkInput(LINK_SKILLS));
+    const got = collectPresets(LINK_SKILLS, defaultPresetInput(LINK_SKILLS), "link");
     const sum = (k: string) => got.filter((x) => x.stat === k).reduce((a, x) => a + x.value, 0);
     expect(sum("CRIT%")).toBe(25); // 궁수 10 + 팬텀 15
     expect(sum("IED%")).toBe(15);
@@ -146,12 +172,13 @@ describe("link skills and union grid", () => {
   });
 
   test("single-value link edits saved before multi-effect links still apply", () => {
-    const got = collectLinks(LINK_SKILLS, { adele: { on: true, value: 6 } });
+    const got = collectPresets(LINK_SKILLS, { adele: { on: true, value: 6 } }, "link");
     expect(got.filter((x) => x.label.startsWith("아델")).map((x) => `${x.stat}=${x.value}`)).toEqual(["BOSS%=6", "DMG%=2"]);
   });
 
   test("link can be switched off or given another value", () => {
-    const got = collectLinks(LINK_SKILLS, { ...defaultLinkInput(LINK_SKILLS), bowman: { on: false }, adele: { on: true, value: 6 } });
+    const input = { ...defaultPresetInput(LINK_SKILLS), bowman: { on: false }, adele: { on: true, value: 6 } };
+    const got = collectPresets(LINK_SKILLS, input, "link");
     expect(got.some((x) => x.label.startsWith("궁수"))).toBe(false);
     expect(got.find((x) => x.label.startsWith("아델"))?.value).toBe(6);
   });

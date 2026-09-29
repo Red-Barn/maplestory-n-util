@@ -44,6 +44,8 @@ export type StatSource =
   | "synergy"
   | "union"
   | "link"
+  | "pet"
+  | "misc-item"
   | "collection"
   | "custom";
 
