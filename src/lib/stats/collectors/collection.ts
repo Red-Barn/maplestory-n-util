@@ -1,4 +1,5 @@
-import { MAIN_STATS, type MainStat, type StatContribution, type StatKey } from "../types";
+import type { MainStat, StatContribution } from "../types";
+import { inputContributions, type InputKey } from "./inputs";
 
 /**
  * User-entered collection (도감) totals. The in-game stat window (API apStat) includes them,
@@ -11,16 +12,10 @@ export const COLLECTION_LABEL = "도감";
 
 // Collection flat stats are treated like equipment flat stats (multiplied by stat %).
 // If in-game testing shows otherwise, map them to `${stat}_FIXED` here.
-function expand(key: keyof CollectionInput): StatKey[] {
-  if (key === "ALL") return [...MAIN_STATS];
-  if (key === "ATT") return ["ATT", "MATT"];
-  return [key];
-}
+const toInputKey = (key: keyof CollectionInput): InputKey => (key === "ATT" ? "ATT_MATT" : key);
 
 export function collectCollection(input: CollectionInput): StatContribution[] {
-  return (Object.entries(input) as [keyof CollectionInput, number | undefined][])
-    .filter(([, v]) => v)
-    .flatMap(([key, value]) =>
-      expand(key).map((stat) => ({ stat, value: value!, source: "collection" as const, label: COLLECTION_LABEL })),
-    );
+  return (Object.entries(input) as [keyof CollectionInput, number | undefined][]).flatMap(([key, value]) =>
+    inputContributions(toInputKey(key), value ?? 0, "collection", COLLECTION_LABEL),
+  );
 }

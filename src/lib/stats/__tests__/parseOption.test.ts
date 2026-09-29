@@ -52,6 +52,10 @@ describe("parseOption", () => {
     expect(parseOption("+10% damage to normal monsters")).toEqual([{ stat: "NORMAL%", value: 10 }]);
   });
 
+  test("conditional damage is not stat-window damage", () => {
+    expect(parseOption("+7% damage when attacking targets inflicted with Abnormal Status.")).toEqual([]);
+  });
+
   test("set effect texts", () => {
     expect(parseOption("MaxHP / MaxMP: +10%")).toEqual([
       { stat: "HP%", value: 10 },

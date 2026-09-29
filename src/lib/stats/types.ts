@@ -43,6 +43,7 @@ export type StatSource =
   | "consumable"
   | "synergy"
   | "union"
+  | "link"
   | "collection"
   | "custom";
 

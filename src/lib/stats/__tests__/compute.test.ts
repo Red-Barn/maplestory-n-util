@@ -1,5 +1,15 @@
 import { describe, expect, test } from "vitest";
-import { apStatToFinal, collectCharacter, collectCollection, collectUnion, computeStats } from "..";
+import { LINK_SKILLS } from "@/data/links";
+import {
+  apStatToFinal,
+  collectCharacter,
+  collectCollection,
+  collectLinks,
+  collectUnion,
+  collectUnionGrid,
+  computeStats,
+  defaultLinkInput,
+} from "..";
 import { collectSets } from "../collectors/sets";
 import { redBarn } from "./fixtures";
 
@@ -82,6 +92,30 @@ describe("user inputs", () => {
     const after = computeStats([...base, ...collectCollection({ "DMG%": 27, "CDMG%": 5 })], c.ap).final;
     expect(after["DMG%"] - before["DMG%"]).toBe(27);
     expect(after["CDMG%"] - before["CDMG%"]).toBe(5);
+  });
+});
+
+describe("link skills and union grid", () => {
+  test("default link skills", () => {
+    const got = collectLinks(LINK_SKILLS, defaultLinkInput(LINK_SKILLS));
+    const sum = (k: string) => got.filter((x) => x.stat === k).reduce((a, x) => a + x.value, 0);
+    expect(sum("CRIT%")).toBe(25); // 궁수 10 + 팬텀 15
+    expect(sum("IED%")).toBe(15);
+    expect(sum("ATT")).toBe(25);
+    expect(sum("MATT")).toBe(25);
+    expect(sum("DEX")).toBe(70);
+    expect(sum("BOSS%")).toBe(4);
+  });
+
+  test("link can be switched off or given another value", () => {
+    const got = collectLinks(LINK_SKILLS, { ...defaultLinkInput(LINK_SKILLS), bowman: { on: false }, adele: { on: true, value: 6 } });
+    expect(got.some((x) => x.label.startsWith("궁수"))).toBe(false);
+    expect(got.find((x) => x.label.startsWith("아델"))?.value).toBe(6);
+  });
+
+  test("union grid cells", () => {
+    const got = collectUnionGrid({ DEX: 10, STR: 4, ATT: 15, "CDMG%": 7, "IED%": 40 }).map((x) => `${x.stat}=${x.value}`);
+    expect(got).toEqual(["DEX_FIXED=50", "STR_FIXED=20", "ATT=15", "CDMG%=3.5", "IED%=40"]);
   });
 });
 

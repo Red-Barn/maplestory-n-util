@@ -25,7 +25,15 @@ export function collectCharacter(bundle: CharacterBundle) {
 
 export { apStatToFinal, computeStats, estimateAp } from "./compute";
 export type { FinalStats } from "./compute";
-export { collectUnion, type UnionInput } from "./collectors/union";
+export {
+  collectUnion,
+  collectUnionGrid,
+  UNION_GRID_PER_CELL,
+  type UnionGridInput,
+  type UnionGridKey,
+  type UnionInput,
+} from "./collectors/union";
+export { collectLinks, defaultLinkInput, type LinkInput } from "./collectors/links";
 export { collectCollection, type CollectionInput } from "./collectors/collection";
 export { MAIN_STATS } from "./types";
 export type { ComputedStats, MainStat, StatContribution, StatKey } from "./types";

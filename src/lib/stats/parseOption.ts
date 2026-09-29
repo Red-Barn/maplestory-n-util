@@ -48,10 +48,15 @@ const PREFIX_RE = /^(?:\[?passive effects?\s*[:-]?\s*|permanently\s+|increases?\
 const NUM_RE = /^\s*(?::|by)?\s*\+?\s*(\d+(?:\.\d+)?)\s*(%)?/i;
 const PER_LEVEL_RE = /^per\s+(\d+)\s+character\s+levels?\s*:?\s*\+?\s*(\d+)/i;
 
+// Conditional damage that isn't part of the stat window's Damage %,
+// e.g. ability "+7% damage when attacking targets inflicted with Abnormal Status."
+const CONDITIONAL_RE = /abnormal status|when attacking/i;
+
 export type ParseContext = { level?: number };
 
 /** Parse one "<label> <value>" fragment. */
 function parseFragment(fragment: string, ctx: ParseContext): StatEffect[] {
+  if (CONDITIONAL_RE.test(fragment)) return [];
   let s = fragment.trim().replace(PREFIX_RE, "").replace(/[\]]/g, "").trim();
   const lower = s.toLowerCase();
 
