@@ -73,6 +73,11 @@ describe("RedBarn (Bowmaster Lv.244)", () => {
     );
   });
 
+  test("special ring (not in the API) adds all stats +4 and ATT/MATT +4", () => {
+    const ring = c.permanent.filter((x) => x.label.startsWith("S.Ring")).map((x) => `${x.stat}=${x.value}`);
+    expect(ring.sort()).toEqual(["ATT=4", "DEX=4", "INT=4", "LUK=4", "MATT=4", "STR=4"]);
+  });
+
   test("main stat AP is 5 × level + 18", () => {
     expect(c.ap.DEX).toBe(1238);
     expect(c.ap.STR).toBe(4);
@@ -185,7 +190,7 @@ describe("link skills and union grid", () => {
 
   test("union grid cells", () => {
     const got = collectUnionGrid({ DEX: 10, STR: 4, ATT: 15, "CDMG%": 7, "IED%": 40 }).map((x) => `${x.stat}=${x.value}`);
-    expect(got).toEqual(["DEX_FIXED=50", "STR_FIXED=20", "ATT=15", "CDMG%=3.5", "IED%=40"]);
+    expect(got).toEqual(["DEX=50", "STR=20", "ATT=15", "CDMG%=3.5", "IED%=40"]);
   });
 });
 

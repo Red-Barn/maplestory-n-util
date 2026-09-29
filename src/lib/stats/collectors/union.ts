@@ -25,12 +25,15 @@ export type UnionGridInput = Partial<Record<UnionGridKey, number>>;
 
 export const UNION_GRID_LABEL = "유니온 점령 효과";
 
-/** Stat gained per occupied cell. Grid main/sub stats are %-unaffected, like raider stats. */
+/**
+ * Stat gained per occupied cell. Unlike raider stats, grid main/sub stats ARE multiplied by
+ * stat % (confirmed in-game by the user).
+ */
 export const UNION_GRID_PER_CELL: Record<UnionGridKey, { stat: StatKey; value: number }> = {
-  STR: { stat: "STR_FIXED", value: 5 },
-  DEX: { stat: "DEX_FIXED", value: 5 },
-  INT: { stat: "INT_FIXED", value: 5 },
-  LUK: { stat: "LUK_FIXED", value: 5 },
+  STR: { stat: "STR", value: 5 },
+  DEX: { stat: "DEX", value: 5 },
+  INT: { stat: "INT", value: 5 },
+  LUK: { stat: "LUK", value: 5 },
   ATT: { stat: "ATT", value: 1 },
   MATT: { stat: "MATT", value: 1 },
   "CRIT%": { stat: "CRIT%", value: 1 },

@@ -138,6 +138,8 @@ export type ItemStats = {
 export type ItemDetail = {
   /** Built from game metadata for non-mintable items (base stats only, no enhancements). */
   fromMetadata?: boolean;
+  /** Not returned by the API at all; added from our own data (e.g. the special ring). */
+  manual?: boolean;
   assetKey: string;
   name: string;
   category: Category;

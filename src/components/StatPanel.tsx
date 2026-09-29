@@ -63,7 +63,7 @@ const flatStatRow = (s: MainStat, role?: string): Row => ({
 const fixedStatRow = (s: MainStat, role?: string): Row => ({
   id: `fixed-${s}`,
   label: `${role ? `${role} (${s})` : s} %미적용`,
-  note: () => "하이퍼스탯·아케인·유니온",
+  note: () => "하이퍼스탯·아케인·유니온 공격대원",
   parts: [`${s}_FIXED`],
   value: (r) => t(r, `${s}_FIXED`),
 });
@@ -409,7 +409,7 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
 
         <NumberFields
           title="유니온 점령 효과"
-          hint="공격대 점령 칸 수를 입력하세요. 주스탯·부스탯은 스탯%가 적용되지 않습니다."
+          hint="공격대 점령 칸 수를 입력하세요. 주스탯·부스탯은 스탯%가 적용됩니다."
           fields={unionGridFields(base.job)}
           values={unionGrid}
           onChange={(next) => {

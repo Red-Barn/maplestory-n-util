@@ -1,6 +1,7 @@
 import "server-only";
 
 import { itemFromMetadata, type ItemMetadata } from "@/lib/itemMeta";
+import { withManualItems } from "@/lib/manualItems";
 import { MsuApiError, msuFetch } from "@/lib/msu";
 import type {
   AccountCharactersResponse,
@@ -84,5 +85,5 @@ export async function getCharacterBundle(assetKey: string): Promise<CharacterBun
   ).filter((s): s is ItemSet => s != null);
 
   const learned = [...skills.skills, ...hyper.skills].flatMap((t) => t.skills).filter((s) => s.skillLevel > 0);
-  return { character, items, sets, skills: learned };
+  return { character, items: withManualItems(items), sets, skills: learned };
 }

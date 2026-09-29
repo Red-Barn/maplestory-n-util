@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ITEM_EXTRAS } from "@/data/itemExtras";
+import { SPECIAL_RING_SLOT } from "@/lib/manualItems";
 import type { MainStat } from "@/lib/stats/types";
 import type { CharacterDetail, ItemDetail, ItemStats, PotentialLines, StatBreakdown } from "@/types/msu";
 
@@ -24,6 +25,7 @@ const SLOTS: [string, string][] = [
   ["ring2", "반지2"],
   ["ring3", "반지3"],
   ["ring4", "반지4"],
+  [SPECIAL_RING_SLOT, "특수 반지"],
   ["weapon", "무기"],
   ["subWeapon", "보조무기"],
   ["emblem", "엠블렘"],
@@ -195,6 +197,9 @@ function ItemDetailDialog({ item, slotName, iconUrl, onClose }: { item: ItemDeta
           </button>
         </div>
 
+        {item.manual && (
+          <p className="text-[11px] text-zinc-500">API가 불러오지 못하는 장비라 직접 추가한 수치입니다.</p>
+        )}
         {item.fromMetadata && (
           <p className="text-[11px] text-zinc-500">민팅 불가 아이템이라 게임 데이터의 기본 수치만 표시합니다.</p>
         )}
@@ -257,7 +262,7 @@ export default function EquipmentGrid(props: {
   return (
     <>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-        {SLOTS.filter(([slot]) => props.equip[slot]).map(([slot, label]) => (
+        {SLOTS.filter(([slot]) => props.equip[slot] || props.items[slot]).map(([slot, label]) => (
           <ItemCard
             key={slot}
             slotName={label}
