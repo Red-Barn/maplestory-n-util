@@ -132,6 +132,8 @@ export type ItemStats = {
 
 /** GET /items/{assetKey} → data.item */
 export type ItemDetail = {
+  /** Built from game metadata for non-mintable items (base stats only, no enhancements). */
+  fromMetadata?: boolean;
   assetKey: string;
   name: string;
   category: Category;

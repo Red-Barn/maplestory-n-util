@@ -33,7 +33,7 @@ export {
   type UnionGridKey,
   type UnionInput,
 } from "./collectors/union";
-export { collectLinks, defaultLinkInput, type LinkInput } from "./collectors/links";
+export { collectLinks, defaultLinkInput, linkValue, type LinkInput, type LinkState } from "./collectors/links";
 export { collectCollection, type CollectionInput } from "./collectors/collection";
 export { MAIN_STATS } from "./types";
 export type { ComputedStats, MainStat, StatContribution, StatKey } from "./types";

@@ -1,3 +1,4 @@
+import { ITEM_EXTRAS } from "@/data/itemExtras";
 import type { ItemDetail, PotentialLines, StatBreakdown } from "@/types/msu";
 import { parseOption } from "../parseOption";
 import type { StatContribution, StatKey, StatSource } from "../types";
@@ -45,6 +46,7 @@ export function collectItem(item: ItemDetail, level: number): StatContribution[]
   }
   out.push(...potentialLines(item.enhance.potential, "potential", label, level));
   out.push(...potentialLines(item.enhance.bonusPotential, "bonus-potential", label, level));
+  for (const e of ITEM_EXTRAS[item.name] ?? []) out.push({ ...e, source: "equip-base", label: `${label} (고유 효과)` });
   return out;
 }
 

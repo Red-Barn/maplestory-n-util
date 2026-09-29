@@ -5755,5 +5755,179 @@
    "skillMasterLevel": 1,
    "skillName": "Concentration"
   }
- ]
+ ],
+ "metadata": {
+  "ring1": {
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000202004,
+    "label": "Item > Armor > Accessory > Ring",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "02",
+     "label": "Accessory"
+    },
+    "tier3": {
+     "code": "004",
+     "label": "Ring"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": true,
+    "blockUpgradePotential": true,
+    "blockUpgradeStarforce": true,
+    "desc": "",
+    "enableExtraOption": false,
+    "enablePotential": false,
+    "enableStarforce": false,
+    "isBossReward": false,
+    "isJokerItem": false,
+    "isMintable": false,
+    "isOnly": true,
+    "isOnlyEquip": false,
+    "isSbt": false,
+    "itemId": 1113069,
+    "itemName": "Pivotal Adventure Ring",
+    "maxStarforce": 0,
+    "ridingSkill": 0,
+    "setItemId": 0,
+    "slotMax": 0
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1113069.png",
+    "sampleImageUrl": ""
+   },
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 0,
+     "className": "Beginner",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 130,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": 0,
+    "damr": 0,
+    "dex": 3,
+    "imdr": 0,
+    "int": 3,
+    "jump": 0,
+    "knockback": 0,
+    "luk": 3,
+    "mad": 3,
+    "maxHp": 300,
+    "maxHpr": 0,
+    "maxMp": 300,
+    "maxMpr": 0,
+    "pad": 3,
+    "pdd": 0,
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": 0,
+    "statr": 0,
+    "str": 3
+   }
+  },
+  "medal": {
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000202011,
+    "label": "Item > Armor > Accessory > Medal",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "02",
+     "label": "Accessory"
+    },
+    "tier3": {
+     "code": "011",
+     "label": "Medal"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": false,
+    "blockUpgradePotential": false,
+    "blockUpgradeStarforce": false,
+    "desc": "Equipping this medal will let people around you know that you played Monster Park at least 539 times over 11 weeks.",
+    "enableExtraOption": false,
+    "enablePotential": false,
+    "enableStarforce": false,
+    "isBossReward": false,
+    "isJokerItem": false,
+    "isMintable": false,
+    "isOnly": false,
+    "isOnlyEquip": false,
+    "isSbt": false,
+    "itemId": 1142922,
+    "itemName": "Seven Day Monster Parker",
+    "maxStarforce": 0,
+    "ridingSkill": 0,
+    "setItemId": 584,
+    "slotMax": 0
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1142922.png",
+    "sampleImageUrl": ""
+   },
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 0,
+     "className": "Beginner",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 100,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": 0,
+    "damr": 0,
+    "dex": 7,
+    "imdr": 10,
+    "int": 7,
+    "jump": 0,
+    "knockback": 0,
+    "luk": 7,
+    "mad": 7,
+    "maxHp": 0,
+    "maxHpr": 0,
+    "maxMp": 0,
+    "maxMpr": 0,
+    "pad": 7,
+    "pdd": 0,
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": 0,
+    "statr": 0,
+    "str": 7
+   }
+  }
+ }
 }

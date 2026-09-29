@@ -1,10 +1,12 @@
 import "server-only";
 
+import { itemFromMetadata, type ItemMetadata } from "@/lib/itemMeta";
 import { MsuApiError, msuFetch } from "@/lib/msu";
 import type {
   AccountCharactersResponse,
   CharacterBundle,
   CharacterDetail,
+  EquipSlotRef,
   ItemDetail,
   ItemSet,
   SkillsResponse,
@@ -41,21 +43,26 @@ export async function getAccountCharacters(wallet: string, name?: string) {
 
 // Item options change rarely compared with how many calls a page view costs (1 per slot).
 const ITEM_REVALIDATE = 600;
-const SET_REVALIDATE = 86400; // static game metadata
+const META_REVALIDATE = 86400; // static game metadata
+
+/** Minted items have a full detail; non-mintable ones (medals, event rings) only game metadata. */
+function getEquippedItem(ref: EquipSlotRef): Promise<ItemDetail | null> {
+  if (!ref) return Promise.resolve(null);
+  const req = ref.assetKey
+    ? msuFetch<{ item: ItemDetail }>(`/items/${ref.assetKey}`, {}, ITEM_REVALIDATE).then((r) => r.item)
+    : msuFetch<{ item: ItemMetadata }>(`/gamemeta/items/${ref.itemId}`, {}, META_REVALIDATE).then((r) =>
+        itemFromMetadata(r.item),
+      );
+  return req.catch(() => null);
+}
 
 export async function getCharacterBundle(assetKey: string): Promise<CharacterBundle> {
   assertAssetKey(assetKey);
   const { character } = await msuFetch<{ character: CharacterDetail }>(`/characters/${assetKey}`);
 
-  const slots = Object.entries(character.wearing.equip).filter(([, ref]) => ref?.assetKey);
+  const slots = Object.entries(character.wearing.equip).filter(([, ref]) => ref?.itemId);
   const [itemResults, skills, hyper] = await Promise.all([
-    Promise.all(
-      slots.map(([, ref]) =>
-        msuFetch<{ item: ItemDetail }>(`/items/${ref!.assetKey}`, {}, ITEM_REVALIDATE)
-          .then((r) => r.item)
-          .catch(() => null),
-      ),
-    ),
+    Promise.all(slots.map(([, ref]) => getEquippedItem(ref))),
     msuFetch<SkillsResponse>(`/characters/${assetKey}/skills`, {}, ITEM_REVALIDATE),
     msuFetch<SkillsResponse>(`/characters/${assetKey}/hyper-skill`, {}, ITEM_REVALIDATE).catch(() => ({ skills: [] })),
   ]);
@@ -69,7 +76,7 @@ export async function getCharacterBundle(assetKey: string): Promise<CharacterBun
   const sets = (
     await Promise.all(
       [...setPieces.values()].map((itemId) =>
-        msuFetch<{ itemSet: ItemSet }>(`/gamemeta/items/${itemId}/set`, {}, SET_REVALIDATE)
+        msuFetch<{ itemSet: ItemSet }>(`/gamemeta/items/${itemId}/set`, {}, META_REVALIDATE)
           .then((r) => r.itemSet)
           .catch(() => null),
       ),

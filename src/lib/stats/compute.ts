@@ -6,15 +6,12 @@ import { MAIN_STATS } from "./types";
 const MULTIPLICATIVE: StatKey[] = ["IED%", "FD%"];
 
 /**
- * AP auto-assigned to each main stat. MSU doesn't expose AP, so it's estimated:
- * every stat except the main one keeps its minimum 4, the rest goes to the main stat.
- * Total AP = 5 per level + 18 (tuned against RedBarn; see compute.test.ts).
+ * AP per main stat. MSU doesn't expose AP: the main stat gets 5 × level + 18
+ * (e.g. 1238 at Lv.244, confirmed in-game), every other stat stays at its minimum 4.
  */
 export function estimateAp(level: number, job: Pick<JobData, "mainStat"> | undefined): Record<MainStat, number> {
-  const main = job?.mainStat ?? "STR";
-  const total = 5 * level + 18;
   const ap = { STR: 4, DEX: 4, INT: 4, LUK: 4 };
-  ap[main] = total - 12;
+  ap[job?.mainStat ?? "STR"] = 5 * level + 18;
   return ap;
 }
 

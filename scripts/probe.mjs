@@ -62,9 +62,18 @@ for (const [slot, it] of Object.entries(equip)) {
 }
 await save("item-details", itemDetails);
 
+// Non-mintable items (medals, event rings) have no detail, only game metadata.
+const itemMetadata = {};
+for (const [slot, it] of Object.entries(equip)) {
+  if (it?.itemId && !it.assetKey) itemMetadata[slot] = (await get(`/gamemeta/items/${it.itemId}`))?.data?.item ?? null;
+}
+await save("item-metadata", itemMetadata);
+
 // Set effects, one lookup per set via any equipped piece.
 const setPieces = new Map();
-for (const it of Object.values(itemDetails)) if (it?.common?.setItemId) setPieces.set(it.common.setItemId, it.common.itemId);
+for (const it of [...Object.values(itemDetails), ...Object.values(itemMetadata)]) {
+  if (it?.common?.setItemId) setPieces.set(it.common.setItemId, it.common.itemId);
+}
 const itemSets = {};
 for (const [setId, itemId] of setPieces) itemSets[setId] = (await get(`/gamemeta/items/${itemId}/set`))?.data?.itemSet ?? null;
 await save("item-sets", itemSets);

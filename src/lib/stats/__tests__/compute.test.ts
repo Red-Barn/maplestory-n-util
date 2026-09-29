@@ -53,7 +53,25 @@ describe("RedBarn (Bowmaster Lv.244)", () => {
         "AbsoLab Set (Bowman) 2세트",
         "AbsoLab Set (Bowman) 3세트",
         "AbsoLab Set (Bowman) 4세트",
+        // medal (metadata only) + badge
+        "Seven Days Set 2세트",
       ]),
+    );
+  });
+
+  test("main stat AP is 5 × level + 18", () => {
+    expect(c.ap.DEX).toBe(1238);
+    expect(c.ap.STR).toBe(4);
+  });
+
+  test("non-mintable items count via metadata, plus known extra effects", () => {
+    const of = (name: string) =>
+      c.permanent.filter((x) => x.label.startsWith(name)).map((x) => `${x.stat}=${x.value}`).sort();
+    expect(of("Pivotal Adventure Ring")).toEqual(
+      ["ATT=3", "CDMG%=3", "CRIT%=15", "DEX=3", "HP=300", "INT=3", "LUK=3", "MATT=3", "MP=300", "STR=3"].sort(),
+    );
+    expect(of("Seven Day Monster Parker")).toEqual(
+      ["ATT=7", "DEX=7", "IED%=10", "INT=7", "LUK=7", "MATT=7", "STR=7"].sort(),
     );
   });
 
@@ -110,6 +128,12 @@ describe("link skills and union grid", () => {
     expect(sum("MATT")).toBe(25);
     expect(sum("DEX")).toBe(70);
     expect(sum("BOSS%")).toBe(4);
+    expect(sum("DMG%")).toBe(2); // 아델 링크
+  });
+
+  test("single-value link edits saved before multi-effect links still apply", () => {
+    const got = collectLinks(LINK_SKILLS, { adele: { on: true, value: 6 } });
+    expect(got.filter((x) => x.label.startsWith("아델")).map((x) => `${x.stat}=${x.value}`)).toEqual(["BOSS%=6", "DMG%=2"]);
   });
 
   test("link can be switched off or given another value", () => {

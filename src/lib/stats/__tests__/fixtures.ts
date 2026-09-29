@@ -1,5 +1,14 @@
+import { itemFromMetadata, type ItemMetadata } from "@/lib/itemMeta";
 import type { CharacterBundle } from "@/types/msu";
 import redBarnJson from "./fixtures/redbarn.json";
 
+type Fixture = CharacterBundle & { metadata: Record<string, ItemMetadata> };
+
+function load(json: unknown): CharacterBundle {
+  const { metadata, ...bundle } = json as Fixture;
+  const fromMeta = Object.fromEntries(Object.entries(metadata ?? {}).map(([slot, m]) => [slot, itemFromMetadata(m)]));
+  return { ...bundle, items: { ...bundle.items, ...fromMeta } };
+}
+
 /** RedBarn (Bowmaster Lv.244) — built by scripts/make-fixture.mjs from scripts/probe.mjs output */
-export const redBarn = redBarnJson as unknown as CharacterBundle;
+export const redBarn = load(redBarnJson);

@@ -1,7 +1,7 @@
 "use client";
 
 import type { LinkSkillDef } from "@/data/links";
-import type { LinkInput } from "@/lib/stats";
+import { linkValue, type LinkInput, type LinkState } from "@/lib/stats";
 
 export type Field<K extends string> = { key: K; label: string; pct?: boolean; unit?: string };
 
@@ -69,6 +69,7 @@ const LINK_KEY_LABEL: Record<string, string> = {
   "CRIT%": "크리티컬 확률 %",
   "IED%": "방어율 무시 %",
   "BOSS%": "보스 데미지 %",
+  "DMG%": "데미지 %",
   ATT_MATT: "공/마 +",
   ALL: "올스탯 +",
 };
@@ -76,27 +77,33 @@ const LINK_KEY_LABEL: Record<string, string> = {
 export function LinkSkills(props: { defs: LinkSkillDef[]; values: LinkInput; onChange: (next: LinkInput) => void }) {
   return (
     <Panel title="링크 스킬" hint="API 스탯에 포함된 링크 스킬 효과입니다. 레벨이 다르면 수치를 고쳐 주세요.">
-      <ul className="space-y-1.5">
+      <ul className="space-y-2">
         {props.defs.map((d) => {
-          const state = props.values[d.id] ?? { on: true };
-          const set = (patch: Partial<typeof state>) =>
-            props.onChange({ ...props.values, [d.id]: { ...state, ...patch } });
+          const state: LinkState = props.values[d.id] ?? { on: true };
+          const setOn = (on: boolean) => props.onChange({ ...props.values, [d.id]: { ...state, on } });
+          const setValue = (i: number, v: number) => {
+            const values = d.effects.map((_, j) => linkValue(d, state, j));
+            values[i] = v;
+            props.onChange({ ...props.values, [d.id]: { on: state.on, values } });
+          };
           return (
-            <li key={d.id} className="flex items-center justify-between gap-2 text-sm">
-              <label className="flex min-w-0 cursor-pointer items-center gap-2">
-                <input type="checkbox" checked={state.on} onChange={(e) => set({ on: e.target.checked })} />
-                <span className="min-w-0">
-                  <span className="block truncate">
-                    {d.name} <span className="text-[11px] text-zinc-500">Lv.{d.level}</span>
-                  </span>
-                  <span className="block text-[11px] text-zinc-500">{LINK_KEY_LABEL[d.key] ?? d.key}</span>
+            <li key={d.id} className="text-sm">
+              <label className="flex cursor-pointer items-center gap-2">
+                <input type="checkbox" checked={state.on} onChange={(e) => setOn(e.target.checked)} />
+                <span>
+                  {d.name} <span className="text-[11px] text-zinc-500">Lv.{d.level}</span>
                 </span>
               </label>
-              <NumberInput
-                value={state.value ?? d.value}
-                decimal={d.key.endsWith("%")}
-                onChange={(v) => set({ value: v ?? 0 })}
-              />
+              {d.effects.map((e, i) => (
+                <div key={i} className="mt-1 flex items-center justify-between gap-2 pl-6">
+                  <span className="text-[11px] text-zinc-500">{LINK_KEY_LABEL[e.key] ?? e.key}</span>
+                  <NumberInput
+                    value={linkValue(d, state, i)}
+                    decimal={e.key.endsWith("%")}
+                    onChange={(v) => setValue(i, v ?? 0)}
+                  />
+                </div>
+              ))}
             </li>
           );
         })}

@@ -28,6 +28,8 @@ const bundle = {
   items: strip(await read("item-details")),
   sets: Object.values(await read("item-sets")).filter(Boolean),
   skills,
+  // raw game metadata of non-mintable items; tests convert it with itemFromMetadata
+  metadata: await read("item-metadata").catch(() => ({})),
 };
 await writeFile(`src/lib/stats/__tests__/fixtures/${out}.json`, JSON.stringify(bundle, null, 1));
 console.log("wrote", out);
