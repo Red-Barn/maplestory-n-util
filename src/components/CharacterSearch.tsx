@@ -37,10 +37,13 @@ export default function CharacterSearch() {
     try {
       const qs = name.trim() ? `?name=${encodeURIComponent(name.trim())}` : "";
       const res = await fetch(`/api/accounts/${w}/characters${qs}`);
-      const body = await res.json();
-      if (!res.ok) throw new Error(body.error ?? `HTTP ${res.status}`);
+      // A crashed server answers with an HTML error page, not our JSON.
+      const body = (await res.json().catch(() => null)) as { characters?: AccountCharacter[]; error?: string } | null;
+      if (!res.ok || !body?.characters) {
+        throw new Error(body?.error ?? `서버 오류가 발생했습니다 (HTTP ${res.status}). 잠시 후 다시 시도해 주세요.`);
+      }
       save(WALLET_KEY, w);
-      const list = (body.characters as AccountCharacter[]).sort(
+      const list = body.characters.sort(
         (a, b) => Number(b.data.combatPower) - Number(a.data.combatPower),
       );
       setResults(list);
