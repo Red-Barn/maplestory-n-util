@@ -23,7 +23,7 @@
   - 럭키 아이템(카오스 루타 모자 4종, `src/data/luckyItems.ts`)은 3개 이상 착용한 **장비 세트**에만 +1. 장신구 세트(모든 부위가 Accessory)는 제외
   - 펫: `wearing.pet`에서 펫 수(1/2/3마리 → 공마 3/14/30)와 펫장비 수(개당 공마 5)로 자동 계산. 칭호·화살은 API에 없어 `src/data/miscItems.ts` 프리셋(링크 스킬과 같은 구조)
   - 민팅 불가 아이템(훈장, Pivotal Adventure Ring 등)은 `/gamemeta/items/{itemId}` 메타데이터로 기본 스탯·세트 번호를 얻음 (`src/lib/itemMeta.ts`). 메타데이터에 없는 효과는 이름 기준 `src/data/itemExtras.ts`
-  - 특수 반지(S.Ring)는 API에 아예 없음 → `src/lib/manualItems.ts`가 모든 캐릭터에 올스탯 +4, 공마 +4 장비로 추가
+  - 특수 반지(S.Ring)는 API에 아예 없음 → `src/lib/manualItems.ts`가 모든 캐릭터에 올스탯 +4, 공마 +4 장비로 추가. 끼지 않은 캐릭터는 장착 장비의 "특수 반지 착용" 체크 해제(localStorage `msn:special-ring`, 기본 체크) → `CharacterSections`가 스탯 패널·장비 그리드 양쪽에서 제외
   - 유니온: 점령 효과 주/부스탯은 스탯% **적용**, 공격대원 주/부스탯은 스탯% **미적용** (사용자 확인)
   - 마켓 이름 검색(`filter.name`)은 OAuth(`msu-authorization`) 없이는 필터가 무시됨 → 이름 검색은 지갑 내 `name` 필터로 대체
   - 직업 데이터(`src/data/jobs/`): 주스탯/부스탯/공격 타입은 API `apStat`에서 가장 큰 스탯·공격력/마력으로 확인 (`jobs.test.ts`가 검증). 액티브 스킬에 붙은 패시브는 `passiveOnly`로 "[Passive Effect ...]" 부분만 파싱, 문장형 효과는 `effects`로 고정값 지정

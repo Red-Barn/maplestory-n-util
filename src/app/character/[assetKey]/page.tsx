@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import EquipmentGrid from "@/components/EquipmentGrid";
-import StatPanel from "@/components/StatPanel";
-import { findJob } from "@/data/jobs";
+import CharacterSections from "@/components/CharacterSections";
 import { getCharacterBundle } from "@/lib/character";
 import { MsuApiError } from "@/lib/msu";
 
@@ -21,7 +19,6 @@ export default async function CharacterPage({ params }: PageProps<"/character/[a
   const { character, items } = bundle;
   const { common, apStat } = character;
   const missing = Object.entries(character.wearing.equip).filter(([slot, ref]) => ref?.itemId && !items[slot]).length;
-  const job = findJob(common.job.jobCode);
 
   return (
     <div className="space-y-8">
@@ -42,25 +39,7 @@ export default async function CharacterPage({ params }: PageProps<"/character/[a
         </div>
       </section>
 
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">스탯</h2>
-        <StatPanel bundle={bundle} />
-      </section>
-
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">장착 장비</h2>
-        {missing > 0 && (
-          <p className="text-xs text-zinc-500">
-            장비 {missing}개의 정보를 불러오지 못해 스탯 계산에서 빠졌습니다. 잠시 후 새로고침해 주세요.
-          </p>
-        )}
-        <p className="text-xs text-zinc-500">장비를 누르면 기본·스타포스·추가옵션 수치와 잠재능력이 보입니다.</p>
-        <EquipmentGrid
-          equip={character.wearing.equip}
-          items={items}
-          job={job && { mainStat: job.mainStat, subStats: job.subStats, attackType: job.attackType }}
-        />
-      </section>
+      <CharacterSections bundle={bundle} missing={missing} />
     </div>
   );
 }

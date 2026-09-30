@@ -26,3 +26,8 @@ const SPECIAL_RING: ItemDetail = {
 export function withManualItems(items: Record<string, ItemDetail | null>): Record<string, ItemDetail | null> {
   return { ...items, [SPECIAL_RING_SLOT]: SPECIAL_RING };
 }
+
+/** For characters that don't wear a special ring (the user unchecks it on the character page). */
+export function withoutSpecialRing(items: Record<string, ItemDetail | null>): Record<string, ItemDetail | null> {
+  return Object.fromEntries(Object.entries(items).filter(([slot]) => slot !== SPECIAL_RING_SLOT));
+}

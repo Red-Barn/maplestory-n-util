@@ -15,6 +15,7 @@ import {
   defaultPresetInput,
 } from "..";
 import { collectSets, countSetPieces } from "../collectors/sets";
+import { withoutSpecialRing } from "@/lib/manualItems";
 import { redBarn } from "./fixtures";
 
 const c = collectCharacter(redBarn);
@@ -72,6 +73,16 @@ describe("RedBarn (Bowmaster Lv.244)", () => {
   test("special ring (not in the API) adds all stats +4 and ATT/MATT +4", () => {
     const ring = c.permanent.filter((x) => x.label.startsWith("S.Ring")).map((x) => `${x.stat}=${x.value}`);
     expect(ring.sort()).toEqual(["ATT=4", "DEX=4", "INT=4", "LUK=4", "MATT=4", "STR=4"]);
+  });
+
+  test("taking the special ring off removes exactly its stats", () => {
+    const off = collectCharacter({ ...redBarn, items: withoutSpecialRing(redBarn.items) });
+    expect(off.permanent.some((x) => x.label.startsWith("S.Ring"))).toBe(false);
+    expect(off.permanent.length).toBe(c.permanent.length - 6);
+    const t = (list: typeof c.permanent) => computeStats(list, c.ap).totals;
+    expect(t(c.permanent).DEX! - t(off.permanent).DEX!).toBe(4);
+    expect(t(c.permanent).ATT! - t(off.permanent).ATT!).toBe(4);
+    expect(Object.keys(redBarn.items)).toContain("sRing"); // the original bundle is untouched
   });
 
   test("Marksmanship gives IED 25% and ATT 25%", () => {

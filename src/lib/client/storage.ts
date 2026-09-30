@@ -45,6 +45,16 @@ export function loadSeasonBuff(assetKey: string): boolean {
   return flag ?? load<PanelBuffs>(statPanelKey(assetKey), {}).buffs?.[SEASON_BUFF_ID] ?? false;
 }
 
+// Whether each character wears a special ring. The API never returns it, so it's assumed worn.
+const SPECIAL_RING_KEY = "msn:special-ring";
+
+export const loadSpecialRing = (assetKey: string): boolean =>
+  load<Record<string, boolean>>(SPECIAL_RING_KEY, {})[assetKey] ?? true;
+
+export function saveSpecialRing(assetKey: string, on: boolean) {
+  save(SPECIAL_RING_KEY, { ...load<Record<string, boolean>>(SPECIAL_RING_KEY, {}), [assetKey]: on });
+}
+
 export function saveSeasonBuff(assetKey: string, on: boolean) {
   save(SEASON_KEY, { ...load<Record<string, boolean>>(SEASON_KEY, {}), [assetKey]: on });
   // keep the character page's buff check in line, so it opens with no buff change
