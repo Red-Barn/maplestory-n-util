@@ -13,6 +13,8 @@ const ALIASES: [string, Target][] = (
   [
     ["attack power and magic att", { flat: ["ATT", "MATT"], pct: ["ATT%", "MATT%"] }],
     ["attack power & magic att", { flat: ["ATT", "MATT"], pct: ["ATT%", "MATT%"] }],
+    // Aran's Maha Blessing: "Party Member Attack Power: + 30, Magic ATT: +30"
+    ["party member attack power", { flat: ["ATT"] }],
     ["att & magic att", { flat: ["ATT", "MATT"], pct: ["ATT%", "MATT%"] }],
     ["maxhp / maxmp", { flat: ["HP", "MP"], pct: ["HP%", "MP%"] }],
     ["damage against normal monsters", { pct: ["NORMAL%"] }],
@@ -52,8 +54,10 @@ const PER_LEVEL_RE = /^per\s+(\d+)\s+character\s+levels?\s*:?\s*\+?\s*(\d+)/i;
 // e.g. ability "+7% damage when attacking targets inflicted with Abnormal Status."
 const CONDITIONAL_RE = /abnormal status|when attacking/i;
 
-// Sentence-style IED, e.g. Marksmanship "ignores 25% of monster's Weapon DEF".
-const IGNORES_DEF_RE = /^ignores?\s+(\d+(?:\.\d+)?)%\s+of\s+(?:the\s+)?(?:monster|enem(?:y|ies))'?s?'?\s+(?:weapon\s+)?def/i;
+// Sentence-style IED, e.g. Marksmanship "ignores 25% of monster's Weapon DEF",
+// Weapon Aura "Ignores 12% Enemy DEF for 100 sec".
+const IGNORES_DEF_RE =
+  /^ignores?\s+(\d+(?:\.\d+)?)%\s+(?:of\s+(?:the\s+)?(?:monster|enem(?:y|ies))'?s?'?\s+(?:weapon\s+)?def|enemy\s+def)/i;
 
 export type ParseContext = { level?: number };
 

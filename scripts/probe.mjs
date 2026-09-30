@@ -2,17 +2,24 @@
 // can be written against actual field names (the docs don't enumerate them).
 //
 // Usage: node --env-file=.env.local scripts/probe.mjs <walletAddress> [characterName]
+//        node --env-file=.env.local scripts/probe.mjs <characterAssetKey> <sampleDir>
 // Without a name the first character in the wallet is used.
+// With an asset key the samples go to docs/samples/<sampleDir>/ (one folder per character).
 
 import { mkdir, writeFile } from "node:fs/promises";
 
 const BASE = "https://openapi.msu.io/v1rc1";
 const key = process.env.MSU_API_KEY;
-const [wallet, name] = process.argv.slice(2);
-if (!key || !wallet) {
+const [first, second] = process.argv.slice(2);
+const byKey = /^CHAR/.test(first ?? "");
+const wallet = byKey ? undefined : first;
+const name = byKey ? undefined : second;
+if (!key || !first || (byKey && !second)) {
   console.error("Usage: node --env-file=.env.local scripts/probe.mjs <walletAddress> [characterName]");
+  console.error("       node --env-file=.env.local scripts/probe.mjs <characterAssetKey> <sampleDir>");
   process.exit(1);
 }
+const dir = byKey ? `docs/samples/${second}` : "docs/samples";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -25,28 +32,32 @@ async function get(path) {
 }
 
 // Replace the wallet address anywhere in the output so samples can be committed.
-const scrub = (obj) => JSON.parse(JSON.stringify(obj).replaceAll(new RegExp(wallet, "gi"), "0xWALLET"));
+const scrub = (obj) => (wallet ? JSON.parse(JSON.stringify(obj).replaceAll(new RegExp(wallet, "gi"), "0xWALLET")) : obj);
 
 async function save(file, obj) {
-  await writeFile(`docs/samples/${file}.json`, JSON.stringify(scrub(obj), null, 2));
+  await writeFile(`${dir}/${file}.json`, JSON.stringify(scrub(obj), null, 2));
 }
 
-await mkdir("docs/samples", { recursive: true });
+await mkdir(dir, { recursive: true });
 
-const list = await get(`/accounts/${wallet}/characters?size=10`);
-await save("account-characters", list);
+let assetKey = byKey ? first : undefined;
+let target;
+if (!byKey) {
+  const list = await get(`/accounts/${wallet}/characters?size=10`);
+  await save("account-characters", list);
 
-let target = list?.data?.characters?.[0];
-if (name) {
-  const byName = await get(`/accounts/${wallet}/characters?name=${encodeURIComponent(name)}`);
-  target = byName?.data?.characters?.find((c) => c.name === name) ?? target;
+  target = list?.data?.characters?.[0];
+  if (name) {
+    const byName = await get(`/accounts/${wallet}/characters?name=${encodeURIComponent(name)}`);
+    target = byName?.data?.characters?.find((c) => c.name === name) ?? target;
+  }
+  assetKey = target?.assetKey;
+  if (!assetKey) {
+    console.error("캐릭터를 찾지 못했습니다. account-characters.json을 확인하세요.");
+    process.exit(1);
+  }
+  console.log("target:", target.name, assetKey);
 }
-const assetKey = target?.assetKey;
-if (!assetKey) {
-  console.error("캐릭터를 찾지 못했습니다. account-characters.json을 확인하세요.");
-  process.exit(1);
-}
-console.log("target:", target.name, assetKey);
 
 const detail = await get(`/characters/${assetKey}`);
 await save("character", detail);
@@ -79,8 +90,10 @@ for (const [setId, itemId] of setPieces) itemSets[setId] = (await get(`/gamemeta
 await save("item-sets", itemSets);
 
 // Market search ignores the name filter in practice; keep a small sample only.
-const search = await get(`/search/characters?filter.name=${encodeURIComponent(name ?? target.name)}`);
-if (search?.data?.characters) search.data.characters = search.data.characters.slice(0, 2);
-await save("search-characters", search);
+if (!byKey) {
+  const search = await get(`/search/characters?filter.name=${encodeURIComponent(name ?? target.name)}`);
+  if (search?.data?.characters) search.data.characters = search.data.characters.slice(0, 2);
+  await save("search-characters", search);
+}
 
-console.log("done → docs/samples/");
+console.log(`done → ${dir}/`);

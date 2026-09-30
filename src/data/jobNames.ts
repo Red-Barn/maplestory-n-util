@@ -4,6 +4,7 @@ export const JOB_NAMES: Record<number, string> = {
   313: "Bowmaster",
   1400: "Night Walker",
   2004: "Luminous",
+  2113: "Aran",
   2513: "Shade",
 };
 

@@ -6,7 +6,15 @@ import { inputContributions, type InputKey } from "./inputs";
  * (link skills, titles, arrows, ...). Values can be edited per character.
  */
 export type PresetEffect = { key: InputKey; value: number };
-export type PresetDef = { id: string; name: string; /** e.g. "Lv.6", "칭호" */ tag?: string; effects: PresetEffect[] };
+export type PresetDef = {
+  id: string;
+  name: string;
+  /** e.g. "Lv.6", "칭호" */
+  tag?: string;
+  effects: PresetEffect[];
+  /** API job names that can use it (e.g. arrows for bow users); omitted = every job. */
+  onlyJobs?: string[];
+};
 
 /**
  * Per-preset on/off and edited values (index-aligned with the definition's effects).

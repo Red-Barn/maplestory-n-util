@@ -4,12 +4,19 @@ import type { SkillEntry } from "@/types/msu";
 import { parseOption } from "../parseOption";
 import type { StatContribution, StatSource } from "../types";
 
+const PASSIVE_PART_RE = /\[passive effects?[^\]]*\]/i;
+
 function fromSkill(skills: SkillEntry[], ref: SkillRef, source: StatSource, label?: string): StatContribution[] {
   const skill = skills.find((s) => s.skillName === ref.name && s.skillLevel > 0);
   if (!skill) return [];
-  return parseOption(skill.skillEffectDescription)
-    .filter((e) => ref.pick.includes(e.stat))
-    .map((e) => ({ ...e, source, label: label ?? `${skill.skillName} Lv.${skill.skillLevel}` }));
+  const text = ref.passiveOnly
+    ? (skill.skillEffectDescription.match(PASSIVE_PART_RE)?.[0] ?? "")
+    : skill.skillEffectDescription;
+  return [...parseOption(text).filter((e) => ref.pick.includes(e.stat)), ...(ref.effects ?? [])].map((e) => ({
+    ...e,
+    source,
+    label: label ?? `${skill.skillName} Lv.${skill.skillLevel}`,
+  }));
 }
 
 export function collectPassives(skills: SkillEntry[], job: JobData | undefined): StatContribution[] {

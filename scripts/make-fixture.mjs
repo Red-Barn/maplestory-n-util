@@ -1,11 +1,13 @@
 // Builds a trimmed, commit-safe test fixture from docs/samples (which is gitignored).
-// Usage: node scripts/make-fixture.mjs <outName>   e.g. redbarn
+// Usage: node scripts/make-fixture.mjs <outName> [sampleDir]   e.g. redbarn, or brownbarn brownbarn
+// sampleDir is the folder under docs/samples that probe.mjs wrote to in asset key mode.
 
 import { readFile, writeFile } from "node:fs/promises";
 
-const out = process.argv[2];
-if (!out) throw new Error("Usage: node scripts/make-fixture.mjs <outName>");
-const read = async (f) => JSON.parse(await readFile(`docs/samples/${f}.json`, "utf8"));
+const [out, sampleDir] = process.argv.slice(2);
+if (!out) throw new Error("Usage: node scripts/make-fixture.mjs <outName> [sampleDir]");
+const dir = sampleDir ? `docs/samples/${sampleDir}` : "docs/samples";
+const read = async (f) => JSON.parse(await readFile(`${dir}/${f}.json`, "utf8"));
 
 // Drop ownership / token identifiers; keep only what the stat engine reads.
 const strip = (o) => {

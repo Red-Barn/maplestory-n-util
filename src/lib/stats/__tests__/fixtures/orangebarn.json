@@ -1,0 +1,5831 @@
+{
+ "character": {
+  "ability": {
+   "ability1": {
+    "code": 70000035,
+    "desc": "Boss Monster Damage: +18%",
+    "grade": 4,
+    "level": 18,
+    "values": [
+     18
+    ]
+   },
+   "ability2": {
+    "code": 70000039,
+    "desc": "+7% damage when attacking targets inflicted with Abnormal Status.",
+    "grade": 3,
+    "level": 25,
+    "values": [
+     7
+    ]
+   },
+   "ability3": {
+    "code": 70000012,
+    "desc": "Attack: +9",
+    "grade": 2,
+    "level": 9,
+    "values": [
+     9
+    ]
+   }
+  },
+  "apStat": {
+   "abnormalStatusResistance": {
+    "total": 81
+   },
+   "additionalStatusDamage": {
+    "total": 7
+   },
+   "arcaneForce": {
+    "total": 640
+   },
+   "att": {
+    "total": 1386
+   },
+   "attackSpeed": {
+    "total": 7
+   },
+   "bonusExp": {
+    "total": 15
+   },
+   "bossMonsterDamage": {
+    "total": 353
+   },
+   "buffDurationRate": {
+    "total": 0
+   },
+   "combatPower": "7190499",
+   "cooldownNotApplied": {
+    "total": 0
+   },
+   "cooldownReduction": {
+    "total": 0
+   },
+   "cooldownReductionRate": {
+    "total": 5
+   },
+   "criticalDamage": {
+    "total": 90
+   },
+   "criticalRate": {
+    "total": 126
+   },
+   "damage": {
+    "total": 97
+   },
+   "defence": {
+    "total": 31883
+   },
+   "dex": {
+    "total": 3052
+   },
+   "finalDamage": {
+    "total": 46.74
+   },
+   "hp": {
+    "total": 45369
+   },
+   "ignoreDefence": {
+    "total": 94.65
+   },
+   "ignoreElementalResistance": {
+    "total": 0
+   },
+   "int": {
+    "total": 1636
+   },
+   "jump": {
+    "total": 123
+   },
+   "knockbackResistance": {
+    "total": 100
+   },
+   "luk": {
+    "total": 1838
+   },
+   "magicAtt": {
+    "total": 286
+   },
+   "mp": {
+    "total": 26222
+   },
+   "normalEnemyDamage": {
+    "total": 0
+   },
+   "speed": {
+    "total": 140
+   },
+   "starforce": {
+    "total": 114
+   },
+   "str": {
+    "total": 14944
+   },
+   "summonDurationIncrease": {
+    "total": 15
+   }
+  },
+  "assetKey": "CHARd2j9bd47lb2s73e8hmeg",
+  "category": {
+   "categoryNo": 1020205001,
+   "label": "Character > Heroes > Pirate > Shade",
+   "tier0": {
+    "code": "102",
+    "label": "Character"
+   },
+   "tier1": {
+    "code": "02",
+    "label": "Heroes"
+   },
+   "tier2": {
+    "code": "05",
+    "label": "Pirate"
+   },
+   "tier3": {
+    "code": "001",
+    "label": "Shade"
+   }
+  },
+  "common": {
+   "exp": "149854413081",
+   "expr": "59.512",
+   "gender": 0,
+   "honorExp": 9970,
+   "job": {
+    "classCode": 16,
+    "className": "Pirate",
+    "jobCode": 2513,
+    "jobName": "Shade"
+   },
+   "level": 225,
+   "name": "OrangeBarn",
+   "nesolet": "0",
+   "popularity": 1,
+   "totalExp": "251803914498",
+   "world": {
+    "code": 0,
+    "name": "Ain"
+   }
+  },
+  "hyperStat": {
+   "abnormalStatusResistance": {
+    "code": 80000416,
+    "desc": "Increases Abnormal Status Resistance by 0.",
+    "level": 0
+   },
+   "attackAndMagicAttack": {
+    "code": 80000419,
+    "desc": "Attack Power and Magic ATT: +21",
+    "level": 7
+   },
+   "bossMonsterDamage": {
+    "code": 80000414,
+    "desc": "Boss Monster Damage: +39%",
+    "level": 11
+   },
+   "criticalDamage": {
+    "code": 80000410,
+    "desc": "Critical Damage: +9%",
+    "level": 9
+   },
+   "criticalRate": {
+    "code": 80000409,
+    "desc": "Critical Rate: +0%",
+    "level": 0
+   },
+   "damage": {
+    "code": 80000413,
+    "desc": "Damage: +30%",
+    "level": 10
+   },
+   "dex": {
+    "code": 80000401,
+    "desc": "Dexterity +90",
+    "level": 3
+   },
+   "expEarned": null,
+   "ignoreDefence": {
+    "code": 80000412,
+    "desc": "DEF Ignored: +15%",
+    "level": 5
+   },
+   "int": null,
+   "luk": null,
+   "maxHp": null,
+   "maxMp": null,
+   "normalMonsterDamage": null,
+   "str": {
+    "code": 80000400,
+    "desc": "Strength +150",
+    "level": 5
+   }
+  },
+  "image": {
+   "avatarParam": "0a0a55665a0a1482168a63777a1003721a1012478a1022231a1032241a1042258a1062169a1073035a1082640a1102797a1353103a2512a0a0a0a0a2a0a0a0a0a0a0a0a0a0a",
+   "imageUrl": "https://gamedatahub-static.msu.io/msu/platform/charimages/static/MGEwYTU1NjY1YTBhMTQ4MjE2OGE2Mzc3N2ExMDAzNzIxYTEwMTI0NzhhMTAyMjIzMWExMDMyMjQxYTEwNDIyNThhMTA2MjE2OWExMDczMDM1YTEwODI2NDBhMTEwMjc5N2ExMzUzMTAzYTI1MTJhMGEwYTBhMGEyYTBhMWEwYTBhMGEwYTBhMGEw.png"
+  },
+  "wearing": {
+   "arcaneSymbols": {
+    "slots": [
+     {
+      "arcaneForce": 190,
+      "currentExp": 127,
+      "imageUrl": "https://api-static.msu.io/itemimages/icon/1712001.png",
+      "itemId": 1712001,
+      "level": 17,
+      "maxLevel": 20,
+      "stat": {
+       "str": 1900
+      },
+      "totalExp": 300
+     },
+     {
+      "arcaneForce": 220,
+      "currentExp": 0,
+      "imageUrl": "https://api-static.msu.io/itemimages/icon/1712002.png",
+      "itemId": 1712002,
+      "level": 20,
+      "maxLevel": 20,
+      "stat": {
+       "str": 2200
+      },
+      "totalExp": 411
+     },
+     {
+      "arcaneForce": 140,
+      "currentExp": 11,
+      "imageUrl": "https://api-static.msu.io/itemimages/icon/1712003.png",
+      "itemId": 1712003,
+      "level": 12,
+      "maxLevel": 20,
+      "stat": {
+       "str": 1400
+      },
+      "totalExp": 155
+     },
+     {
+      "arcaneForce": 90,
+      "currentExp": 33,
+      "imageUrl": "https://api-static.msu.io/itemimages/icon/1712004.png",
+      "itemId": 1712004,
+      "level": 7,
+      "maxLevel": 20,
+      "stat": {
+       "str": 900
+      },
+      "totalExp": 60
+     },
+     {
+      "arcaneForce": 0,
+      "currentExp": 0,
+      "imageUrl": "",
+      "itemId": 0,
+      "level": 0,
+      "maxLevel": 0,
+      "stat": {},
+      "totalExp": 0
+     },
+     {
+      "arcaneForce": 0,
+      "currentExp": 0,
+      "imageUrl": "",
+      "itemId": 0,
+      "level": 0,
+      "maxLevel": 0,
+      "stat": {},
+      "totalExp": 0
+     }
+    ],
+    "totalArcaneForce": 640,
+    "totalStat": {
+     "str": 6400
+    }
+   },
+   "decoEquip": {
+    "cap": null,
+    "cape": null,
+    "clothes": null,
+    "earAcc": null,
+    "eyeAcc": null,
+    "face": null,
+    "faceAcc": null,
+    "gloves": null,
+    "hair": null,
+    "pants": null,
+    "ring1": null,
+    "ring2": null,
+    "ring3": null,
+    "ring4": null,
+    "shoes": null,
+    "skin": null,
+    "subWeapon": null,
+    "weapon": null
+   },
+   "equip": {
+    "android": null,
+    "badge": {
+     "assetKey": "ITEMd37qf045hk8s73fr9hrg",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1182193.png",
+     "itemId": 1182193,
+     "mintable": true
+    },
+    "belt": {
+     "assetKey": "ITEMd2nricmblq7c738ovj10",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1132272.png",
+     "itemId": 1132272,
+     "mintable": true
+    },
+    "cap": {
+     "assetKey": "ITEMd4816u09hbfs739g0j8g",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1003721.png",
+     "itemId": 1003721,
+     "mintable": true
+    },
+    "cape": {
+     "assetKey": "ITEMd337v7u54k0c739ripdg",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1102797.png",
+     "itemId": 1102797,
+     "mintable": true
+    },
+    "clothes": {
+     "assetKey": "ITEMd2uhc1r4k31s73egqc0g",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1042258.png",
+     "itemId": 1042258,
+     "mintable": true
+    },
+    "earAcc": {
+     "assetKey": "ITEMd3e8o291b7uc739vcthg",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1032241.png",
+     "itemId": 1032241,
+     "mintable": true
+    },
+    "emblem": {
+     "assetKey": "ITEMd2fsn325qnbc7393e2u0",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1190572.png",
+     "itemId": 1190572,
+     "mintable": true
+    },
+    "eyeAcc": {
+     "assetKey": "ITEMd10du5n2d3os738ji3ug",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1022231.png",
+     "itemId": 1022231,
+     "mintable": true
+    },
+    "faceAcc": {
+     "assetKey": "ITEMd3ce8idpjpgs73ag1e6g",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1012478.png",
+     "itemId": 1012478,
+     "mintable": true
+    },
+    "gloves": {
+     "assetKey": "ITEMd337vci79egs738t4o3g",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1082640.png",
+     "itemId": 1082640,
+     "mintable": true
+    },
+    "machineHeart": null,
+    "medal": {
+     "assetKey": "",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1142905.png",
+     "itemId": 1142905,
+     "mintable": false
+    },
+    "pants": {
+     "assetKey": "ITEMd2uhc1r4k31s73egqc00",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1062169.png",
+     "itemId": 1062169,
+     "mintable": true
+    },
+    "pendant1": {
+     "assetKey": "ITEMd0jbk7ofl2es73e8ea0g",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1122076.png",
+     "itemId": 1122076,
+     "mintable": true
+    },
+    "pendant2": {
+     "assetKey": "ITEMd0mq257pq2cs73f0bpg0",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1122254.png",
+     "itemId": 1122254,
+     "mintable": true
+    },
+    "pocket": {
+     "assetKey": "ITEMd334f4jadlqc73bcafn0",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1162025.png",
+     "itemId": 1162025,
+     "mintable": true
+    },
+    "ring1": {
+     "assetKey": "ITEMd0is0akmd7mc73fbhncg",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1113149.png",
+     "itemId": 1113149,
+     "mintable": true
+    },
+    "ring2": {
+     "assetKey": "ITEMd0nrmphqahks73f79grg",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1113089.png",
+     "itemId": 1113089,
+     "mintable": true
+    },
+    "ring3": {
+     "assetKey": "ITEMd38hgvo38phs73d6o3n0",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1113282.png",
+     "itemId": 1113282,
+     "mintable": true
+    },
+    "ring4": {
+     "assetKey": "",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1113069.png",
+     "itemId": 1113069,
+     "mintable": false
+    },
+    "shoes": {
+     "assetKey": "ITEMd337vem54k0c739rirng",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1073035.png",
+     "itemId": 1073035,
+     "mintable": true
+    },
+    "shoulder": {
+     "assetKey": "ITEMd337v9np0qps738f83lg",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1152179.png",
+     "itemId": 1152179,
+     "mintable": true
+    },
+    "subWeapon": {
+     "assetKey": "ITEMd35aufjgoj3s73dogo5g",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1353103.png",
+     "itemId": 1353103,
+     "mintable": true
+    },
+    "weapon": {
+     "assetKey": "ITEMd2a6hutkebic739r4oq0",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1482168.png",
+     "itemId": 1482168,
+     "mintable": true
+    }
+   },
+   "pet": {
+    "pet1": {
+     "assetKey": "",
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/5000042.png",
+     "itemId": 5000042,
+     "mintable": false,
+     "petAcc": null
+    },
+    "pet2": null,
+    "pet3": null
+   }
+  }
+ },
+ "items": {
+  "badge": {
+   "assetKey": "ITEMd37qf045hk8s73fr9hrg",
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000202009,
+    "label": "Item > Armor > Accessory > Badge",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "02",
+     "label": "Accessory"
+    },
+    "tier3": {
+     "code": "009",
+     "label": "Badge"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": true,
+    "blockUpgradePotential": true,
+    "blockUpgradeStarforce": true,
+    "desc": "Grants a #chidden effect# on Monday.",
+    "enableExtraOption": false,
+    "enablePotential": false,
+    "enableStarforce": false,
+    "isBossReward": false,
+    "isJokerItem": false,
+    "isMintable": true,
+    "isOnly": false,
+    "isOnlyEquip": false,
+    "isSbt": false,
+    "itemId": 1182193,
+    "itemName": "Badge of Mano",
+    "maxStarforce": 0,
+    "ridingSkill": 0,
+    "setItemId": 0,
+    "slotMax": 0
+   },
+   "enhance": {
+    "bonusPotential": null,
+    "extraOption": {
+     "code": "0"
+    },
+    "potential": null,
+    "starforce": {
+     "enhanced": 0,
+     "maxStarforce": 0,
+     "serialFailCount": 0
+    }
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1182193.png",
+    "sampleImageUrl": ""
+   },
+   "name": "Badge of Mano",
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 0,
+     "className": "Beginner",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 100,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "damr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "dex": {
+     "base": 7,
+     "enhance": 0,
+     "extra": 0,
+     "total": 7
+    },
+    "imdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "int": {
+     "base": 7,
+     "enhance": 0,
+     "extra": 0,
+     "total": 7
+    },
+    "jump": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "knockback": 0,
+    "levelReduced": 0,
+    "luk": {
+     "base": 7,
+     "enhance": 0,
+     "extra": 0,
+     "total": 7
+    },
+    "mad": {
+     "base": 7,
+     "enhance": 0,
+     "extra": 0,
+     "total": 7
+    },
+    "maxHp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxHpr": null,
+    "maxMp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxMpr": null,
+    "pad": {
+     "base": 7,
+     "enhance": 0,
+     "extra": 0,
+     "total": 7
+    },
+    "pdd": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "statr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "str": {
+     "base": 7,
+     "enhance": 0,
+     "extra": 0,
+     "total": 7
+    }
+   }
+  },
+  "belt": {
+   "assetKey": "ITEMd2nricmblq7c738ovj10",
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000202006,
+    "label": "Item > Armor > Accessory > Belt",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "02",
+     "label": "Accessory"
+    },
+    "tier3": {
+     "code": "006",
+     "label": "Belt"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": false,
+    "blockUpgradePotential": false,
+    "blockUpgradeStarforce": false,
+    "desc": "",
+    "enableExtraOption": true,
+    "enablePotential": true,
+    "enableStarforce": true,
+    "isBossReward": true,
+    "isJokerItem": false,
+    "isMintable": true,
+    "isOnly": false,
+    "isOnlyEquip": false,
+    "isSbt": false,
+    "itemId": 1132272,
+    "itemName": "Golden Clover Belt",
+    "maxStarforce": 25,
+    "ridingSkill": 0,
+    "setItemId": 462,
+    "slotMax": 0
+   },
+   "enhance": {
+    "bonusPotential": {
+     "option1": {
+      "code": 12011,
+      "grade": 1,
+      "label": "ATT: +10"
+     },
+     "option2": {
+      "code": 2002,
+      "grade": 0,
+      "label": "DEX : +6"
+     },
+     "option3": {
+      "code": 2006,
+      "grade": 0,
+      "label": "Max MP: +60"
+     }
+    },
+    "extraOption": {
+     "code": "114085064005"
+    },
+    "potential": {
+     "option1": {
+      "code": 20041,
+      "grade": 2,
+      "label": "STR : +6%"
+     },
+     "option2": {
+      "code": 10013,
+      "grade": 1,
+      "label": "DEF: +120"
+     },
+     "option3": {
+      "code": 10053,
+      "grade": 1,
+      "label": "DEF: +3%"
+     }
+    },
+    "starforce": {
+     "enhanced": 10,
+     "maxStarforce": 25,
+     "serialFailCount": 0
+    }
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1132272.png",
+    "sampleImageUrl": ""
+   },
+   "name": "Golden Clover Belt",
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 0,
+     "className": "Beginner",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 140,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "damr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "dex": {
+     "base": 15,
+     "enhance": 25,
+     "extra": 20,
+     "total": 60
+    },
+    "imdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "int": {
+     "base": 15,
+     "enhance": 25,
+     "extra": 0,
+     "total": 40
+    },
+    "jump": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "knockback": 0,
+    "levelReduced": 0,
+    "luk": {
+     "base": 15,
+     "enhance": 25,
+     "extra": 36,
+     "total": 76
+    },
+    "mad": {
+     "base": 1,
+     "enhance": 0,
+     "extra": 0,
+     "total": 1
+    },
+    "maxHp": {
+     "base": 150,
+     "enhance": 130,
+     "extra": 0,
+     "total": 280
+    },
+    "maxHpr": null,
+    "maxMp": {
+     "base": 150,
+     "enhance": 0,
+     "extra": 1680,
+     "total": 1830
+    },
+    "maxMpr": null,
+    "pad": {
+     "base": 1,
+     "enhance": 0,
+     "extra": 0,
+     "total": 1
+    },
+    "pdd": {
+     "base": 150,
+     "enhance": 100,
+     "extra": 0,
+     "total": 250
+    },
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "statr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "str": {
+     "base": 15,
+     "enhance": 25,
+     "extra": 56,
+     "total": 96
+    }
+   }
+  },
+  "cap": {
+   "assetKey": "ITEMd4816u09hbfs739g0j8g",
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000201001,
+    "label": "Item > Armor > Armor > Hat",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "01",
+     "label": "Armor"
+    },
+    "tier3": {
+     "code": "001",
+     "label": "Hat"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": false,
+    "blockUpgradePotential": false,
+    "blockUpgradeStarforce": false,
+    "desc": "",
+    "enableExtraOption": true,
+    "enablePotential": true,
+    "enableStarforce": true,
+    "isBossReward": false,
+    "isJokerItem": true,
+    "isMintable": true,
+    "isOnly": false,
+    "isOnlyEquip": false,
+    "isSbt": false,
+    "itemId": 1003721,
+    "itemName": "Chaos Queen's Tiara",
+    "maxStarforce": 25,
+    "ridingSkill": 0,
+    "setItemId": 0,
+    "slotMax": 0
+   },
+   "enhance": {
+    "bonusPotential": {
+     "option1": {
+      "code": 12011,
+      "grade": 1,
+      "label": "ATT: +10"
+     },
+     "option2": {
+      "code": 2004,
+      "grade": 0,
+      "label": "LUK : +6"
+     },
+     "option3": {
+      "code": 2010,
+      "grade": 0,
+      "label": "Jump: +4"
+     }
+    },
+    "extraOption": {
+     "code": "182003101"
+    },
+    "potential": {
+     "option1": {
+      "code": 20041,
+      "grade": 2,
+      "label": "STR : +6%"
+     },
+     "option2": {
+      "code": 10013,
+      "grade": 1,
+      "label": "DEF: +120"
+     },
+     "option3": {
+      "code": 10042,
+      "grade": 1,
+      "label": "DEX : +3%"
+     }
+    },
+    "starforce": {
+     "enhanced": 10,
+     "maxStarforce": 25,
+     "serialFailCount": 0
+    }
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1003721.png",
+    "sampleImageUrl": ""
+   },
+   "name": "Chaos Queen's Tiara",
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 0,
+     "className": "Beginner",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 140,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "damr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "dex": {
+     "base": 23,
+     "enhance": 25,
+     "extra": 0,
+     "total": 48
+    },
+    "imdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "int": {
+     "base": 23,
+     "enhance": 25,
+     "extra": 0,
+     "total": 48
+    },
+    "jump": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "knockback": 0,
+    "levelReduced": 0,
+    "luk": {
+     "base": 23,
+     "enhance": 25,
+     "extra": 0,
+     "total": 48
+    },
+    "mad": {
+     "base": 1,
+     "enhance": 0,
+     "extra": 2,
+     "total": 3
+    },
+    "maxHp": {
+     "base": 0,
+     "enhance": 130,
+     "extra": 420,
+     "total": 550
+    },
+    "maxHpr": null,
+    "maxMp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxMpr": null,
+    "pad": {
+     "base": 1,
+     "enhance": 0,
+     "extra": 0,
+     "total": 1
+    },
+    "pdd": {
+     "base": 300,
+     "enhance": 196,
+     "extra": 0,
+     "total": 496
+    },
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": {
+     "base": 5,
+     "enhance": 0,
+     "extra": 0,
+     "total": 5
+    },
+    "statr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "str": {
+     "base": 23,
+     "enhance": 25,
+     "extra": 24,
+     "total": 72
+    }
+   }
+  },
+  "cape": {
+   "assetKey": "ITEMd337v7u54k0c739ripdg",
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000201007,
+    "label": "Item > Armor > Armor > Cape",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "01",
+     "label": "Armor"
+    },
+    "tier3": {
+     "code": "007",
+     "label": "Cape"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": false,
+    "blockUpgradePotential": false,
+    "blockUpgradeStarforce": false,
+    "desc": "",
+    "enableExtraOption": true,
+    "enablePotential": true,
+    "enableStarforce": true,
+    "isBossReward": true,
+    "isJokerItem": false,
+    "isMintable": true,
+    "isOnly": false,
+    "isOnlyEquip": false,
+    "isSbt": false,
+    "itemId": 1102797,
+    "itemName": "AbsoLab Pirate Cape",
+    "maxStarforce": 25,
+    "ridingSkill": 0,
+    "setItemId": 508,
+    "slotMax": 0
+   },
+   "enhance": {
+    "bonusPotential": {
+     "option1": {
+      "code": 12011,
+      "grade": 1,
+      "label": "ATT: +10"
+     },
+     "option2": {
+      "code": 2003,
+      "grade": 0,
+      "label": "INT : +6"
+     },
+     "option3": {
+      "code": 2009,
+      "grade": 0,
+      "label": "Movement Speed: +4"
+     }
+    },
+    "extraOption": {
+     "code": "3133055245"
+    },
+    "potential": {
+     "option1": {
+      "code": 20086,
+      "grade": 2,
+      "label": "All Stats: +3%"
+     },
+     "option2": {
+      "code": 10041,
+      "grade": 1,
+      "label": "STR : +3%"
+     },
+     "option3": {
+      "code": 10045,
+      "grade": 1,
+      "label": "Max HP: +3%"
+     }
+    },
+    "starforce": {
+     "enhanced": 0,
+     "maxStarforce": 25,
+     "serialFailCount": 0
+    }
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1102797.png",
+    "sampleImageUrl": ""
+   },
+   "name": "AbsoLab Pirate Cape",
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 16,
+     "className": "Pirate",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 160,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "damr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "dex": {
+     "base": 15,
+     "enhance": 0,
+     "extra": 0,
+     "total": 15
+    },
+    "imdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "int": {
+     "base": 15,
+     "enhance": 0,
+     "extra": 25,
+     "total": 40
+    },
+    "jump": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "knockback": 0,
+    "levelReduced": 0,
+    "luk": {
+     "base": 15,
+     "enhance": 0,
+     "extra": 0,
+     "total": 15
+    },
+    "mad": {
+     "base": 2,
+     "enhance": 0,
+     "extra": 0,
+     "total": 2
+    },
+    "maxHp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxHpr": null,
+    "maxMp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxMpr": null,
+    "pad": {
+     "base": 2,
+     "enhance": 0,
+     "extra": 0,
+     "total": 2
+    },
+    "pdd": {
+     "base": 250,
+     "enhance": 0,
+     "extra": 27,
+     "total": 277
+    },
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "statr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 5,
+     "total": 5
+    },
+    "str": {
+     "base": 15,
+     "enhance": 0,
+     "extra": 52,
+     "total": 67
+    }
+   }
+  },
+  "clothes": {
+   "assetKey": "ITEMd2uhc1r4k31s73egqc0g",
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000201002,
+    "label": "Item > Armor > Armor > Top",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "01",
+     "label": "Armor"
+    },
+    "tier3": {
+     "code": "002",
+     "label": "Top"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": false,
+    "blockUpgradePotential": false,
+    "blockUpgradeStarforce": false,
+    "desc": "",
+    "enableExtraOption": true,
+    "enablePotential": true,
+    "enableStarforce": true,
+    "isBossReward": true,
+    "isJokerItem": false,
+    "isMintable": true,
+    "isOnly": false,
+    "isOnlyEquip": false,
+    "isSbt": false,
+    "itemId": 1042258,
+    "itemName": "Eagle Eye Wanderer Coat",
+    "maxStarforce": 25,
+    "ridingSkill": 0,
+    "setItemId": 251,
+    "slotMax": 0
+   },
+   "enhance": {
+    "bonusPotential": {
+     "option1": {
+      "code": 12011,
+      "grade": 1,
+      "label": "ATT: +10"
+     },
+     "option2": {
+      "code": 2013,
+      "grade": 0,
+      "label": "DEF: +60"
+     },
+     "option3": {
+      "code": 2009,
+      "grade": 0,
+      "label": "Movement Speed: +4"
+     }
+    },
+    "extraOption": {
+     "code": "245135043176"
+    },
+    "potential": {
+     "option1": {
+      "code": 20041,
+      "grade": 2,
+      "label": "STR : +6%"
+     },
+     "option2": {
+      "code": 10046,
+      "grade": 1,
+      "label": "Max MP: +3%"
+     },
+     "option3": {
+      "code": 10044,
+      "grade": 1,
+      "label": "LUK : +3%"
+     }
+    },
+    "starforce": {
+     "enhanced": 0,
+     "maxStarforce": 25,
+     "serialFailCount": 0
+    }
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1042258.png",
+    "sampleImageUrl": ""
+   },
+   "name": "Eagle Eye Wanderer Coat",
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 16,
+     "className": "Pirate",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 150,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "damr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "dex": {
+     "base": 30,
+     "enhance": 0,
+     "extra": 12,
+     "total": 42
+    },
+    "imdr": {
+     "base": 5,
+     "enhance": 0,
+     "extra": 0,
+     "total": 5
+    },
+    "int": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "jump": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "knockback": 0,
+    "levelReduced": 0,
+    "luk": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "mad": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxHp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxHpr": null,
+    "maxMp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxMpr": null,
+    "pad": {
+     "base": 2,
+     "enhance": 0,
+     "extra": 6,
+     "total": 8
+    },
+    "pdd": {
+     "base": 135,
+     "enhance": 0,
+     "extra": 40,
+     "total": 175
+    },
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "statr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 5,
+     "total": 5
+    },
+    "str": {
+     "base": 30,
+     "enhance": 0,
+     "extra": 12,
+     "total": 42
+    }
+   }
+  },
+  "earAcc": {
+   "assetKey": "ITEMd3e8o291b7uc739vcthg",
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000202003,
+    "label": "Item > Armor > Accessory > Earrings",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "02",
+     "label": "Accessory"
+    },
+    "tier3": {
+     "code": "003",
+     "label": "Earrings"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": false,
+    "blockUpgradePotential": false,
+    "blockUpgradeStarforce": false,
+    "desc": "",
+    "enableExtraOption": true,
+    "enablePotential": true,
+    "enableStarforce": true,
+    "isBossReward": true,
+    "isJokerItem": false,
+    "isMintable": true,
+    "isOnly": false,
+    "isOnlyEquip": false,
+    "isSbt": false,
+    "itemId": 1032241,
+    "itemName": "Dea Sidus Earring",
+    "maxStarforce": 20,
+    "ridingSkill": 0,
+    "setItemId": 462,
+    "slotMax": 0
+   },
+   "enhance": {
+    "bonusPotential": {
+     "option1": {
+      "code": 12011,
+      "grade": 1,
+      "label": "ATT: +10"
+     },
+     "option2": {
+      "code": 2013,
+      "grade": 0,
+      "label": "DEF: +60"
+     },
+     "option3": {
+      "code": 2002,
+      "grade": 0,
+      "label": "DEX : +6"
+     }
+    },
+    "extraOption": {
+     "code": "173036244065"
+    },
+    "potential": {
+     "option1": {
+      "code": 20041,
+      "grade": 2,
+      "label": "STR : +6%"
+     },
+     "option2": {
+      "code": 10053,
+      "grade": 1,
+      "label": "DEF: +3%"
+     },
+     "option3": {
+      "code": 10045,
+      "grade": 1,
+      "label": "Max HP: +3%"
+     }
+    },
+    "starforce": {
+     "enhanced": 10,
+     "maxStarforce": 20,
+     "serialFailCount": 0
+    }
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1032241.png",
+    "sampleImageUrl": ""
+   },
+   "name": "Dea Sidus Earring",
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 0,
+     "className": "Beginner",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 130,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "damr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "dex": {
+     "base": 5,
+     "enhance": 25,
+     "extra": 0,
+     "total": 30
+    },
+    "imdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "int": {
+     "base": 5,
+     "enhance": 25,
+     "extra": 0,
+     "total": 30
+    },
+    "jump": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "knockback": 0,
+    "levelReduced": 0,
+    "luk": {
+     "base": 5,
+     "enhance": 25,
+     "extra": 62,
+     "total": 92
+    },
+    "mad": {
+     "base": 2,
+     "enhance": 0,
+     "extra": 0,
+     "total": 2
+    },
+    "maxHp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxHpr": null,
+    "maxMp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxMpr": null,
+    "pad": {
+     "base": 2,
+     "enhance": 0,
+     "extra": 3,
+     "total": 5
+    },
+    "pdd": {
+     "base": 50,
+     "enhance": 37,
+     "extra": 0,
+     "total": 87
+    },
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "statr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 4,
+     "total": 4
+    },
+    "str": {
+     "base": 5,
+     "enhance": 25,
+     "extra": 20,
+     "total": 50
+    }
+   }
+  },
+  "emblem": {
+   "assetKey": "ITEMd2fsn325qnbc7393e2u0",
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000202010,
+    "label": "Item > Armor > Accessory > Emblem",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "02",
+     "label": "Accessory"
+    },
+    "tier3": {
+     "code": "010",
+     "label": "Emblem"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": true,
+    "blockUpgradePotential": false,
+    "blockUpgradeStarforce": true,
+    "desc": "Can be worn by Hero class only.",
+    "enableExtraOption": false,
+    "enablePotential": true,
+    "enableStarforce": false,
+    "isBossReward": false,
+    "isJokerItem": false,
+    "isMintable": true,
+    "isOnly": false,
+    "isOnlyEquip": false,
+    "isSbt": false,
+    "itemId": 1190572,
+    "itemName": "Gold Heroes Emblem",
+    "maxStarforce": 0,
+    "ridingSkill": 0,
+    "setItemId": 0,
+    "slotMax": 0
+   },
+   "enhance": {
+    "bonusPotential": {
+     "option1": {
+      "code": 42051,
+      "grade": 4,
+      "label": "ATT: +12%"
+     },
+     "option2": {
+      "code": 32206,
+      "grade": 3,
+      "label": "15% chance to recover 85 MP when attacking."
+     },
+     "option3": {
+      "code": 32051,
+      "grade": 3,
+      "label": "ATT: +9%"
+     }
+    },
+    "extraOption": {
+     "code": "0"
+    },
+    "potential": {
+     "option1": {
+      "code": 40292,
+      "grade": 4,
+      "label": "DEF Ignored: +40%"
+     },
+     "option2": {
+      "code": 30051,
+      "grade": 3,
+      "label": "ATT: +9%"
+     },
+     "option3": {
+      "code": 30051,
+      "grade": 3,
+      "label": "ATT: +9%"
+     }
+    },
+    "starforce": {
+     "enhanced": 0,
+     "maxStarforce": 0,
+     "serialFailCount": 0
+    }
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1190572.png",
+    "sampleImageUrl": ""
+   },
+   "name": "Gold Heroes Emblem",
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 0,
+     "className": "Beginner",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 100,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "damr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "dex": {
+     "base": 10,
+     "enhance": 0,
+     "extra": 0,
+     "total": 10
+    },
+    "imdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "int": {
+     "base": 10,
+     "enhance": 0,
+     "extra": 0,
+     "total": 10
+    },
+    "jump": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "knockback": 0,
+    "levelReduced": 0,
+    "luk": {
+     "base": 10,
+     "enhance": 0,
+     "extra": 0,
+     "total": 10
+    },
+    "mad": {
+     "base": 2,
+     "enhance": 0,
+     "extra": 0,
+     "total": 2
+    },
+    "maxHp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxHpr": null,
+    "maxMp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxMpr": null,
+    "pad": {
+     "base": 2,
+     "enhance": 0,
+     "extra": 0,
+     "total": 2
+    },
+    "pdd": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "statr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "str": {
+     "base": 10,
+     "enhance": 0,
+     "extra": 0,
+     "total": 10
+    }
+   }
+  },
+  "eyeAcc": {
+   "assetKey": "ITEMd10du5n2d3os738ji3ug",
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000202002,
+    "label": "Item > Armor > Accessory > Eye Accessory",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "02",
+     "label": "Accessory"
+    },
+    "tier3": {
+     "code": "002",
+     "label": "Eye Accessory"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": false,
+    "blockUpgradePotential": false,
+    "blockUpgradeStarforce": false,
+    "desc": "",
+    "enableExtraOption": true,
+    "enablePotential": true,
+    "enableStarforce": true,
+    "isBossReward": true,
+    "isJokerItem": false,
+    "isMintable": true,
+    "isOnly": false,
+    "isOnlyEquip": false,
+    "isSbt": false,
+    "itemId": 1022231,
+    "itemName": "Aquatic Letter Eye Accessory",
+    "maxStarforce": 8,
+    "ridingSkill": 0,
+    "setItemId": 462,
+    "slotMax": 0
+   },
+   "enhance": {
+    "bonusPotential": {
+     "option1": {
+      "code": 22041,
+      "grade": 2,
+      "label": "STR : +4%"
+     },
+     "option2": {
+      "code": 12009,
+      "grade": 1,
+      "label": "Movement Speed: +5"
+     },
+     "option3": {
+      "code": 12011,
+      "grade": 1,
+      "label": "ATT: +10"
+     }
+    },
+    "extraOption": {
+     "code": "246064025135"
+    },
+    "potential": {
+     "option1": {
+      "code": 40086,
+      "grade": 4,
+      "label": "All Stats: +9%"
+     },
+     "option2": {
+      "code": 40041,
+      "grade": 4,
+      "label": "STR : +12%"
+     },
+     "option3": {
+      "code": 30086,
+      "grade": 3,
+      "label": "All Stats: +6%"
+     }
+    },
+    "starforce": {
+     "enhanced": 8,
+     "maxStarforce": 8,
+     "serialFailCount": 0
+    }
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1022231.png",
+    "sampleImageUrl": ""
+   },
+   "name": "Aquatic Letter Eye Accessory",
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 0,
+     "className": "Beginner",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 100,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "damr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "dex": {
+     "base": 6,
+     "enhance": 19,
+     "extra": 0,
+     "total": 25
+    },
+    "imdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "int": {
+     "base": 6,
+     "enhance": 19,
+     "extra": 30,
+     "total": 55
+    },
+    "jump": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "knockback": 0,
+    "levelReduced": 0,
+    "luk": {
+     "base": 6,
+     "enhance": 19,
+     "extra": 12,
+     "total": 37
+    },
+    "mad": {
+     "base": 1,
+     "enhance": 0,
+     "extra": 0,
+     "total": 1
+    },
+    "maxHp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxHpr": null,
+    "maxMp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxMpr": null,
+    "pad": {
+     "base": 1,
+     "enhance": 0,
+     "extra": 0,
+     "total": 1
+    },
+    "pdd": {
+     "base": 100,
+     "enhance": 53,
+     "extra": 30,
+     "total": 183
+    },
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "statr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 6,
+     "total": 6
+    },
+    "str": {
+     "base": 6,
+     "enhance": 19,
+     "extra": 12,
+     "total": 37
+    }
+   }
+  },
+  "faceAcc": {
+   "assetKey": "ITEMd3ce8idpjpgs73ag1e6g",
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000202001,
+    "label": "Item > Armor > Accessory > Face Accessory",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "02",
+     "label": "Accessory"
+    },
+    "tier3": {
+     "code": "001",
+     "label": "Face Accessory"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": false,
+    "blockUpgradePotential": false,
+    "blockUpgradeStarforce": false,
+    "desc": "",
+    "enableExtraOption": true,
+    "enablePotential": true,
+    "enableStarforce": true,
+    "isBossReward": true,
+    "isJokerItem": false,
+    "isMintable": true,
+    "isOnly": false,
+    "isOnlyEquip": false,
+    "isSbt": false,
+    "itemId": 1012478,
+    "itemName": "Condensed Power Crystal",
+    "maxStarforce": 10,
+    "ridingSkill": 0,
+    "setItemId": 462,
+    "slotMax": 0
+   },
+   "enhance": {
+    "bonusPotential": {
+     "option1": {
+      "code": 12011,
+      "grade": 1,
+      "label": "ATT: +10"
+     },
+     "option2": {
+      "code": 2003,
+      "grade": 0,
+      "label": "INT : +6"
+     },
+     "option3": {
+      "code": 2010,
+      "grade": 0,
+      "label": "Jump: +3"
+     }
+    },
+    "extraOption": {
+     "code": "185246093174"
+    },
+    "potential": {
+     "option1": {
+      "code": 20045,
+      "grade": 2,
+      "label": "Max HP: +6%"
+     },
+     "option2": {
+      "code": 10041,
+      "grade": 1,
+      "label": "STR : +3%"
+     },
+     "option3": {
+      "code": 20041,
+      "grade": 2,
+      "label": "STR : +6%"
+     }
+    },
+    "starforce": {
+     "enhanced": 10,
+     "maxStarforce": 10,
+     "serialFailCount": 0
+    }
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1012478.png",
+    "sampleImageUrl": ""
+   },
+   "name": "Condensed Power Crystal",
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 0,
+     "className": "Beginner",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 110,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "damr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "dex": {
+     "base": 5,
+     "enhance": 25,
+     "extra": 0,
+     "total": 30
+    },
+    "imdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "int": {
+     "base": 5,
+     "enhance": 25,
+     "extra": 9,
+     "total": 39
+    },
+    "jump": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "knockback": 0,
+    "levelReduced": 0,
+    "luk": {
+     "base": 5,
+     "enhance": 25,
+     "extra": 9,
+     "total": 39
+    },
+    "mad": {
+     "base": 5,
+     "enhance": 0,
+     "extra": 5,
+     "total": 10
+    },
+    "maxHp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxHpr": null,
+    "maxMp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxMpr": null,
+    "pad": {
+     "base": 5,
+     "enhance": 0,
+     "extra": 4,
+     "total": 9
+    },
+    "pdd": {
+     "base": 100,
+     "enhance": 70,
+     "extra": 0,
+     "total": 170
+    },
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "statr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 6,
+     "total": 6
+    },
+    "str": {
+     "base": 5,
+     "enhance": 25,
+     "extra": 0,
+     "total": 30
+    }
+   }
+  },
+  "gloves": {
+   "assetKey": "ITEMd337vci79egs738t4o3g",
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000201006,
+    "label": "Item > Armor > Armor > Gloves",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "01",
+     "label": "Armor"
+    },
+    "tier3": {
+     "code": "006",
+     "label": "Gloves"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": false,
+    "blockUpgradePotential": false,
+    "blockUpgradeStarforce": false,
+    "desc": "",
+    "enableExtraOption": true,
+    "enablePotential": true,
+    "enableStarforce": true,
+    "isBossReward": true,
+    "isJokerItem": false,
+    "isMintable": true,
+    "isOnly": false,
+    "isOnlyEquip": false,
+    "isSbt": false,
+    "itemId": 1082640,
+    "itemName": "AbsoLab Pirate Gloves",
+    "maxStarforce": 25,
+    "ridingSkill": 0,
+    "setItemId": 508,
+    "slotMax": 0
+   },
+   "enhance": {
+    "bonusPotential": {
+     "option1": {
+      "code": 12011,
+      "grade": 1,
+      "label": "ATT: +10"
+     },
+     "option2": {
+      "code": 2006,
+      "grade": 0,
+      "label": "Max MP: +60"
+     },
+     "option3": {
+      "code": 2012,
+      "grade": 0,
+      "label": "Magic ATT: +3"
+     }
+    },
+    "extraOption": {
+     "code": "246124064085"
+    },
+    "potential": {
+     "option1": {
+      "code": 20086,
+      "grade": 2,
+      "label": "All Stats: +3%"
+     },
+     "option2": {
+      "code": 10041,
+      "grade": 1,
+      "label": "STR : +3%"
+     },
+     "option3": {
+      "code": 10046,
+      "grade": 1,
+      "label": "Max MP: +3%"
+     }
+    },
+    "starforce": {
+     "enhanced": 0,
+     "maxStarforce": 25,
+     "serialFailCount": 0
+    }
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1082640.png",
+    "sampleImageUrl": ""
+   },
+   "name": "AbsoLab Pirate Gloves",
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 16,
+     "className": "Pirate",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 160,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "damr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "dex": {
+     "base": 20,
+     "enhance": 0,
+     "extra": 25,
+     "total": 45
+    },
+    "imdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "int": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "jump": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "knockback": 0,
+    "levelReduced": 20,
+    "luk": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 45,
+     "total": 45
+    },
+    "mad": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxHp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxHpr": null,
+    "maxMp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxMpr": null,
+    "pad": {
+     "base": 5,
+     "enhance": 0,
+     "extra": 0,
+     "total": 5
+    },
+    "pdd": {
+     "base": 150,
+     "enhance": 0,
+     "extra": 0,
+     "total": 150
+    },
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "statr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 6,
+     "total": 6
+    },
+    "str": {
+     "base": 20,
+     "enhance": 0,
+     "extra": 20,
+     "total": 40
+    }
+   }
+  },
+  "pants": {
+   "assetKey": "ITEMd2uhc1r4k31s73egqc00",
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000201004,
+    "label": "Item > Armor > Armor > Bottom",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "01",
+     "label": "Armor"
+    },
+    "tier3": {
+     "code": "004",
+     "label": "Bottom"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": false,
+    "blockUpgradePotential": false,
+    "blockUpgradeStarforce": false,
+    "desc": "",
+    "enableExtraOption": true,
+    "enablePotential": true,
+    "enableStarforce": true,
+    "isBossReward": true,
+    "isJokerItem": false,
+    "isMintable": true,
+    "isOnly": false,
+    "isOnlyEquip": false,
+    "isSbt": false,
+    "itemId": 1062169,
+    "itemName": "Trixter Wanderer Pants",
+    "maxStarforce": 25,
+    "ridingSkill": 0,
+    "setItemId": 251,
+    "slotMax": 0
+   },
+   "enhance": {
+    "bonusPotential": {
+     "option1": {
+      "code": 12011,
+      "grade": 1,
+      "label": "ATT: +10"
+     },
+     "option2": {
+      "code": 2011,
+      "grade": 0,
+      "label": "ATT: +3"
+     },
+     "option3": {
+      "code": 2006,
+      "grade": 0,
+      "label": "Max MP: +60"
+     }
+    },
+    "extraOption": {
+     "code": "54245065085"
+    },
+    "potential": {
+     "option1": {
+      "code": 20086,
+      "grade": 2,
+      "label": "All Stats: +3%"
+     },
+     "option2": {
+      "code": 10003,
+      "grade": 1,
+      "label": "INT : +12"
+     },
+     "option3": {
+      "code": 10041,
+      "grade": 1,
+      "label": "STR : +3%"
+     }
+    },
+    "starforce": {
+     "enhanced": 0,
+     "maxStarforce": 25,
+     "serialFailCount": 0
+    }
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1062169.png",
+    "sampleImageUrl": ""
+   },
+   "name": "Trixter Wanderer Pants",
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 16,
+     "className": "Pirate",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 150,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "damr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "dex": {
+     "base": 30,
+     "enhance": 0,
+     "extra": 20,
+     "total": 50
+    },
+    "imdr": {
+     "base": 5,
+     "enhance": 0,
+     "extra": 0,
+     "total": 5
+    },
+    "int": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 16,
+     "total": 16
+    },
+    "jump": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "knockback": 0,
+    "levelReduced": 0,
+    "luk": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 40,
+     "total": 40
+    },
+    "mad": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxHp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxHpr": null,
+    "maxMp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxMpr": null,
+    "pad": {
+     "base": 2,
+     "enhance": 0,
+     "extra": 0,
+     "total": 2
+    },
+    "pdd": {
+     "base": 135,
+     "enhance": 0,
+     "extra": 0,
+     "total": 135
+    },
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "statr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 5,
+     "total": 5
+    },
+    "str": {
+     "base": 30,
+     "enhance": 0,
+     "extra": 36,
+     "total": 66
+    }
+   }
+  },
+  "pendant1": {
+   "assetKey": "ITEMd0jbk7ofl2es73e8ea0g",
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000202005,
+    "label": "Item > Armor > Accessory > Pendant",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "02",
+     "label": "Accessory"
+    },
+    "tier3": {
+     "code": "005",
+     "label": "Pendant"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": false,
+    "blockUpgradePotential": false,
+    "blockUpgradeStarforce": false,
+    "desc": "",
+    "enableExtraOption": true,
+    "enablePotential": true,
+    "enableStarforce": true,
+    "isBossReward": false,
+    "isJokerItem": false,
+    "isMintable": true,
+    "isOnly": false,
+    "isOnlyEquip": true,
+    "isSbt": false,
+    "itemId": 1122076,
+    "itemName": "Chaos Horntail Necklace",
+    "maxStarforce": 15,
+    "ridingSkill": 0,
+    "setItemId": 462,
+    "slotMax": 0
+   },
+   "enhance": {
+    "bonusPotential": {
+     "option1": {
+      "code": 12011,
+      "grade": 1,
+      "label": "ATT: +10"
+     },
+     "option2": {
+      "code": 2011,
+      "grade": 0,
+      "label": "ATT: +3"
+     },
+     "option3": {
+      "code": 2009,
+      "grade": 0,
+      "label": "Movement Speed: +4"
+     }
+    },
+    "extraOption": {
+     "code": "123244"
+    },
+    "potential": {
+     "option1": {
+      "code": 20041,
+      "grade": 2,
+      "label": "STR : +6%"
+     },
+     "option2": {
+      "code": 10081,
+      "grade": 1,
+      "label": "All Stats: +5"
+     },
+     "option3": {
+      "code": 10001,
+      "grade": 1,
+      "label": "STR : +12"
+     }
+    },
+    "starforce": {
+     "enhanced": 10,
+     "maxStarforce": 15,
+     "serialFailCount": 0
+    }
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1122076.png",
+    "sampleImageUrl": ""
+   },
+   "name": "Chaos Horntail Necklace",
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 0,
+     "className": "Beginner",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 120,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "damr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "dex": {
+     "base": 10,
+     "enhance": 25,
+     "extra": 0,
+     "total": 35
+    },
+    "imdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "int": {
+     "base": 10,
+     "enhance": 25,
+     "extra": 0,
+     "total": 35
+    },
+    "jump": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "knockback": 0,
+    "levelReduced": 15,
+    "luk": {
+     "base": 10,
+     "enhance": 25,
+     "extra": 0,
+     "total": 35
+    },
+    "mad": {
+     "base": 2,
+     "enhance": 0,
+     "extra": 0,
+     "total": 2
+    },
+    "maxHp": {
+     "base": 0,
+     "enhance": 130,
+     "extra": 0,
+     "total": 130
+    },
+    "maxHpr": {
+     "base": 10,
+     "enhance": 0,
+     "extra": 0,
+     "total": 10
+    },
+    "maxMp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxMpr": {
+     "base": 10,
+     "enhance": 0,
+     "extra": 0,
+     "total": 10
+    },
+    "pad": {
+     "base": 2,
+     "enhance": 0,
+     "extra": 0,
+     "total": 2
+    },
+    "pdd": {
+     "base": 140,
+     "enhance": 96,
+     "extra": 0,
+     "total": 236
+    },
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "statr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 4,
+     "total": 4
+    },
+    "str": {
+     "base": 10,
+     "enhance": 25,
+     "extra": 0,
+     "total": 35
+    }
+   }
+  },
+  "pendant2": {
+   "assetKey": "ITEMd0mq257pq2cs73f0bpg0",
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000202005,
+    "label": "Item > Armor > Accessory > Pendant",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "02",
+     "label": "Accessory"
+    },
+    "tier3": {
+     "code": "005",
+     "label": "Pendant"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": false,
+    "blockUpgradePotential": false,
+    "blockUpgradeStarforce": false,
+    "desc": "",
+    "enableExtraOption": true,
+    "enablePotential": true,
+    "enableStarforce": true,
+    "isBossReward": true,
+    "isJokerItem": false,
+    "isMintable": true,
+    "isOnly": false,
+    "isOnlyEquip": true,
+    "isSbt": false,
+    "itemId": 1122254,
+    "itemName": "Mechanator Pendant",
+    "maxStarforce": 15,
+    "ridingSkill": 0,
+    "setItemId": 462,
+    "slotMax": 0
+   },
+   "enhance": {
+    "bonusPotential": {
+     "option1": {
+      "code": 12011,
+      "grade": 1,
+      "label": "ATT: +10"
+     },
+     "option2": {
+      "code": 2004,
+      "grade": 0,
+      "label": "LUK : +6"
+     },
+     "option3": {
+      "code": 2003,
+      "grade": 0,
+      "label": "INT : +6"
+     }
+    },
+    "extraOption": {
+     "code": "245024033006"
+    },
+    "potential": {
+     "option1": {
+      "code": 20041,
+      "grade": 2,
+      "label": "STR : +6%"
+     },
+     "option2": {
+      "code": 10046,
+      "grade": 1,
+      "label": "Max MP: +3%"
+     },
+     "option3": {
+      "code": 10046,
+      "grade": 1,
+      "label": "Max MP: +3%"
+     }
+    },
+    "starforce": {
+     "enhanced": 10,
+     "maxStarforce": 15,
+     "serialFailCount": 0
+    }
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1122254.png",
+    "sampleImageUrl": ""
+   },
+   "name": "Mechanator Pendant",
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 0,
+     "className": "Beginner",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 120,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "damr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "dex": {
+     "base": 10,
+     "enhance": 25,
+     "extra": 0,
+     "total": 35
+    },
+    "imdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "int": {
+     "base": 10,
+     "enhance": 25,
+     "extra": 28,
+     "total": 63
+    },
+    "jump": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "knockback": 0,
+    "levelReduced": 0,
+    "luk": {
+     "base": 10,
+     "enhance": 25,
+     "extra": 21,
+     "total": 56
+    },
+    "mad": {
+     "base": 1,
+     "enhance": 0,
+     "extra": 0,
+     "total": 1
+    },
+    "maxHp": {
+     "base": 250,
+     "enhance": 130,
+     "extra": 0,
+     "total": 380
+    },
+    "maxHpr": null,
+    "maxMp": {
+     "base": 250,
+     "enhance": 0,
+     "extra": 0,
+     "total": 250
+    },
+    "maxMpr": null,
+    "pad": {
+     "base": 1,
+     "enhance": 0,
+     "extra": 0,
+     "total": 1
+    },
+    "pdd": {
+     "base": 100,
+     "enhance": 70,
+     "extra": 0,
+     "total": 170
+    },
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "statr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 5,
+     "total": 5
+    },
+    "str": {
+     "base": 10,
+     "enhance": 25,
+     "extra": 42,
+     "total": 77
+    }
+   }
+  },
+  "pocket": {
+   "assetKey": "ITEMd334f4jadlqc73bcafn0",
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000202008,
+    "label": "Item > Armor > Accessory > Pocket Item",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "02",
+     "label": "Accessory"
+    },
+    "tier3": {
+     "code": "008",
+     "label": "Pocket Item"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": false,
+    "blockUpgradePotential": true,
+    "blockUpgradeStarforce": true,
+    "desc": "",
+    "enableExtraOption": true,
+    "enablePotential": false,
+    "enableStarforce": false,
+    "isBossReward": true,
+    "isJokerItem": false,
+    "isMintable": true,
+    "isOnly": false,
+    "isOnlyEquip": false,
+    "isSbt": false,
+    "itemId": 1162025,
+    "itemName": "Pink Holy Cup",
+    "maxStarforce": 0,
+    "ridingSkill": 0,
+    "setItemId": 462,
+    "slotMax": 0
+   },
+   "enhance": {
+    "bonusPotential": null,
+    "extraOption": {
+     "code": "135104244045"
+    },
+    "potential": null,
+    "starforce": {
+     "enhanced": 0,
+     "maxStarforce": 0,
+     "serialFailCount": 0
+    }
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1162025.png",
+    "sampleImageUrl": ""
+   },
+   "name": "Pink Holy Cup",
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 0,
+     "className": "Beginner",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 140,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "damr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "dex": {
+     "base": 5,
+     "enhance": 0,
+     "extra": 20,
+     "total": 25
+    },
+    "imdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "int": {
+     "base": 5,
+     "enhance": 0,
+     "extra": 0,
+     "total": 5
+    },
+    "jump": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "knockback": 0,
+    "levelReduced": 0,
+    "luk": {
+     "base": 5,
+     "enhance": 0,
+     "extra": 0,
+     "total": 5
+    },
+    "mad": {
+     "base": 5,
+     "enhance": 0,
+     "extra": 0,
+     "total": 5
+    },
+    "maxHp": {
+     "base": 50,
+     "enhance": 0,
+     "extra": 1680,
+     "total": 1730
+    },
+    "maxHpr": null,
+    "maxMp": {
+     "base": 50,
+     "enhance": 0,
+     "extra": 0,
+     "total": 50
+    },
+    "maxMpr": null,
+    "pad": {
+     "base": 5,
+     "enhance": 0,
+     "extra": 0,
+     "total": 5
+    },
+    "pdd": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 40,
+     "total": 40
+    },
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "statr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 4,
+     "total": 4
+    },
+    "str": {
+     "base": 5,
+     "enhance": 0,
+     "extra": 20,
+     "total": 25
+    }
+   }
+  },
+  "ring1": {
+   "assetKey": "ITEMd0is0akmd7mc73fbhncg",
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000202004,
+    "label": "Item > Armor > Accessory > Ring",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "02",
+     "label": "Accessory"
+    },
+    "tier3": {
+     "code": "004",
+     "label": "Ring"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": true,
+    "blockUpgradePotential": false,
+    "blockUpgradeStarforce": false,
+    "desc": "",
+    "enableExtraOption": false,
+    "enablePotential": true,
+    "enableStarforce": true,
+    "isBossReward": true,
+    "isJokerItem": false,
+    "isMintable": true,
+    "isOnly": false,
+    "isOnlyEquip": true,
+    "isSbt": false,
+    "itemId": 1113149,
+    "itemName": "Silver Blossom Ring",
+    "maxStarforce": 10,
+    "ridingSkill": 0,
+    "setItemId": 462,
+    "slotMax": 0
+   },
+   "enhance": {
+    "bonusPotential": {
+     "option1": {
+      "code": 12011,
+      "grade": 1,
+      "label": "ATT: +10"
+     },
+     "option2": {
+      "code": 2002,
+      "grade": 0,
+      "label": "DEX : +6"
+     },
+     "option3": {
+      "code": 2009,
+      "grade": 0,
+      "label": "Movement Speed: +3"
+     }
+    },
+    "extraOption": {
+     "code": "0"
+    },
+    "potential": {
+     "option1": {
+      "code": 20041,
+      "grade": 2,
+      "label": "STR : +6%"
+     },
+     "option2": {
+      "code": 10046,
+      "grade": 1,
+      "label": "Max MP: +3%"
+     },
+     "option3": {
+      "code": 10003,
+      "grade": 1,
+      "label": "INT : +12"
+     }
+    },
+    "starforce": {
+     "enhanced": 10,
+     "maxStarforce": 10,
+     "serialFailCount": 0
+    }
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1113149.png",
+    "sampleImageUrl": ""
+   },
+   "name": "Silver Blossom Ring",
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 0,
+     "className": "Beginner",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 110,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "damr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "dex": {
+     "base": 5,
+     "enhance": 25,
+     "extra": 0,
+     "total": 30
+    },
+    "imdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "int": {
+     "base": 5,
+     "enhance": 25,
+     "extra": 0,
+     "total": 30
+    },
+    "jump": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "knockback": 0,
+    "levelReduced": 0,
+    "luk": {
+     "base": 5,
+     "enhance": 25,
+     "extra": 0,
+     "total": 30
+    },
+    "mad": {
+     "base": 2,
+     "enhance": 0,
+     "extra": 0,
+     "total": 2
+    },
+    "maxHp": {
+     "base": 0,
+     "enhance": 130,
+     "extra": 0,
+     "total": 130
+    },
+    "maxHpr": null,
+    "maxMp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxMpr": null,
+    "pad": {
+     "base": 2,
+     "enhance": 0,
+     "extra": 0,
+     "total": 2
+    },
+    "pdd": {
+     "base": 0,
+     "enhance": 11,
+     "extra": 0,
+     "total": 11
+    },
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "statr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "str": {
+     "base": 5,
+     "enhance": 25,
+     "extra": 0,
+     "total": 30
+    }
+   }
+  },
+  "ring2": {
+   "assetKey": "ITEMd0nrmphqahks73f79grg",
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000202004,
+    "label": "Item > Armor > Accessory > Ring",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "02",
+     "label": "Accessory"
+    },
+    "tier3": {
+     "code": "004",
+     "label": "Ring"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": true,
+    "blockUpgradePotential": true,
+    "blockUpgradeStarforce": false,
+    "desc": "",
+    "enableExtraOption": false,
+    "enablePotential": false,
+    "enableStarforce": true,
+    "isBossReward": false,
+    "isJokerItem": false,
+    "isMintable": true,
+    "isOnly": false,
+    "isOnlyEquip": true,
+    "isSbt": false,
+    "itemId": 1113089,
+    "itemName": "Ifia's Ring",
+    "maxStarforce": 10,
+    "ridingSkill": 0,
+    "setItemId": 329,
+    "slotMax": 0
+   },
+   "enhance": {
+    "bonusPotential": null,
+    "extraOption": {
+     "code": "0"
+    },
+    "potential": null,
+    "starforce": {
+     "enhanced": 10,
+     "maxStarforce": 10,
+     "serialFailCount": 0
+    }
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1113089.png",
+    "sampleImageUrl": ""
+   },
+   "name": "Ifia's Ring",
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 0,
+     "className": "Beginner",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 110,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "damr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "dex": {
+     "base": 3,
+     "enhance": 25,
+     "extra": 0,
+     "total": 28
+    },
+    "imdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "int": {
+     "base": 3,
+     "enhance": 25,
+     "extra": 0,
+     "total": 28
+    },
+    "jump": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "knockback": 0,
+    "levelReduced": 0,
+    "luk": {
+     "base": 3,
+     "enhance": 25,
+     "extra": 0,
+     "total": 28
+    },
+    "mad": {
+     "base": 1,
+     "enhance": 0,
+     "extra": 0,
+     "total": 1
+    },
+    "maxHp": {
+     "base": 100,
+     "enhance": 130,
+     "extra": 0,
+     "total": 230
+    },
+    "maxHpr": null,
+    "maxMp": {
+     "base": 100,
+     "enhance": 0,
+     "extra": 0,
+     "total": 100
+    },
+    "maxMpr": null,
+    "pad": {
+     "base": 1,
+     "enhance": 0,
+     "extra": 0,
+     "total": 1
+    },
+    "pdd": {
+     "base": 140,
+     "enhance": 96,
+     "extra": 0,
+     "total": 236
+    },
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "statr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "str": {
+     "base": 3,
+     "enhance": 25,
+     "extra": 0,
+     "total": 28
+    }
+   }
+  },
+  "ring3": {
+   "assetKey": "ITEMd38hgvo38phs73d6o3n0",
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000202004,
+    "label": "Item > Armor > Accessory > Ring",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "02",
+     "label": "Accessory"
+    },
+    "tier3": {
+     "code": "004",
+     "label": "Ring"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": true,
+    "blockUpgradePotential": false,
+    "blockUpgradeStarforce": false,
+    "desc": "",
+    "enableExtraOption": false,
+    "enablePotential": true,
+    "enableStarforce": true,
+    "isBossReward": false,
+    "isJokerItem": false,
+    "isMintable": true,
+    "isOnly": false,
+    "isOnlyEquip": true,
+    "isSbt": false,
+    "itemId": 1113282,
+    "itemName": "Noble Ifia's Ring",
+    "maxStarforce": 15,
+    "ridingSkill": 0,
+    "setItemId": 462,
+    "slotMax": 0
+   },
+   "enhance": {
+    "bonusPotential": {
+     "option1": {
+      "code": 12011,
+      "grade": 1,
+      "label": "ATT: +10"
+     },
+     "option2": {
+      "code": 2004,
+      "grade": 0,
+      "label": "LUK : +6"
+     },
+     "option3": {
+      "code": 2006,
+      "grade": 0,
+      "label": "Max MP: +60"
+     }
+    },
+    "extraOption": {
+     "code": "0"
+    },
+    "potential": {
+     "option1": {
+      "code": 20041,
+      "grade": 2,
+      "label": "STR : +6%"
+     },
+     "option2": {
+      "code": 10041,
+      "grade": 1,
+      "label": "STR : +3%"
+     },
+     "option3": {
+      "code": 10002,
+      "grade": 1,
+      "label": "DEX : +12"
+     }
+    },
+    "starforce": {
+     "enhanced": 10,
+     "maxStarforce": 15,
+     "serialFailCount": 0
+    }
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1113282.png",
+    "sampleImageUrl": ""
+   },
+   "name": "Noble Ifia's Ring",
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 0,
+     "className": "Beginner",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 120,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "damr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "dex": {
+     "base": 5,
+     "enhance": 25,
+     "extra": 0,
+     "total": 30
+    },
+    "imdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "int": {
+     "base": 5,
+     "enhance": 25,
+     "extra": 0,
+     "total": 30
+    },
+    "jump": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "knockback": 0,
+    "levelReduced": 0,
+    "luk": {
+     "base": 5,
+     "enhance": 25,
+     "extra": 0,
+     "total": 30
+    },
+    "mad": {
+     "base": 2,
+     "enhance": 0,
+     "extra": 0,
+     "total": 2
+    },
+    "maxHp": {
+     "base": 200,
+     "enhance": 130,
+     "extra": 0,
+     "total": 330
+    },
+    "maxHpr": null,
+    "maxMp": {
+     "base": 200,
+     "enhance": 0,
+     "extra": 0,
+     "total": 200
+    },
+    "maxMpr": null,
+    "pad": {
+     "base": 2,
+     "enhance": 0,
+     "extra": 0,
+     "total": 2
+    },
+    "pdd": {
+     "base": 0,
+     "enhance": 11,
+     "extra": 0,
+     "total": 11
+    },
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "statr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "str": {
+     "base": 5,
+     "enhance": 25,
+     "extra": 0,
+     "total": 30
+    }
+   }
+  },
+  "shoes": {
+   "assetKey": "ITEMd337vem54k0c739rirng",
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000201005,
+    "label": "Item > Armor > Armor > Shoes",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "01",
+     "label": "Armor"
+    },
+    "tier3": {
+     "code": "005",
+     "label": "Shoes"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": false,
+    "blockUpgradePotential": false,
+    "blockUpgradeStarforce": false,
+    "desc": "",
+    "enableExtraOption": true,
+    "enablePotential": true,
+    "enableStarforce": true,
+    "isBossReward": true,
+    "isJokerItem": false,
+    "isMintable": true,
+    "isOnly": false,
+    "isOnlyEquip": false,
+    "isSbt": false,
+    "itemId": 1073035,
+    "itemName": "AbsoLab Pirate Shoes",
+    "maxStarforce": 25,
+    "ridingSkill": 0,
+    "setItemId": 508,
+    "slotMax": 0
+   },
+   "enhance": {
+    "bonusPotential": {
+     "option1": {
+      "code": 12011,
+      "grade": 1,
+      "label": "ATT: +10"
+     },
+     "option2": {
+      "code": 2001,
+      "grade": 0,
+      "label": "STR : +6"
+     },
+     "option3": {
+      "code": 2009,
+      "grade": 0,
+      "label": "Movement Speed: +4"
+     }
+    },
+    "extraOption": {
+     "code": "104245134176"
+    },
+    "potential": {
+     "option1": {
+      "code": 20041,
+      "grade": 2,
+      "label": "STR : +6%"
+     },
+     "option2": {
+      "code": 10044,
+      "grade": 1,
+      "label": "LUK : +3%"
+     },
+     "option3": {
+      "code": 10006,
+      "grade": 1,
+      "label": "Max MP: +120"
+     }
+    },
+    "starforce": {
+     "enhanced": 6,
+     "maxStarforce": 25,
+     "serialFailCount": 0
+    }
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1073035.png",
+    "sampleImageUrl": ""
+   },
+   "name": "AbsoLab Pirate Shoes",
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 16,
+     "className": "Pirate",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 160,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "damr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "dex": {
+     "base": 20,
+     "enhance": 13,
+     "extra": 0,
+     "total": 33
+    },
+    "imdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "int": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "jump": {
+     "base": 7,
+     "enhance": 4,
+     "extra": 0,
+     "total": 11
+    },
+    "knockback": 0,
+    "levelReduced": 0,
+    "luk": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "mad": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxHp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 1920,
+     "total": 1920
+    },
+    "maxHpr": null,
+    "maxMp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxMpr": null,
+    "pad": {
+     "base": 5,
+     "enhance": 0,
+     "extra": 6,
+     "total": 11
+    },
+    "pdd": {
+     "base": 150,
+     "enhance": 54,
+     "extra": 36,
+     "total": 240
+    },
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": {
+     "base": 10,
+     "enhance": 4,
+     "extra": 0,
+     "total": 14
+    },
+    "statr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 5,
+     "total": 5
+    },
+    "str": {
+     "base": 20,
+     "enhance": 13,
+     "extra": 0,
+     "total": 33
+    }
+   }
+  },
+  "shoulder": {
+   "assetKey": "ITEMd337v9np0qps738f83lg",
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000202007,
+    "label": "Item > Armor > Accessory > Shoulder Accessory",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "02",
+     "label": "Accessory"
+    },
+    "tier3": {
+     "code": "007",
+     "label": "Shoulder Accessory"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": true,
+    "blockUpgradePotential": false,
+    "blockUpgradeStarforce": false,
+    "desc": "",
+    "enableExtraOption": false,
+    "enablePotential": true,
+    "enableStarforce": true,
+    "isBossReward": true,
+    "isJokerItem": false,
+    "isMintable": true,
+    "isOnly": false,
+    "isOnlyEquip": false,
+    "isSbt": false,
+    "itemId": 1152179,
+    "itemName": "AbsoLab Pirate Shoulder",
+    "maxStarforce": 25,
+    "ridingSkill": 0,
+    "setItemId": 508,
+    "slotMax": 0
+   },
+   "enhance": {
+    "bonusPotential": {
+     "option1": {
+      "code": 22041,
+      "grade": 2,
+      "label": "STR : +4%"
+     },
+     "option2": {
+      "code": 12006,
+      "grade": 1,
+      "label": "Max MP: +100"
+     },
+     "option3": {
+      "code": 12010,
+      "grade": 1,
+      "label": "Jump: +6"
+     }
+    },
+    "extraOption": {
+     "code": "0"
+    },
+    "potential": {
+     "option1": {
+      "code": 20041,
+      "grade": 2,
+      "label": "STR : +6%"
+     },
+     "option2": {
+      "code": 10002,
+      "grade": 1,
+      "label": "DEX : +12"
+     },
+     "option3": {
+      "code": 10044,
+      "grade": 1,
+      "label": "LUK : +3%"
+     }
+    },
+    "starforce": {
+     "enhanced": 0,
+     "maxStarforce": 25,
+     "serialFailCount": 0
+    }
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1152179.png",
+    "sampleImageUrl": ""
+   },
+   "name": "AbsoLab Pirate Shoulder",
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 16,
+     "className": "Pirate",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 160,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "damr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "dex": {
+     "base": 14,
+     "enhance": 0,
+     "extra": 0,
+     "total": 14
+    },
+    "imdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "int": {
+     "base": 14,
+     "enhance": 0,
+     "extra": 0,
+     "total": 14
+    },
+    "jump": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "knockback": 0,
+    "levelReduced": 0,
+    "luk": {
+     "base": 14,
+     "enhance": 0,
+     "extra": 0,
+     "total": 14
+    },
+    "mad": {
+     "base": 10,
+     "enhance": 0,
+     "extra": 0,
+     "total": 10
+    },
+    "maxHp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxHpr": null,
+    "maxMp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxMpr": null,
+    "pad": {
+     "base": 10,
+     "enhance": 0,
+     "extra": 0,
+     "total": 10
+    },
+    "pdd": {
+     "base": 100,
+     "enhance": 0,
+     "extra": 0,
+     "total": 100
+    },
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "statr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "str": {
+     "base": 14,
+     "enhance": 0,
+     "extra": 0,
+     "total": 14
+    }
+   }
+  },
+  "subWeapon": {
+   "assetKey": "ITEMd35aufjgoj3s73dogo5g",
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000103012,
+    "label": "Item > Weapon > Secondary Weapon > Fox Marble",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "01",
+     "label": "Weapon"
+    },
+    "tier2": {
+     "code": "03",
+     "label": "Secondary Weapon"
+    },
+    "tier3": {
+     "code": "012",
+     "label": "Fox Marble"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": true,
+    "blockUpgradePotential": false,
+    "blockUpgradeStarforce": true,
+    "desc": "",
+    "enableExtraOption": false,
+    "enablePotential": true,
+    "enableStarforce": false,
+    "isBossReward": false,
+    "isJokerItem": false,
+    "isMintable": true,
+    "isOnly": false,
+    "isOnlyEquip": false,
+    "isSbt": false,
+    "itemId": 1353103,
+    "itemName": "Golden Fox Marble",
+    "maxStarforce": 0,
+    "ridingSkill": 0,
+    "setItemId": 0,
+    "slotMax": 0
+   },
+   "enhance": {
+    "bonusPotential": {
+     "option1": {
+      "code": 42051,
+      "grade": 4,
+      "label": "ATT: +12%"
+     },
+     "option2": {
+      "code": 32051,
+      "grade": 3,
+      "label": "ATT: +9%"
+     },
+     "option3": {
+      "code": 32093,
+      "grade": 3,
+      "label": "INT per 10 Character Levels: +1"
+     }
+    },
+    "extraOption": {
+     "code": "0"
+    },
+    "potential": {
+     "option1": {
+      "code": 40292,
+      "grade": 4,
+      "label": "DEF Ignored: +40%"
+     },
+     "option2": {
+      "code": 30051,
+      "grade": 3,
+      "label": "ATT: +9%"
+     },
+     "option3": {
+      "code": 30602,
+      "grade": 3,
+      "label": "Boss Damage: +30%"
+     }
+    },
+    "starforce": {
+     "enhanced": 0,
+     "maxStarforce": 0,
+     "serialFailCount": 0
+    }
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1353103.png",
+    "sampleImageUrl": ""
+   },
+   "name": "Golden Fox Marble",
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 16,
+     "className": "Pirate",
+     "isJobRestricted": true,
+     "restrictDescription": "Shade only"
+    },
+    "level": 100,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "damr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "dex": {
+     "base": 10,
+     "enhance": 0,
+     "extra": 0,
+     "total": 10
+    },
+    "imdr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "int": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "jump": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "knockback": 0,
+    "levelReduced": 0,
+    "luk": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "mad": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxHp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxHpr": null,
+    "maxMp": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxMpr": null,
+    "pad": {
+     "base": 3,
+     "enhance": 0,
+     "extra": 0,
+     "total": 3
+    },
+    "pdd": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "statr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "str": {
+     "base": 10,
+     "enhance": 0,
+     "extra": 0,
+     "total": 10
+    }
+   }
+  },
+  "weapon": {
+   "assetKey": "ITEMd2a6hutkebic739r4oq0",
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000102009,
+    "label": "Item > Weapon > Two-handed Weapon > Knuckle",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "01",
+     "label": "Weapon"
+    },
+    "tier2": {
+     "code": "02",
+     "label": "Two-handed Weapon"
+    },
+    "tier3": {
+     "code": "009",
+     "label": "Knuckle"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": false,
+    "blockUpgradePotential": false,
+    "blockUpgradeStarforce": false,
+    "desc": "",
+    "enableExtraOption": true,
+    "enablePotential": true,
+    "enableStarforce": true,
+    "isBossReward": true,
+    "isJokerItem": false,
+    "isMintable": true,
+    "isOnly": false,
+    "isOnlyEquip": false,
+    "isSbt": false,
+    "itemId": 1482168,
+    "itemName": "Fafnir Perry Talon",
+    "maxStarforce": 25,
+    "ridingSkill": 0,
+    "setItemId": 251,
+    "slotMax": 0
+   },
+   "enhance": {
+    "bonusPotential": {
+     "option1": {
+      "code": 12006,
+      "grade": 1,
+      "label": "Max MP: +100"
+     },
+     "option2": {
+      "code": 12051,
+      "grade": 1,
+      "label": "ATT: +3%"
+     },
+     "option3": {
+      "code": 2001,
+      "grade": 0,
+      "label": "STR : +6"
+     }
+    },
+    "extraOption": {
+     "code": "216175244034"
+    },
+    "potential": {
+     "option1": {
+      "code": 30602,
+      "grade": 3,
+      "label": "Boss Damage: +30%"
+     },
+     "option2": {
+      "code": 20052,
+      "grade": 2,
+      "label": "Magic ATT: +6%"
+     },
+     "option3": {
+      "code": 20044,
+      "grade": 2,
+      "label": "LUK : +6%"
+     }
+    },
+    "starforce": {
+     "enhanced": 10,
+     "maxStarforce": 25,
+     "serialFailCount": 0
+    }
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1482168.png",
+    "sampleImageUrl": ""
+   },
+   "name": "Fafnir Perry Talon",
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 16,
+     "className": "Pirate",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 150,
+    "luk": 0,
+    "str": 450
+   },
+   "stats": {
+    "attackSpeed": 5,
+    "bdr": {
+     "base": 30,
+     "enhance": 0,
+     "extra": 12,
+     "total": 42
+    },
+    "damr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "dex": {
+     "base": 40,
+     "enhance": 25,
+     "extra": 0,
+     "total": 65
+    },
+    "imdr": {
+     "base": 10,
+     "enhance": 0,
+     "extra": 0,
+     "total": 10
+    },
+    "int": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "jump": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "knockback": 0,
+    "levelReduced": 0,
+    "luk": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 32,
+     "total": 32
+    },
+    "mad": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "maxHp": {
+     "base": 0,
+     "enhance": 130,
+     "extra": 0,
+     "total": 130
+    },
+    "maxHpr": null,
+    "maxMp": {
+     "base": 0,
+     "enhance": 130,
+     "extra": 0,
+     "total": 130
+    },
+    "maxMpr": null,
+    "pad": {
+     "base": 128,
+     "enhance": 32,
+     "extra": 31,
+     "total": 191
+    },
+    "pdd": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 0,
+     "total": 0
+    },
+    "statr": {
+     "base": 0,
+     "enhance": 0,
+     "extra": 4,
+     "total": 4
+    },
+    "str": {
+     "base": 40,
+     "enhance": 25,
+     "extra": 0,
+     "total": 65
+    }
+   }
+  }
+ },
+ "sets": [
+  {
+   "effects": [
+    {
+     "desc": [
+      "MaxHP / MaxMP: +1000",
+      "STR: +20",
+      "DEX: +20"
+     ],
+     "equipCount": 2
+    },
+    {
+     "desc": [
+      "MaxHP / MaxMP: +10%",
+      "Attack Power: +50"
+     ],
+     "equipCount": 3
+    },
+    {
+     "desc": [
+      "Boss Damage: +30%"
+     ],
+     "equipCount": 4
+    }
+   ],
+   "pieces": [
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1003801.png",
+     "itemId": 1003801,
+     "representName": "Royal Wanderer Hat",
+     "subItems": [],
+     "typeName": "(Hat)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1042258.png",
+     "itemId": 1042258,
+     "representName": "Eagle Eye Wanderer Coat",
+     "subItems": [],
+     "typeName": "(Top)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1062169.png",
+     "itemId": 1062169,
+     "representName": "Trixter Wanderer Pants",
+     "subItems": [],
+     "typeName": "(Bottom)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/0.png",
+     "itemId": 0,
+     "representName": "Choose 1 Fafnir Weapon",
+     "subItems": [],
+     "typeName": "(Weapon)"
+    }
+   ],
+   "setId": 251,
+   "setName": "Root Abyss Set (Pirate)",
+   "viewType": "NORMAL"
+  },
+  {
+   "effects": [
+    {
+     "desc": [
+      "All Stats: +5",
+      "ATT & Magic ATT: +2"
+     ],
+     "equipCount": 2
+    },
+    {
+     "desc": [
+      "MaxHP / MaxMP: +5%",
+      "ATT & Magic ATT: +3",
+      "+20% Damage when attacking Von Leon"
+     ],
+     "equipCount": 3
+    }
+   ],
+   "pieces": [
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1113089.png",
+     "itemId": 1113089,
+     "representName": "Ifia's Ring",
+     "subItems": [],
+     "typeName": "(Ring)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1032227.png",
+     "itemId": 1032227,
+     "representName": "Ifia's Earrings",
+     "subItems": [],
+     "typeName": "(Earrings)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1122274.png",
+     "itemId": 1122274,
+     "representName": "Ifia's Necklace",
+     "subItems": [],
+     "typeName": "(Pendant)"
+    }
+   ],
+   "setId": 329,
+   "setName": "Ifia's Treasure Set",
+   "viewType": "NORMAL"
+  },
+  {
+   "effects": [
+    {
+     "desc": [
+      "All Stats: +10",
+      "MaxHP / MaxMP: +5%",
+      "ATT & Magic ATT: +5"
+     ],
+     "equipCount": 3
+    },
+    {
+     "desc": [
+      "All Stats: +10",
+      "MaxHP / MaxMP: +5%",
+      "ATT & Magic ATT: +5"
+     ],
+     "equipCount": 5
+    },
+    {
+     "desc": [
+      "All Stats: +10",
+      "ATT & Magic ATT: +10",
+      "DEF: +80",
+      "DEF Ignored: +10%"
+     ],
+     "equipCount": 7
+    },
+    {
+     "desc": [
+      "All Stats: +15",
+      "ATT & Magic ATT: +10",
+      "DEF: +100",
+      "Boss Damage: +10%"
+     ],
+     "equipCount": 9
+    }
+   ],
+   "pieces": [
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1012478.png",
+     "itemId": 1012478,
+     "representName": "Condensed Power Crystal",
+     "subItems": [],
+     "typeName": "(Face Accessory)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1022231.png",
+     "itemId": 1022231,
+     "representName": "Aquatic Letter Eye Accessory",
+     "subItems": [],
+     "typeName": "(Eye Accessory)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1022232.png",
+     "itemId": 1022232,
+     "representName": "Black Bean Mark",
+     "subItems": [],
+     "typeName": "(Eye Accessory)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1022277.png",
+     "itemId": 1022277,
+     "representName": "Papulatus Mark",
+     "subItems": [],
+     "typeName": "(Eye Accessory)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1032136.png",
+     "itemId": 1032136,
+     "representName": "Will o' the Wisps",
+     "subItems": [],
+     "typeName": "(Earrings)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1032241.png",
+     "itemId": 1032241,
+     "representName": "Dea Sidus Earring",
+     "subItems": [],
+     "typeName": "(Earrings)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1113149.png",
+     "itemId": 1113149,
+     "representName": "Silver Blossom Ring",
+     "subItems": [],
+     "typeName": "(Ring)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1113282.png",
+     "itemId": 1113282,
+     "representName": "Noble Ifia's Ring",
+     "subItems": [],
+     "typeName": "(Ring)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1113313.png",
+     "itemId": 1113313,
+     "representName": "Guardian Angel Ring",
+     "subItems": [],
+     "typeName": "(Ring)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1122000.png",
+     "itemId": 1122000,
+     "representName": "Horntail Necklace",
+     "subItems": [],
+     "typeName": "(Pendant)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1122076.png",
+     "itemId": 1122076,
+     "representName": "Chaos Horntail Necklace",
+     "subItems": [],
+     "typeName": "(Pendant)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1122254.png",
+     "itemId": 1122254,
+     "representName": "Mechanator Pendant",
+     "subItems": [],
+     "typeName": "(Pendant)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1122150.png",
+     "itemId": 1122150,
+     "representName": "Dominator Pendant",
+     "subItems": [],
+     "typeName": "(Pendant)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1132272.png",
+     "itemId": 1132272,
+     "representName": "Golden Clover Belt",
+     "subItems": [],
+     "typeName": "(Belt)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1132296.png",
+     "itemId": 1132296,
+     "representName": "Enraged Zakum Belt",
+     "subItems": [],
+     "typeName": "(Belt)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1152170.png",
+     "itemId": 1152170,
+     "representName": "Royal Black Metal Shoulder",
+     "subItems": [],
+     "typeName": "(Shoulder Accessory)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1182087.png",
+     "itemId": 1182087,
+     "representName": "Crystal Ventus Badge",
+     "subItems": [],
+     "typeName": "(Badge)"
+    }
+   ],
+   "setId": 462,
+   "setName": "Boss Accessory Set",
+   "viewType": "NORMAL"
+  },
+  {
+   "effects": [
+    {
+     "desc": [
+      "MaxHP / MaxMP: +1500",
+      "ATT & Magic ATT: +20",
+      "Boss Damage: +10%"
+     ],
+     "equipCount": 2
+    },
+    {
+     "desc": [
+      "All Stats: +30",
+      "ATT & Magic ATT: +20",
+      "Boss Damage: +10%"
+     ],
+     "equipCount": 3
+    },
+    {
+     "desc": [
+      "ATT & Magic ATT: +25",
+      "DEF: +200",
+      "DEF Ignored: +10%"
+     ],
+     "equipCount": 4
+    },
+    {
+     "desc": [
+      "ATT & Magic ATT: +30",
+      "Boss Damage: +10%"
+     ],
+     "equipCount": 5
+    },
+    {
+     "desc": [
+      "MaxHP / MaxMP: +20%",
+      "ATT & Magic ATT: +20"
+     ],
+     "equipCount": 6
+    },
+    {
+     "desc": [
+      "ATT & Magic ATT: +20",
+      "DEF Ignored: +10%"
+     ],
+     "equipCount": 7
+    }
+   ],
+   "pieces": [
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1004426.png",
+     "itemId": 1004426,
+     "representName": "AbsoLab Pirate Fedora",
+     "subItems": [],
+     "typeName": "(Hat)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1052890.png",
+     "itemId": 1052890,
+     "representName": "AbsoLab Pirate Suit",
+     "subItems": [],
+     "typeName": "(Outfit)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1073035.png",
+     "itemId": 1073035,
+     "representName": "AbsoLab Pirate Shoes",
+     "subItems": [],
+     "typeName": "(Shoes)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1082640.png",
+     "itemId": 1082640,
+     "representName": "AbsoLab Pirate Gloves",
+     "subItems": [],
+     "typeName": "(Gloves)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1102797.png",
+     "itemId": 1102797,
+     "representName": "AbsoLab Pirate Cape",
+     "subItems": [],
+     "typeName": "(Cape)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/1152179.png",
+     "itemId": 1152179,
+     "representName": "AbsoLab Pirate Shoulder",
+     "subItems": [],
+     "typeName": "(Shoulder Accessory)"
+    },
+    {
+     "imageUrl": "https://api-static.msu.io/itemimages/icon/0.png",
+     "itemId": 0,
+     "representName": "Choose 1 AbsoLab Weapon",
+     "subItems": [],
+     "typeName": "(Weapon)"
+    }
+   ],
+   "setId": 508,
+   "setName": "AbsoLab Set (Pirate)",
+   "viewType": "NORMAL"
+  }
+ ],
+ "skills": [
+  {
+   "skillDescription": "[Master Level: 20]\n\nGrants 1 skill level for every 10 levels your highest level character has. Blessing of the Fairy and Empress's Blessing do not stack, so only the strongest skill will be active.",
+   "skillEffectDescription": "Attack Power: +20, Magic ATT: +20",
+   "skillId": 20050012,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/20050012.png",
+   "skillLevel": 20,
+   "skillMasterLevel": 20,
+   "skillName": "Blessing of the Fairy"
+  },
+  {
+   "skillDescription": "[Master Level: 1]\n\nThe blessing of the Fox God increases your Spirit Affinity.",
+   "skillEffectDescription": "Minion Duration +5%",
+   "skillId": 20050074,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/20050074.png",
+   "skillLevel": 1,
+   "skillMasterLevel": 1,
+   "skillName": "Spirit Affinity"
+  },
+  {
+   "skillDescription": "[Master Level: 1]\n\nA powerful force is exerted in accordance with the willpower of the Alliance.",
+   "skillEffectDescription": "Permanently increases STR: +5, DEX: 5, INT: 5, LUK: 5, ATT: 5, Magic ATT: 5",
+   "skillId": 20050190,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/20050190.png",
+   "skillLevel": 1,
+   "skillMasterLevel": 1,
+   "skillName": "Will of the Alliance"
+  },
+  {
+   "skillDescription": "[Master Level: 1]\n\nRecovers HP on successful attacks due to your bond with the spirit. Permanently increases Knockback Resistance and reduces incoming damage.",
+   "skillEffectDescription": "Recover 1% HP on direct skill attacks.\\nKnockback Resistance: 100%, Damage Taken: -30%",
+   "skillId": 20050285,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/20050285.png",
+   "skillLevel": 1,
+   "skillMasterLevel": 1,
+   "skillName": "Spirit Bond 1"
+  },
+  {
+   "skillDescription": "[Master Level: 1]\\nIncreases the Attack Power and Magic ATT of all nearby characters.",
+   "skillEffectDescription": "MP Cost: 30, increases ATT & Magic ATT by 4% for 2400 sec\\nCooldown: 300 sec",
+   "skillId": 20051005,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/20051005.png",
+   "skillLevel": 1,
+   "skillMasterLevel": 0,
+   "skillName": "Hero's Echo"
+  },
+  {
+   "skillDescription": "[Master Level: 1]\n\nTeleports you forward to the farthest enemy in range. When no enemies are around, you'll be teleported forward a set distance.\\n#cYou can teleport while using skills.#",
+   "skillEffectDescription": "MP Cost: 20. Teleports you to the furthest enemy in range.\\nWhen no enemies are around, you'll be teleported forward 300.",
+   "skillId": 20051284,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/20051284.png",
+   "skillLevel": 1,
+   "skillMasterLevel": 1,
+   "skillName": "Fox Trot"
+  },
+  {
+   "skillDescription": "[Master Level: 1]\n\nSummons a guardian spirit through the favor of the Fox God. But can the guardian protect you from an absence dearly felt?\\nCan be toggled #cOn/Off#.",
+   "skillEffectDescription": "MP Cost: 10, summon Shade's Guardian spirit.\\nCooldown: 5 sec",
+   "skillId": 20051288,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/20051288.png",
+   "skillLevel": 1,
+   "skillMasterLevel": 1,
+   "skillName": "Heart Grown Fonder"
+  },
+  {
+   "skillDescription": "[Master Level: 20]\n\nThe blessings of the heavens and earth envelop you, increasing your Defense, Max HP, and Max MP.\\n#cLevel 20 required to learn Harmonious Defense.#",
+   "skillEffectDescription": "DEF +500, Max HP +20%, Max MP +20%",
+   "skillId": 25000105,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25000105.png",
+   "skillLevel": 20,
+   "skillMasterLevel": 20,
+   "skillName": "Cosmic Balance"
+  },
+  {
+   "skillDescription": "[Master Level: 20]\n\nImbued with the power of the spirits, you strike multiple enemies in front.",
+   "skillEffectDescription": "MP Cost: 11, Max Enemies Hit: 4, Damage: 138%, Number of Attacks: 4",
+   "skillId": 25001002,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25001002.png",
+   "skillLevel": 20,
+   "skillMasterLevel": 20,
+   "skillName": "Flash Fist"
+  },
+  {
+   "skillDescription": "[Master Level: 15]\n\nCall on the blessing of the Fox God to increase your Attack Speed for a set duration.\\nPermanently increases your ATT and Damage.\n\n#cCan add Auto Buff Skill#",
+   "skillEffectDescription": "MP Cost: 15, Duration: 200 sec, Attack Speed: +1\\n[Passive Effect: Attack Power: +20, Damage: +10%]",
+   "skillId": 25001007,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25001007.png",
+   "skillLevel": 15,
+   "skillMasterLevel": 15,
+   "skillName": "Fox God's Favor"
+  },
+  {
+   "skillDescription": "[Master Level: 10]\n\nAllows you to double jump.\\nPress the up key at the same time to move upward.",
+   "skillEffectDescription": "MP Cost: 10. Allows you to jump a greater distance.",
+   "skillId": 25001204,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25001204.png",
+   "skillLevel": 10,
+   "skillMasterLevel": 10,
+   "skillName": "Vulpes Leap"
+  },
+  {
+   "skillDescription": "[Master Level: 10]\n\nChannel the power of the Fox God to bolster your aptitude for battle.",
+   "skillEffectDescription": "Damage: +10%, Critical Rate: +15%",
+   "skillId": 25100014,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25100014.png",
+   "skillLevel": 10,
+   "skillMasterLevel": 10,
+   "skillName": "Foxy Courage"
+  },
+  {
+   "skillDescription": "[Master Level: 10]\n\nIncreases Knuckle Mastery and Critical Rate.\\n#cLevel 10 required to learn Advanced Knuckle Mastery.#",
+   "skillEffectDescription": "Knuckle Mastery: +50%, Critical Rate +10%",
+   "skillId": 25100106,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25100106.png",
+   "skillLevel": 10,
+   "skillMasterLevel": 10,
+   "skillName": "Knuckle Mastery"
+  },
+  {
+   "skillDescription": "[Master Level: 4]\n\nDeepens your bond with the spirits, boosting your Attack Speed and Movement Speed permanently.\\nRequired Skills: #cSpirit Bond 1 Lv. 1.#\\n#cLevel 4 required to learn Spirit Bond 3.#",
+   "skillEffectDescription": "Attack Speed +2, Movement Speed +20",
+   "skillId": 25100107,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25100107.png",
+   "skillLevel": 4,
+   "skillMasterLevel": 4,
+   "skillName": "Spirit Bond 2"
+  },
+  {
+   "skillDescription": "[Master Level: 10]\n\nPermanently increases your STR through hard work and training.",
+   "skillEffectDescription": "STR: +60",
+   "skillId": 25100108,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25100108.png",
+   "skillLevel": 10,
+   "skillMasterLevel": 10,
+   "skillName": "Strength Training"
+  },
+  {
+   "skillDescription": "[Master Level: 20]\n\nSummons a nature spirit to attack multiple enemies in front of you.",
+   "skillEffectDescription": "MP Cost: 18, Max Enemies Hit: 6, Damage: 360%, Number of Attacks: 4",
+   "skillId": 25101000,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25101000.png",
+   "skillLevel": 20,
+   "skillMasterLevel": 20,
+   "skillName": "Ground Pound"
+  },
+  {
+   "skillDescription": "[Master Level: 20]\n\nSummon a Blade Imp, which pulls in multiple enemies in front of you in a fierce attack. Some enemies can resist this pull.\\nEnemies hit by the attack are marked with Blade Imp - Trap for a set amount of time.",
+   "skillEffectDescription": "MP Cost: 50, Max Enemies Hit: 8, Damage: 155%, Number of Attacks: 4\\n#cBlade Imp - Trap:# lasts 120 sec, Final Damage increased against marked enemies by 10%",
+   "skillId": 25101004,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25101004.png",
+   "skillLevel": 20,
+   "skillMasterLevel": 20,
+   "skillName": "Blade Imp - Forward Slash"
+  },
+  {
+   "skillDescription": "[Master Level: 10]\n\nGrants a chance to summon Fox Spirits when landing direct skill attacks. The foxes chase down and attack enemies. Unaffected by attack reflection. Targets the boss with the highest HP first.\\nCan be toggled #cOn/Off#\\n#cLevel 10 required to learn Heartfelt Communion.#",
+   "skillEffectDescription": "MP Cost: 15, 40% chance to summon Fox Spirits when landing direct skill attacks.\\n10% summon chance when hitting a boss with Bomb Punch.\\nDamage: 120%, Number of Attacks: 2\\nThe spirits disappear after attacking up to 2 times.",
+   "skillId": 25101009,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25101009.png",
+   "skillLevel": 10,
+   "skillMasterLevel": 10,
+   "skillName": "Fox Spirits"
+  },
+  {
+   "skillDescription": "[Master Level: 1]\n\nSummon a Blade Imp and choose the direction of its attack.\\nPress the arrow keys after using the skill to choose: #cBlade Imp - Forward Slash#, #cBlade Imp - Downward Slash#, or #cBlade Imp - Spin Slash#.",
+   "skillEffectDescription": "MP Cost: 10. Determines Blade Imp's direction.\\nCooldown: 2 sec",
+   "skillId": 25101013,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25101013.png",
+   "skillLevel": 1,
+   "skillMasterLevel": 1,
+   "skillName": "Blade Imp - Command"
+  },
+  {
+   "skillDescription": "[Master Level: 10]\n\nSlide backward quickly.\\nAlso increases Avoidability permanently. \\n#cAble to cast while using other skills.#",
+   "skillEffectDescription": "MP Cost: 10. Moves a certain distance backward. \\n[Passive Effect: Avoidability: +15%]",
+   "skillId": 25101205,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25101205.png",
+   "skillLevel": 10,
+   "skillMasterLevel": 10,
+   "skillName": "Back Step"
+  },
+  {
+   "skillDescription": "[Master Level: 9]\n\nIncreases ATT, Damage, and Critical Damage by harmonizing with the Spirit Guardian.",
+   "skillEffectDescription": "Attack Power: +20, Damage: +20%, Critical Damage: +10%",
+   "skillId": 25110015,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25110015.png",
+   "skillLevel": 9,
+   "skillMasterLevel": 9,
+   "skillName": "Total Harmony"
+  },
+  {
+   "skillDescription": "[Master Level: 20]\n\nYour bond with the spirits grows deeper, boosting your Final Damage and Boss Damage.\\nRequired Skill: #cSpirit Bond 2 Lv. 4#\\n#cLevel 20 required to learn Spirit Bond 4.#",
+   "skillEffectDescription": "Final Damage +15%, Boss Damage +20%",
+   "skillId": 25110107,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25110107.png",
+   "skillLevel": 20,
+   "skillMasterLevel": 20,
+   "skillName": "Spirit Bond 3"
+  },
+  {
+   "skillDescription": "[Master Level: 10]\n\nThe spirits flow harmoniously within you, permanently increasing your Defense, Status Resistance, and Elemental Resistance.\\nRequired Skill: #cCosmic Balance Lv. 20 or higher#",
+   "skillEffectDescription": "DEF +1500, Abnormal Status Resistance +40, All Elemental Resistance +40%",
+   "skillId": 25110108,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25110108.png",
+   "skillLevel": 10,
+   "skillMasterLevel": 10,
+   "skillName": "Harmonious Defense"
+  },
+  {
+   "skillDescription": "[Master Level: 20]\n\nEnlists the aid of enervating spirits to ignore a portion of the enemy's defense. The spirits also have a chance to possess and weaken enemies.",
+   "skillEffectDescription": "DEF Ignored: +20%\\n10% chance for an enervating spirit to possess enemies hit by attacks for 30 seconds.\\nDamage increases by 20% when attacking an enemy possessed by an enervating spirit.",
+   "skillId": 25110210,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25110210.png",
+   "skillLevel": 20,
+   "skillMasterLevel": 20,
+   "skillName": "Weaken"
+  },
+  {
+   "skillDescription": "[Master Level: 20]\n\nSummons a nature spirit to attack multiple enemies in front of you.\\nCan be used 2 times in a row.",
+   "skillEffectDescription": "MP Cost: 20 per hit \\n#cHit 1# - Max Enemies Hit: 6, Damage: 350%, Number of Attacks: 4\\n#cHit 2# - Max Enemies Hit: 8, Damage: 396%, Number of Attacks: 4",
+   "skillId": 25111000,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25111000.png",
+   "skillLevel": 20,
+   "skillMasterLevel": 20,
+   "skillName": "Shockwave Punch"
+  },
+  {
+   "skillDescription": "[Master Level: 20]\n\nOpens a path to the spirit world, creating a wall of frenzied spirits.\\nThe spirits absorb the souls of enemies they defeat, increasing the duration of Spirit Frenzy. Unaffected by attack reflection.\\n#cLevel 20 required to learn Heartfelt Communion.#",
+   "skillEffectDescription": "MP Cost: 30. Summons Spirit Frenzy for 60 sec and periodically deals damage.\\nMax Enemies Hit: 10, Damage: 210%, Number of Attacks: 6\\nDuration increases by 1 sec for every enemy defeated with Spirit Frenzy, up to a maximum increase of 15 sec.\\nCooldown: 10 sec",
+   "skillId": 25111005,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25111005.png",
+   "skillLevel": 20,
+   "skillMasterLevel": 20,
+   "skillName": "Spirit Frenzy"
+  },
+  {
+   "skillDescription": "[Master Level: 15]\n\nCalls upon binding spirits to immobilize enemies caught in their trap. Enemies who are already stunned will not be affected.\\nAffected enemies cannot be stunned again by Spirit Trap or other skills for 90 seconds.",
+   "skillEffectDescription": "MP Cost: 65. Creates a trap that lasts for 10 sec and regularly deals damage.\\nMax Enemies Hit: 15, Damage: 700%, Number of Attacks: 3\\nAttacked enemies are stunned.\\nStun Duration: +100%, depending on damage inflicted with Spirit Trap.\\nCooldown: 120 sec.",
+   "skillId": 25111206,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25111206.png",
+   "skillLevel": 15,
+   "skillMasterLevel": 15,
+   "skillName": "Spirit Trap"
+  },
+  {
+   "skillDescription": "[Master Level: 10]\n\nYour guardian spirit intercedes when you would fall in battle, knocking back enemies and making you temporarily invincible.\\nCan be resisted by some enemies.\\nCooldown applies when the guardian spirit is summoned and is not affected by Cooldown reset.\\nCan be toggled #cOn/Off.#",
+   "skillEffectDescription": "MP Cost: 150. When hit by an attack that would prove fatal, consumes the buff to deal 450% damage up to 15 enemies 4 times and makes you invincible for 3 sec.\\nCooldown: 1800 sec",
+   "skillId": 25111209,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25111209.png",
+   "skillLevel": 10,
+   "skillMasterLevel": 10,
+   "skillName": "Summon Other Spirit"
+  },
+  {
+   "skillDescription": "[Master Level: 20]\n\nAttunes your heart to the spirit world, deepening your communion.\\nSpirits of greater power begin heeding your call, enhancing Fox Spirits and Spirit Frenzy. \\nRequired Skills: #cSpirit Frenzy Lv. 20#, #cFox Spirits Lv. 10",
+   "skillEffectDescription": "Increases Spirit Frenzy attack range, dealing damage periodically. Max Enemies Hit: 10, Damage: 360%, Number of Attacks: 8\\nFox Spirits Damage: +75%, Max Number of Attacks: +1",
+   "skillId": 25120110,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25120110.png",
+   "skillLevel": 20,
+   "skillMasterLevel": 20,
+   "skillName": "Heartfelt Communion"
+  },
+  {
+   "skillDescription": "[Master Level: 30]\n\nYour bond with the spirits grows deeper, boosting your Ignore Defense and Boss Damage.\\nRequired Skill: #cSpirit Bond 3 Lv. 20#",
+   "skillEffectDescription": "DEF Ignored +30%, Boss Damage +30%",
+   "skillId": 25120112,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25120112.png",
+   "skillLevel": 30,
+   "skillMasterLevel": 30,
+   "skillName": "Spirit Bond 4"
+  },
+  {
+   "skillDescription": "[Master Level: 30]\n\nUses the power of spirits to maximize your Knuckle Mastery.\\nFinal Damage also increases permanently.\\nRequired Skill: #cKnuckle Mastery Lv. 10#",
+   "skillEffectDescription": "Knuckle Mastery: +70%, Final Damage: +16%",
+   "skillId": 25120113,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25120113.png",
+   "skillLevel": 30,
+   "skillMasterLevel": 30,
+   "skillName": "Advanced Knuckle Mastery"
+  },
+  {
+   "skillDescription": "[Master Level: 30]\n\nAnalyzes enemy weaknesses and increases Critical Rate, Critical Damage, and Final Damage.",
+   "skillEffectDescription": "Critical Rate +10%, Critical Damage +18%, Final Damage +10% ",
+   "skillId": 25120214,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25120214.png",
+   "skillLevel": 30,
+   "skillMasterLevel": 30,
+   "skillName": "Critical Insight"
+  },
+  {
+   "skillDescription": "[Master Level: 30]\n\nSummons a nature spirit to attack multiple enemies in front of you.\\nCan be used 3 times in a row.",
+   "skillEffectDescription": "MP Cost: 20 per hit \\n#cHit 1# - Max Enemies Hit: 8, Damage: 225%, Number of Attacks: 4\\n#cHit 2# - Max Enemies Hit: 8, Damage: 225%, Number of Attacks: 4\\n#cHit 3# - Max Enemies Hit: 8, Damage: 225%, Number of Attacks: 4, Stun Chance: 100%, Stun Duration: 2 sec\\nAll attacks increase Damage Against Normal Enemies by 192%",
+   "skillId": 25121000,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25121000.png",
+   "skillLevel": 30,
+   "skillMasterLevel": 30,
+   "skillName": "Bomb Punch"
+  },
+  {
+   "skillDescription": "[Master Level: 30]\n\nSummons a wind spirit to claw at multiple enemies.",
+   "skillEffectDescription": "MP Cost: 80, Damage: 265%, Number of Attacks: 12, Max Enemies Hit: 3",
+   "skillId": 25121005,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25121005.png",
+   "skillLevel": 30,
+   "skillMasterLevel": 30,
+   "skillName": "Spirit Claw"
+  },
+  {
+   "skillDescription": "[Master Level: 20]\n\nSummons a grim spirit to attack enemies in front of you. Attacked enemies receive Death Marks.\\nDeath Marks deal damage to enemies over time, and you'll absorb a portion of the mark damage as HP.\\nDeath Mark is not affected by attack reflection.",
+   "skillEffectDescription": "MP Cost: 100, Max Enemies Hit: 10, Damage: 600%, Number of Critical Hits: 8\\n#cDeath Mark#: Damage Over Time: 250% damage every 1 sec for 15 sec\\nHP Absorb Amount: 1% of damage dealt \\nCooldown: 60 sec",
+   "skillId": 25121006,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25121006.png",
+   "skillLevel": 20,
+   "skillMasterLevel": 20,
+   "skillName": "Death Mark"
+  },
+  {
+   "skillDescription": "[Master Level: 20]\n\nSummons a fire spirit to split the enemy's soul from their body and siphon away their power. Targets the boss with the highest HP first when attacking multiple enemies and creates a spirit flame that burns the souls of enemies.\\nEnemies hit by Soul Splitter are afflicted by a debuff that drains their power, while Shade and party members who are inside the spirit flame are granted the Fire Spirit's Blessing.\\nThe Fire Spirit's Blessing increases Final Damage when attacking an enemy afflicted with the Soul Splitter debuff. Party members who receive the blessing cannot receive it again for a set duration.\\nStationary enemies cannot have their souls split, instead granting Fire Spirit's Blessing to Shade and party members within the same map. If a party member is unable to receive the blessing, they can obtain it again inside the spirit flame. Blessings granted to party members do not apply beyond the duration of the spirit flame.\\nEnemies affected by Soul Splitter cannot have their soul split again for 40 seconds.",
+   "skillEffectDescription": "MP Cost: 100, Max Enemies Hit: 6, Damage: 720%, Number of Attacks: 10\\nWhen an attack lands, the enemy's soul is split for 30 sec, they are afflicted with a debuff, and a spirit flame is created for 10 sec at the enemy's location. The flame's duration can increase up to 100% depending on the damage dealt with Soul Splitter.\\nGrants the Fire Spirit's Blessing for 30 sec upon landing an attack.\\nParty members inside the spirit flame obtain the Fire Spirit's Blessing for 10 sec, and are unable to receive the blessing again for 110 sec.\\nThe Fire Spirit's Blessing increases Final Damage by 20% when attacking an enemy afflicted with the Soul Splitter debuff.\\nEXP increases by 100% when defeating an enemy afflicted with the Soul Splitter debuff.\\nCooldown: 60 sec",
+   "skillId": 25121007,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25121007.png",
+   "skillLevel": 20,
+   "skillMasterLevel": 20,
+   "skillName": "Soul Splitter"
+  },
+  {
+   "skillDescription": "[Master Level: 30]\n\nTemporarily increases the stats of all party members. Doesn't stack with Maple Warrior, Call of Cygnus, Nova Warrior, Hero of the Flora, President's Orders, Anima Warrior, and Rhinne's Protection.\n\n#cCan add Auto Buff Skill#",
+   "skillEffectDescription": "MP Cost: 70, Increases all stats assigned APs by 15% for 900 sec",
+   "skillId": 25121108,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25121108.png",
+   "skillLevel": 30,
+   "skillMasterLevel": 30,
+   "skillName": "Maple Warrior"
+  },
+  {
+   "skillDescription": "[Master Level: 10]\n\nCalls upon guardian spirits to neutralize enemy magic and protect you from harm. Spirit Ward's passive effect is not affected by cooldown resets.",
+   "skillEffectDescription": "MP Cost: 55. Summons 3 guardian spirits for 30 seconds and creates a barrier.\\nConsumes 1 guardian spirit to nullify a debuff.\\nCooldown: 60 sec\\n[Passive Effect: Activates Spirit Ward again when there are fewer than the maximum number of guardian spirits, Cooldown: 100 sec]",
+   "skillId": 25121209,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25121209.png",
+   "skillLevel": 10,
+   "skillMasterLevel": 10,
+   "skillName": "Spirit Ward"
+  },
+  {
+   "skillDescription": "[Master Level: 5]\n\nHones your resolve to ignore certain abnormal status effects. Immune to most abnormal status effects for 3 sec after use. Certain abnormal status effects will still get through, and Combat Orders do not apply.",
+   "skillEffectDescription": "MP Cost: 30, Cooldown: 300 sec",
+   "skillId": 25121211,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25121211.png",
+   "skillLevel": 5,
+   "skillMasterLevel": 5,
+   "skillName": "Hero's Will"
+  },
+  {
+   "skillDescription": "[Master Level: 25]\n\nAllows you to locate an enemy's weak spot to inflict lethal damage against them. Does not stack with Sharp Eyes.\n\n#cCan add Auto Buff Skill#",
+   "skillEffectDescription": "HP Cost: 5% of Max HP, Duration: 183 sec, Critical Rate: +10%, Critical Damage: +8%\\nCooldown: 180 sec\\n#c[Passive Effect - All Stats: +1]#",
+   "skillId": 400001002,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/400001002.png",
+   "skillLevel": 1,
+   "skillMasterLevel": 25,
+   "skillName": "Decent Sharp Eyes"
+  },
+  {
+   "skillDescription": "[Master Level: 25]\n\nTemporarily increases all of your skill levels. #cOnly 4th Job Skills can be increased beyond master level# while other skills can only be increased to master level. \\n#cExceptions:# Some special skills, Beginner Skills, Combat Orders, Decent Combat Orders, Hyper Skills, and 5th Job Skills cannot be increased.\\nDoes not stack with Combat Orders.\n\n#cCan add Auto Buff Skill#",
+   "skillEffectDescription": "HP Cost: 5% of Max HP, Duration: 183 sec, All Skills: +1\\nCooldown: 180 sec\\n#c[Passive Effect - Abnormal Status Resistance: +1]#",
+   "skillId": 400001004,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/400001004.png",
+   "skillLevel": 1,
+   "skillMasterLevel": 25,
+   "skillName": "Decent Combat Orders"
+  },
+  {
+   "skillDescription": "[Master Level: 50]\n\nBoosts Fox Spirits/Fox Spirits Orb.\\n\\n#cLv. 20 - Critical Rate: +5%\\nLv. 40 - Monster DEF Ignored: +20%#",
+   "skillEffectDescription": "Fox Spirits/Fox Spirits Orb Final Damage: +100%",
+   "skillId": 400004312,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/400004312.png",
+   "skillLevel": 50,
+   "skillMasterLevel": 50,
+   "skillName": "Fox Spirits Boost"
+  },
+  {
+   "skillDescription": "[Master Level: 50]\n\nBoosts Spirit Frenzy.\\n\\n#cLv. 20 - Max Targets: +1\\nLv. 40 - Monster DEF Ignored: +20%#",
+   "skillEffectDescription": "Spirit Frenzy Final Damage: +150%",
+   "skillId": 400004315,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/400004315.png",
+   "skillLevel": 50,
+   "skillMasterLevel": 50,
+   "skillName": "Spirit Frenzy Boost"
+  },
+  {
+   "skillDescription": "[Master Level: 50]\n\nBoosts Spirit Claw.\\n\\n#cLv. 20 - Max Targets: +1\\nLv.40 - Monster DEF Ignored: +20%#",
+   "skillEffectDescription": "Spirit Claw Final Damage: +100%",
+   "skillId": 400004319,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/400004319.png",
+   "skillLevel": 50,
+   "skillMasterLevel": 50,
+   "skillName": "Spirit Claw Boost"
+  },
+  {
+   "skillDescription": "[Master Level: 25]\n\nThe next time you use Roll of the Dice, you get to throw an extra die and choose your desired number (via the number keys). Jobs without Roll of the Dice will be allowed to use the Roll of the Dice skill and choose their desired number.",
+   "skillEffectDescription": "HP Cost: 1000, select your desired die roll.\\nIf a job that has Double Down gets the same number on 2 dice, the chance for the last die to have the same number is decreased by 50%.\\nCooldown: 10 Sec.\\n[Passive Effect: Attack Power: +19]",
+   "skillId": 400051000,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/400051000.png",
+   "skillLevel": 9,
+   "skillMasterLevel": 25,
+   "skillName": "Loaded Dice"
+  },
+  {
+   "skillDescription": "[Master Level: 25]\n\nTest your luck! Roll dice to get a random Buff. Roll a 1 and you get nothing, but Roll of the Dice's cooldown will be reduced by 50%.",
+   "skillEffectDescription": "HP Cost: 300, Buff Duration: 180 sec\\n#cCooldown: 180 sec#",
+   "skillId": 400051001,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/400051001.png",
+   "skillLevel": 9,
+   "skillMasterLevel": 25,
+   "skillName": "Roll of the Dice"
+  },
+  {
+   "skillDescription": "[Master Level: 25]\n\nIncarnates an Avatar of the Fox God, vanquishing darkness with divine light.\\nBlessed by the Fox God, Shade's skill cooldowns reset, excluding skills that are not affected by cooldown reset effects.\\nThe Avatar of the Fox God enhances Shade's blessing for a set duration, and Foxlight shines down to scour enemies hit by Shade's attacks. Foxlights are not affected by attack reflection.",
+   "skillEffectDescription": "MP Cost: 1000\\nThe Avatar of the Fox God incarnates, releasing 4 shockwaves which deal 294% damage to up to 15 enemies 7 times.\\nIncreases Final Damage by 17% for 30 seconds, recovers 100% of max HP every 1 seconds\\nFoxlights activate regularly for 4 seconds while the buff lasts.\\nOnce every 1 seconds, landing an attack will increase the Foxlight activation time by 4 seconds. Foxlights won't activate once their duration expires, even if the buff is ongoing.\\n#cFoxlight#: Max Enemies Hit: 15, Damage: 343%, Number of Attacks: 10\\nCan be activated up to 60 times\\nCooldown: 120 sec",
+   "skillId": 400051010,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/400051010.png",
+   "skillLevel": 24,
+   "skillMasterLevel": 25,
+   "skillName": "Fox God Flash"
+  },
+  {
+   "skillDescription": "[Master Level: 25]\n\nThrows open a gate to the spirit world with an explosion of energy, followed by Spirits of Darkness that spill out and attack your foes.\\nSpiritgate is not affected by attack reflection, and the Spirits of Darkness target the boss with the highest HP within range first.",
+   "skillEffectDescription": "MP Cost: 1000\\nOpens the Spiritgate. Max Enemies Hit: 15, Damage: 250%, Number of Attacks: 10, Energy Explosion Count: 5. Enemies hit by the energy are afflicted by a debuff for 45 seconds.\\nAttacking an enemy afflicted with the debuff increases Critical Rate by 80% and Critical Damage by 10%.\\nAfterwards, 30 Spirits of Darkness appear to pursue and attack enemies.\\n#cSpirit of Darkness#: Damage: 850%, Number of Attacks: 5\\nCooldown: 70 sec",
+   "skillId": 400051022,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/400051022.png",
+   "skillLevel": 25,
+   "skillMasterLevel": 25,
+   "skillName": "Spiritgate"
+  },
+  {
+   "skillDescription": "[Master Level: 25]\n\nThrough unity, the wind spirit takes its true form.\\nRequired Skill: #cSpirit Claw Lv. 30#",
+   "skillEffectDescription": "MP Cost: 80, Max Enemies Hit: 10, Damage: 752%, Number of Attacks: 12\\nIgnore Defense: +50%, activates when Spirit Claw is used\\nCooldown: 6 sec",
+   "skillId": 400051043,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/400051043.png",
+   "skillLevel": 22,
+   "skillMasterLevel": 25,
+   "skillName": "True Spirit Claw"
+  },
+  {
+   "skillDescription": "[Master Level: 25]\n\nIncarnate the Fox God's wrath to deliver divine fury unto your foes.\\nRequired Skill: #cHeartfelt Communion Lv. 20#",
+   "skillEffectDescription": "MP Cost: 60 per attack. Can hold key down for up to 1.8 seconds.\\nPeriodically attack up to 10 enemies for 420% damage 10 times.\\nMake 14 shockwave attacks when the key is released,\\ndealing 588% damage to up to 10 enemies 8 times.\\nDuring Smashing Multipunch, any attacks that inflict damage proportional to Max HP suffer a -50% damage penalty. \\nFox Spirits have a 50% chance to appear upon each hit.\\nCooldown: 60 sec",
+   "skillId": 400051078,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/400051078.png",
+   "skillLevel": 17,
+   "skillMasterLevel": 25,
+   "skillName": "Smashing Multipunch"
+  },
+  {
+   "skillDescription": "[Master Level: 1]\n\nIncreases Spirit Claw's damage.",
+   "skillEffectDescription": "Damage: +20%",
+   "skillId": 25120146,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25120146.png",
+   "skillLevel": 1,
+   "skillMasterLevel": 1,
+   "skillName": "Spirit Claw - Reinforce"
+  },
+  {
+   "skillDescription": "[Master Level: 1]\n\nIncreases damage when attacking Boss Monsters with Spirit Claw.",
+   "skillEffectDescription": "Boss Damage: +20%",
+   "skillId": 25120147,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25120147.png",
+   "skillLevel": 1,
+   "skillMasterLevel": 1,
+   "skillName": "Spirit Claw - Boss Rush"
+  },
+  {
+   "skillDescription": "[Master Level: 1]\n\nIncreases Spirit Claw's attack count.",
+   "skillEffectDescription": "Number of Attacks: +1",
+   "skillId": 25120148,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25120148.png",
+   "skillLevel": 1,
+   "skillMasterLevel": 1,
+   "skillName": "Spirit Claw - Extra Strike"
+  },
+  {
+   "skillDescription": "[Master Level: 1]\n\nIncreases the attack repeat count of Fox Spirits and Fox Spirits Orb.",
+   "skillEffectDescription": "Repeated Attack Count: +1",
+   "skillId": 25120153,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25120153.png",
+   "skillLevel": 1,
+   "skillMasterLevel": 1,
+   "skillName": "Fox Spirits - Repeated Attack Bonus"
+  },
+  {
+   "skillDescription": "[Master Level: 1]\n\nIncreases the chance of summoning Fox Spirits and Fox Spirits Orb.",
+   "skillEffectDescription": "Summon Chance: +10%",
+   "skillId": 25120154,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25120154.png",
+   "skillLevel": 1,
+   "skillMasterLevel": 1,
+   "skillName": "Fox Spirits - Summon Chance"
+  },
+  {
+   "skillDescription": "[Master Level: 1]\n\nTransforms you into an incarnated spirit that attacks all nearby enemies ruthlessly.\\nYou become invincible during transformation.",
+   "skillEffectDescription": "MP Cost per attack: 50, Can hold key down for up to 8 sec, invincible during casting\\nMax Enemies Hit: 15, Damage: 100%, Number of Attacks: 7\\nReduces Cooldown by 5 seconds for every 1 seconds of remaining key hold-down time when the skill ends.\\nCooldown: 120 sec",
+   "skillId": 25121030,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25121030.png",
+   "skillLevel": 1,
+   "skillMasterLevel": 1,
+   "skillName": "Spirit Incarnation"
+  },
+  {
+   "skillDescription": "[Master Level: 1]\n\nUnlocks the Fox Marble's true potential as a conduit for the Fox God's power.\\nThe empowered Fox Marble enhances Fox Spirits to Fox Spirits Orb for a set duration, and also automatically summons the guardian spirit to create a Spirit Ward.",
+   "skillEffectDescription": "MP Cost: 200\\n25% chance to summon 3 Fox Spirits Orbs when landing direct skill attacks for 30 seconds.\\n5% summon chance when hitting a boss with Bomb Punch.\\nSpirit Ward will be automatically activated again one time\\nif there are fewer than the maximum number of guardian spirits.\\n\\n#cFox Spirits Orb#: Damage: 110%, Number of Attacks: 2, Disappears after a maximum of 3 attacks\\nFinal Damage reduces by 20% when attacking the same enemy multiple times\\nCooldown: 120 sec",
+   "skillId": 25121131,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25121131.png",
+   "skillLevel": 1,
+   "skillMasterLevel": 1,
+   "skillName": "Fox Marble Fusion"
+  },
+  {
+   "skillDescription": "[Master Level: 1]\n\nRecalls the oath of the Maple Heroes to increase damage.\n\n#cCan add Auto Buff Skill#",
+   "skillEffectDescription": "MP Cost: 100, Duration: 60 sec., Damage: +10%\\nApplies to any Hero class in the party\\nCooldown: 120 sec.",
+   "skillId": 25121132,
+   "skillImageUrl": "https://api-static.msu.io/skillimages/icon/25121132.png",
+   "skillLevel": 1,
+   "skillMasterLevel": 1,
+   "skillName": "Heroic Memories"
+  }
+ ],
+ "metadata": {
+  "medal": {
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000202011,
+    "label": "Item > Armor > Accessory > Medal",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "02",
+     "label": "Accessory"
+    },
+    "tier3": {
+     "code": "011",
+     "label": "Medal"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": false,
+    "blockUpgradePotential": false,
+    "blockUpgradeStarforce": false,
+    "desc": "A medal awarded for defeating #cChaos Vellum#.",
+    "enableExtraOption": false,
+    "enablePotential": false,
+    "enableStarforce": false,
+    "isBossReward": false,
+    "isJokerItem": false,
+    "isMintable": false,
+    "isOnly": true,
+    "isOnlyEquip": false,
+    "isSbt": false,
+    "itemId": 1142905,
+    "itemName": "Chaos Vellum Crusher",
+    "maxStarforce": 0,
+    "ridingSkill": 0,
+    "setItemId": 0,
+    "slotMax": 0
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1142905.png",
+    "sampleImageUrl": ""
+   },
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 0,
+     "className": "Beginner",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 0,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": 5,
+    "damr": 0,
+    "dex": 0,
+    "imdr": 0,
+    "int": 0,
+    "jump": 0,
+    "knockback": 0,
+    "luk": 0,
+    "mad": 0,
+    "maxHp": 0,
+    "maxHpr": 0,
+    "maxMp": 0,
+    "maxMpr": 0,
+    "pad": 0,
+    "pdd": 0,
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": 0,
+    "statr": 0,
+    "str": 0
+   }
+  },
+  "ring4": {
+   "beauty": null,
+   "category": {
+    "categoryNo": 1000202004,
+    "label": "Item > Armor > Accessory > Ring",
+    "tier0": {
+     "code": "100",
+     "label": "Item"
+    },
+    "tier1": {
+     "code": "02",
+     "label": "Armor"
+    },
+    "tier2": {
+     "code": "02",
+     "label": "Accessory"
+    },
+    "tier3": {
+     "code": "004",
+     "label": "Ring"
+    }
+   },
+   "common": {
+    "blockUpgradeExtraOption": true,
+    "blockUpgradePotential": true,
+    "blockUpgradeStarforce": true,
+    "desc": "",
+    "enableExtraOption": false,
+    "enablePotential": false,
+    "enableStarforce": false,
+    "isBossReward": false,
+    "isJokerItem": false,
+    "isMintable": false,
+    "isOnly": true,
+    "isOnlyEquip": false,
+    "isSbt": false,
+    "itemId": 1113069,
+    "itemName": "Pivotal Adventure Ring",
+    "maxStarforce": 0,
+    "ridingSkill": 0,
+    "setItemId": 0,
+    "slotMax": 0
+   },
+   "image": {
+    "hasSampleImage": false,
+    "iconImageUrl": "https://api-static.msu.io/itemimages/icon/1113069.png",
+    "sampleImageUrl": ""
+   },
+   "pet": null,
+   "required": {
+    "dex": 0,
+    "int": 0,
+    "job": {
+     "classCode": 0,
+     "className": "Beginner",
+     "isJobRestricted": false,
+     "restrictDescription": ""
+    },
+    "level": 130,
+    "luk": 0,
+    "str": 0
+   },
+   "stats": {
+    "attackSpeed": -1,
+    "bdr": 0,
+    "damr": 0,
+    "dex": 3,
+    "imdr": 0,
+    "int": 3,
+    "jump": 0,
+    "knockback": 0,
+    "luk": 3,
+    "mad": 3,
+    "maxHp": 300,
+    "maxHpr": 0,
+    "maxMp": 300,
+    "maxMpr": 0,
+    "pad": 3,
+    "pdd": 0,
+    "recoveryHp": 0,
+    "recoveryMp": 0,
+    "speed": 0,
+    "statr": 0,
+    "str": 3
+   }
+  }
+ }
+}

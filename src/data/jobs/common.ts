@@ -12,6 +12,8 @@ export const COMMON_PASSIVES: SkillRef[] = [
   { name: "Will of the Alliance", pick: ["STR", "DEX", "INT", "LUK", "ATT", "MATT"] },
   // 5th job common skill: "[Passive Effect - All Stats: +8]"
   { name: "Rope Lift", pick: ["STR", "DEX", "INT", "LUK"] },
+  // "[Passive Effect - All Stats: +1]"
+  { name: "Decent Sharp Eyes", pick: ["STR", "DEX", "INT", "LUK"], passiveOnly: true },
 ];
 
 export const COMMON_BUFFS: BuffDef[] = [
@@ -30,7 +32,7 @@ export const COMMON_BUFFS: BuffDef[] = [
       { stat: "IED%", value: 15 },
       { stat: "CRIT%", value: 15 },
     ],
-    description: "공/마 +10, 올스탯 +20, 보스 데미지 +15%, 방어율 무시 +15%, 크리티컬 확률 +15%, 버프 지속시간 +25%",
+    note: "버프 지속시간 +25%",
     defaultOn: true,
   },
   {

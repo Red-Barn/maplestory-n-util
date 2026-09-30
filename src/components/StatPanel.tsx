@@ -8,6 +8,7 @@ import { MISC_ITEMS, TITLES } from "@/data/miscItems";
 import { load, pushRecent, save } from "@/lib/client/storage";
 import {
   apStatToFinal,
+  choicesForJob,
   collectCharacter,
   collectChoices,
   collectCollectionSet,
@@ -17,7 +18,9 @@ import {
   computeStats,
   defaultPresetInput,
   formatEffect,
+  isRelevant,
   mergeEffects,
+  presetsForJob,
   sumStats,
   MAIN_STATS,
   defaultChoiceInput,
@@ -210,6 +213,12 @@ const TAB_KEY = "msn:stat-input-tab";
 
 const ALL_CHOICES = [...LINK_SKILLS, ...COLLECTION, ...TITLES];
 
+/** Buff effects the job uses, plus the buff's note. */
+const describeBuff = (b: { contributions: StatContribution[]; note?: string }, job: JobData | undefined) =>
+  [...mergeEffects(b.contributions.filter((c) => isRelevant(c.stat, job))).map(formatEffect), b.note]
+    .filter(Boolean)
+    .join(", ");
+
 const countOn = (defs: { id: string }[], input: PresetInput) => defs.filter((d) => input[d.id]?.on ?? true).length;
 const countChosen = (defs: { id: string }[], input: ChoiceInput) => defs.filter((d) => input[d.id]).length;
 const countFilled = (...inputs: Record<string, number | undefined>[]) =>
@@ -238,6 +247,11 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
   const inGame = useMemo(() => apStatToFinal(character.apStat), [character.apStat]);
   const defaults = useMemo(() => Object.fromEntries(base.buffs.map((b) => [b.id, b.defaultOn])), [base.buffs]);
   const ctx: Ctx = { ap: base.ap };
+  // Inputs the character can't use (other jobs' items, stats the job ignores) are left out.
+  const jobName = character.common.job.jobName;
+  const miscDefs = useMemo(() => presetsForJob(MISC_ITEMS, jobName, base.job), [jobName, base.job]);
+  const linkDefs = useMemo(() => choicesForJob(LINK_SKILLS, base.job), [base.job]);
+  const titleDefs = useMemo(() => choicesForJob(TITLES, base.job), [base.job]);
 
   const [buffs, setBuffs] = useState<Record<string, boolean>>(defaults);
   const [union, setUnion] = useState<UnionInput>({});
@@ -286,9 +300,9 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
       ...collectChoices(COLLECTION, choices, "collection"),
       ...collectCollectionSet(collectionSet.ALL),
       ...collectChoices(TITLES, choices, "misc-item"),
-      ...collectPresets(MISC_ITEMS, miscItems, "misc-item"),
+      ...collectPresets(miscDefs, miscItems, "misc-item"),
     ],
-    [base.permanent, union, unionGrid, choices, miscItems, collectionSet],
+    [base.permanent, union, unionGrid, choices, miscItems, collectionSet, miscDefs],
   );
 
   // Default buff set = what the API snapshot includes (season buff on, skill buffs off).
@@ -398,7 +412,7 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
                         items={base.buffs.map((b) => ({
                           id: b.id,
                           name: b.name,
-                          description: b.description ?? mergeEffects(b.contributions).map(formatEffect).join(", "),
+                          description: describeBuff(b, base.job),
                         }))}
                         checked={buffs}
                         onChange={(id, on) => {
@@ -414,11 +428,11 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
               {
                 id: "links",
                 label: "링크",
-                badge: countChosen(LINK_SKILLS, choices),
+                badge: countChosen(linkDefs, choices),
                 content: (
                   <>
                     <Hint>API 스탯에 포함된 링크 스킬입니다. 링크 레벨을 고르세요 (Lv.0 = 미보유).</Hint>
-                    <ChoiceList defs={LINK_SKILLS} values={choices} onChange={setChoice} />
+                    <ChoiceList defs={linkDefs} values={choices} onChange={setChoice} job={base.job} />
                   </>
                 ),
               },
@@ -456,7 +470,7 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
                 content: (
                   <>
                     <Hint>API 스탯에 포함된 도감 효과입니다. 현재 도감 레벨을 고르세요.</Hint>
-                    <ChoiceList defs={COLLECTION} values={choices} onChange={setChoice} />
+                    <ChoiceList defs={COLLECTION} values={choices} onChange={setChoice} job={base.job} />
                     <SubHeading title="세트 효과" hint="도감 세트 효과로 얻은 올스탯 합계를 입력하세요. 스탯%가 적용됩니다." />
                     <FieldList
                       fields={COLLECTION_SET_FIELDS}
@@ -472,20 +486,25 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
               {
                 id: "misc",
                 label: "기타",
-                badge: countChosen(TITLES, choices) + countOn(MISC_ITEMS, miscItems),
+                badge: countChosen(titleDefs, choices) + countOn(miscDefs, miscItems),
                 content: (
                   <>
                     <Hint>API가 불러오지 못하지만 API 스탯에는 포함된 아이템입니다.</Hint>
-                    <ChoiceList defs={TITLES} values={choices} onChange={setChoice} />
-                    <SubHeading title="화살" />
-                    <PresetList
-                      defs={MISC_ITEMS}
-                      values={miscItems}
-                      onChange={(next) => {
-                        setMiscItems(next);
-                        persist({ miscItems: next });
-                      }}
-                    />
+                    <ChoiceList defs={titleDefs} values={choices} onChange={setChoice} job={base.job} />
+                    {miscDefs.length > 0 && (
+                      <>
+                        <SubHeading title="화살" />
+                        <PresetList
+                          defs={miscDefs}
+                          values={miscItems}
+                          onChange={(next) => {
+                            setMiscItems(next);
+                            persist({ miscItems: next });
+                          }}
+                          job={base.job}
+                        />
+                      </>
+                    )}
                   </>
                 ),
               },
