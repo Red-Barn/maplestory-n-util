@@ -398,8 +398,8 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
                 badge: countChosen(LINK_SKILLS, choices),
                 content: (
                   <>
-                    <Hint>API 스탯에 포함된 링크 스킬입니다. 보유한 링크의 레벨을 고르세요.</Hint>
-                    <ChoiceList defs={LINK_SKILLS} values={choices} onChange={setChoice} noneLabel="미보유" />
+                    <Hint>API 스탯에 포함된 링크 스킬입니다. 링크 레벨을 고르세요 (Lv.0 = 미보유).</Hint>
+                    <ChoiceList defs={LINK_SKILLS} values={choices} onChange={setChoice} />
                   </>
                 ),
               },
@@ -436,8 +436,8 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
                 badge: countChosen(COLLECTION, choices),
                 content: (
                   <>
-                    <Hint>API 스탯에 포함된 도감 효과입니다. 현재 도감 단계를 고르세요.</Hint>
-                    <ChoiceList defs={COLLECTION} values={choices} onChange={setChoice} noneLabel="선택 안 함" />
+                    <Hint>API 스탯에 포함된 도감 효과입니다. 현재 도감 레벨을 고르세요.</Hint>
+                    <ChoiceList defs={COLLECTION} values={choices} onChange={setChoice} />
                   </>
                 ),
               },

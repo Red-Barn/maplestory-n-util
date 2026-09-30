@@ -21,6 +21,7 @@ export const TITLES: ChoiceDef[] = [
       { id: "chaos-vellum-crusher", label: "Chaos Vellum Crusher", effects: [{ key: "BOSS%", value: 5 }] },
     ],
     defaultOption: "holy-pink-beanity",
+    noneLabel: "없음",
   },
 ];
 

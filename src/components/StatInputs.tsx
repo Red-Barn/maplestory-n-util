@@ -164,13 +164,13 @@ export function ChoiceList(props: {
   defs: ChoiceDef[];
   values: ChoiceInput;
   onChange: (next: ChoiceInput) => void;
-  /** label of the empty option */
-  noneLabel?: string;
 }) {
   return (
     <ul className="divide-y divide-black/5 dark:divide-white/10">
       {props.defs.map((d) => {
         const option = selectedOption(d, props.values);
+        // level 0 reads as the first level's stats at 0, e.g. "크확 +0%"
+        const shown = option?.effects ?? (d.zeroEffects ? d.options[0]?.effects.map((e) => ({ ...e, value: 0 })) : undefined);
         return (
           <li key={d.id} className="py-1.5">
             <label className="flex items-center justify-between gap-2 text-sm">
@@ -180,7 +180,7 @@ export function ChoiceList(props: {
                 onChange={(e) => props.onChange({ ...props.values, [d.id]: e.target.value })}
                 className="max-w-[60%] rounded border border-black/15 bg-[var(--background)] px-1.5 py-0.5 text-sm focus:border-orange-500 focus:outline-none dark:border-white/20"
               >
-                <option value="">{props.noneLabel ?? "없음"}</option>
+                <option value="">{d.noneLabel}</option>
                 {d.options.map((o) => (
                   <option key={o.id} value={o.id}>
                     {o.label}
@@ -188,7 +188,7 @@ export function ChoiceList(props: {
                 ))}
               </select>
             </label>
-            {option && <p className="mt-0.5 text-right text-[11px] leading-snug text-zinc-500">{describeEffects(option.effects)}</p>}
+            {shown && <p className="mt-0.5 text-right text-[11px] leading-snug text-zinc-500">{describeEffects(shown)}</p>}
           </li>
         );
       })}

@@ -195,6 +195,13 @@ describe("link skills and union grid", () => {
     expect(sumOf(got, "DMG%")).toBe(2);
   });
 
+  test("Lv.0 gives nothing, Lv.6 bowman gives crit rate 10%", () => {
+    const bowman = LINK_SKILLS.filter((d) => d.id === "bowman");
+    expect(collectChoices(bowman, { bowman: "" }, "link")).toEqual([]);
+    expect(statsOf(collectChoices(bowman, { bowman: "6" }, "link"))).toEqual(["CRIT%=10"]);
+    expect(bowman[0].options.map((o) => o.label)).toEqual(["Lv.1", "Lv.2", "Lv.3", "Lv.4", "Lv.5", "Lv.6"]);
+  });
+
   test("other levels, and not owned", () => {
     const input = { ...defaultChoiceInput(LINK_SKILLS), bowman: "", adele: "1", cygnus: "3", pirate: "1" };
     const got = collectChoices(LINK_SKILLS, input, "link");

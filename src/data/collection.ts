@@ -1,4 +1,4 @@
-import { leveledOptions, type ChoiceDef } from "@/lib/stats/collectors/choices";
+import { leveledChoice, type ChoiceDef } from "@/lib/stats/collectors/choices";
 
 // Collection (도감) tiers. The API stat snapshot includes them. Values confirmed in-game by the user.
 // [all stats, ATT/MATT, damage & boss damage & crit damage %, IED & crit rate %]
@@ -19,21 +19,18 @@ const TIERS: [number, number, number, number][] = [
 
 // Flat all stats are treated like equipment flat stats (multiplied by stat %).
 export const COLLECTION: ChoiceDef[] = [
-  {
-    id: "collection",
-    name: "도감",
-    options: leveledOptions(
-      TIERS.map(([all, att, dmg, ied]) => [
-        { key: "ALL", value: all },
-        { key: "ATT_MATT", value: att },
-        { key: "DMG%", value: dmg },
-        { key: "BOSS%", value: dmg },
-        { key: "CDMG%", value: dmg },
-        { key: "IED%", value: ied },
-        { key: "CRIT%", value: ied },
-      ]),
-      (level) => `${level}단계`,
-    ),
-    defaultOption: "",
-  },
+  leveledChoice(
+    "collection",
+    "도감",
+    TIERS.map(([all, att, dmg, ied]) => [
+      { key: "ALL", value: all },
+      { key: "ATT_MATT", value: att },
+      { key: "DMG%", value: dmg },
+      { key: "BOSS%", value: dmg },
+      { key: "CDMG%", value: dmg },
+      { key: "IED%", value: ied },
+      { key: "CRIT%", value: ied },
+    ]),
+    0,
+  ),
 ];
