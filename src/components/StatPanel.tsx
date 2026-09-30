@@ -5,7 +5,8 @@ import type { JobData } from "@/data/jobs";
 import { LINK_SKILLS } from "@/data/links";
 import { COLLECTION } from "@/data/collection";
 import { MISC_ITEMS, TITLES } from "@/data/miscItems";
-import { load, pushRecent, save } from "@/lib/client/storage";
+import { SEASON_BUFF_ID } from "@/data/jobs/common";
+import { load, loadSeasonBuff, pushRecent, save, statPanelKey } from "@/lib/client/storage";
 import {
   apStatToFinal,
   choicesForJob,
@@ -240,12 +241,18 @@ type Saved = {
 
 export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
   const { character } = bundle;
-  const storageKey = `msn:stat-panel:${character.assetKey}`;
+  const storageKey = statPanelKey(character.assetKey);
 
   const base = useMemo(() => collectCharacter(bundle), [bundle]);
   const sections = useMemo(() => buildSections(base.job), [base.job]);
   const inGame = useMemo(() => apStatToFinal(character.apStat), [character.apStat]);
-  const defaults = useMemo(() => Object.fromEntries(base.buffs.map((b) => [b.id, b.defaultOn])), [base.buffs]);
+  // Whether this character uses the season buff (set on the character list); off until it's read.
+  const [season, setSeason] = useState(false);
+  // Buffs the API stat snapshot includes: they start checked and count as "no buff change".
+  const inSnapshot = useMemo(
+    () => Object.fromEntries(base.buffs.map((b) => [b.id, b.id === SEASON_BUFF_ID ? season : b.defaultOn])),
+    [base.buffs, season],
+  );
   const ctx: Ctx = { ap: base.ap };
   // Inputs the character can't use (other jobs' items, stats the job ignores) are left out.
   const jobName = character.common.job.jobName;
@@ -253,7 +260,7 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
   const linkDefs = useMemo(() => choicesForJob(LINK_SKILLS, base.job), [base.job]);
   const titleDefs = useMemo(() => choicesForJob(TITLES, base.job), [base.job]);
 
-  const [buffs, setBuffs] = useState<Record<string, boolean>>(defaults);
+  const [buffs, setBuffs] = useState<Record<string, boolean>>(inSnapshot);
   const [union, setUnion] = useState<UnionInput>({});
   const [unionGrid, setUnionGrid] = useState<UnionGridInput>({});
   const [choices, setChoices] = useState<ChoiceInput>(() => defaultChoiceInput(ALL_CHOICES));
@@ -266,7 +273,12 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
     // restore per-character settings and record this visit (localStorage is client-only)
     const saved = load<Saved>(storageKey, {});
     /* eslint-disable react-hooks/set-state-in-effect */
-    if (saved.buffs) setBuffs({ ...defaults, ...saved.buffs });
+    const usesSeason = loadSeasonBuff(character.assetKey);
+    setSeason(usesSeason);
+    setBuffs({
+      ...Object.fromEntries(base.buffs.map((b) => [b.id, b.id === SEASON_BUFF_ID ? usesSeason : b.defaultOn])),
+      ...saved.buffs,
+    });
     if (saved.union) setUnion(saved.union);
     if (saved.unionGrid) setUnionGrid(saved.unionGrid);
     if (saved.choices) setChoices({ ...defaultChoiceInput(ALL_CHOICES), ...saved.choices });
@@ -281,7 +293,7 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
       level: character.common.level,
       imageUrl: character.image.imageUrl,
     });
-  }, [storageKey, defaults, character]);
+  }, [storageKey, base.buffs, character]);
 
   const persist = (next: Saved) =>
     save(storageKey, { buffs, union, unionGrid, choices, miscItems, collectionSet, ...next } satisfies Saved);
@@ -305,11 +317,11 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
     [base.permanent, union, unionGrid, choices, miscItems, collectionSet, miscDefs],
   );
 
-  // Default buff set = what the API snapshot includes (season buff on, skill buffs off).
-  // "버프 변화" is measured from it.
+  // Default buff set = what the API snapshot includes (the season buff if the character uses it,
+  // skill buffs off). "버프 변화" is measured from it.
   const baseline = useMemo(
-    () => [...known, ...base.buffs.filter((b) => b.defaultOn).flatMap((b) => b.contributions)],
-    [known, base.buffs],
+    () => [...known, ...base.buffs.filter((b) => inSnapshot[b.id]).flatMap((b) => b.contributions)],
+    [known, base.buffs, inSnapshot],
   );
   const active = useMemo(
     () => [...known, ...base.buffs.filter((b) => buffs[b.id]).flatMap((b) => b.contributions)],
@@ -383,7 +395,7 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
           </tbody>
         </table>
         <p className="px-3 py-2 text-xs text-zinc-500">
-          행을 누르면 출처별 내역이 보입니다. 버프 변화 = 기본 버프 상태(시즌 버프만 켬) 대비 변화량. 오차 = 계산값 −
+          행을 누르면 출처별 내역이 보입니다. 버프 변화 = 기본 버프 상태(스킬 버프 끔) 대비 변화량. 오차 = 계산값 −
           인게임 값으로, 버프를 바꾸면 함께 바뀝니다. AP는 레벨 기준 자동 분배로 추정합니다.
         </p>
       </div>
@@ -403,7 +415,12 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
                 badge: base.buffs.filter((b) => buffs[b.id]).length,
                 content: (
                   <>
-                    <Hint>시즌 버프는 API 스탯에 포함되어 기본으로 켜져 있습니다. 스킬 버프는 포함되지 않으므로 체크하면 더해집니다.</Hint>
+                    <Hint>
+                      {season
+                        ? "시즌 버프 사용 중인 캐릭터로 설정되어 기본으로 켜져 있습니다."
+                        : "시즌 버프를 사용하지 않는 캐릭터로 설정되어 있습니다."}{" "}
+                      사용 여부는 캐릭터 목록에서 바꿉니다. 스킬 버프는 API 스탯에 포함되지 않으므로 체크하면 더해집니다.
+                    </Hint>
                     {base.buffs.length === 0 ? (
                       <p className="text-xs text-zinc-500">
                         {base.job ? "배운 버프 스킬이 없습니다." : `${character.common.job.jobName} 직업 데이터가 아직 없습니다.`}

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { jobName } from "@/data/jobNames";
-import { load, loadRecent, save, type RecentCharacter } from "@/lib/client/storage";
+import { load, loadRecent, loadSeasonBuff, save, saveSeasonBuff, type RecentCharacter } from "@/lib/client/storage";
 import type { AccountCharacter } from "@/types/msu";
 
 const WALLET_RE = /^0x[0-9a-fA-F]{40}$/;
@@ -93,7 +93,8 @@ export default function CharacterSearch() {
 
       {results && (
         <section>
-          <h2 className="mb-3 text-sm font-semibold text-zinc-500">캐릭터 {results.length}명</h2>
+          <h2 className="mb-1 text-sm font-semibold text-zinc-500">캐릭터 {results.length}명</h2>
+          <SeasonBuffHint />
           {results.length === 0 ? (
             <p className="text-sm text-zinc-500">해당 지갑에 캐릭터가 없습니다.</p>
           ) : (
@@ -117,7 +118,8 @@ export default function CharacterSearch() {
 
       {recent.length > 0 && (
         <section>
-          <h2 className="mb-3 text-sm font-semibold text-zinc-500">최근 조회</h2>
+          <h2 className="mb-1 text-sm font-semibold text-zinc-500">최근 조회</h2>
+          <SeasonBuffHint />
           <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
             {recent.map((c) => (
               <li key={c.assetKey}>
@@ -131,22 +133,49 @@ export default function CharacterSearch() {
   );
 }
 
-function CharacterCard(props: { assetKey: string; name: string; imageUrl: string; level: number; sub?: string; power?: number }) {
+function SeasonBuffHint() {
   return (
-    <Link
-      href={`/character/${props.assetKey}`}
-      className="flex items-center gap-3 rounded-lg border border-black/10 p-3 hover:border-orange-500 dark:border-white/15"
-    >
-      {/* eslint-disable-next-line @next/next/no-img-element -- external character renders, no optimisation needed */}
-      <img src={props.imageUrl} alt="" className="h-16 w-16 object-contain" />
-      <div className="min-w-0">
-        <p className="truncate font-medium">{props.name}</p>
-        <p className="text-xs text-zinc-500">
-          Lv.{props.level}
-          {props.sub && ` · ${props.sub}`}
-        </p>
-        {props.power !== undefined && <p className="text-xs text-zinc-500">전투력 {props.power.toLocaleString()}</p>}
-      </div>
-    </Link>
+    <p className="mb-3 text-xs text-zinc-500">
+      시즌 버프(보약)를 사용 중인 캐릭터는 불러오기 전에 체크하세요. 체크한 캐릭터만 시즌 버프를 포함해 인게임 스탯과
+      비교합니다.
+    </p>
+  );
+}
+
+function CharacterCard(props: { assetKey: string; name: string; imageUrl: string; level: number; sub?: string; power?: number }) {
+  const [season, setSeason] = useState(false);
+
+  useEffect(() => {
+    // localStorage is only readable after mount
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSeason(loadSeasonBuff(props.assetKey));
+  }, [props.assetKey]);
+
+  return (
+    <div className="rounded-lg border border-black/10 hover:border-orange-500 dark:border-white/15">
+      <Link href={`/character/${props.assetKey}`} className="flex items-center gap-3 p-3">
+        {/* eslint-disable-next-line @next/next/no-img-element -- external character renders, no optimisation needed */}
+        <img src={props.imageUrl} alt="" className="h-16 w-16 object-contain" />
+        <div className="min-w-0">
+          <p className="truncate font-medium">{props.name}</p>
+          <p className="text-xs text-zinc-500">
+            Lv.{props.level}
+            {props.sub && ` · ${props.sub}`}
+          </p>
+          {props.power !== undefined && <p className="text-xs text-zinc-500">전투력 {props.power.toLocaleString()}</p>}
+        </div>
+      </Link>
+      <label className="flex cursor-pointer items-center gap-2 border-t border-black/10 px-3 py-1.5 text-xs dark:border-white/15">
+        <input
+          type="checkbox"
+          checked={season}
+          onChange={(e) => {
+            setSeason(e.target.checked);
+            saveSeasonBuff(props.assetKey, e.target.checked);
+          }}
+        />
+        시즌 버프 사용 중
+      </label>
+    </div>
   );
 }
