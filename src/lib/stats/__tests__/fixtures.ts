@@ -4,6 +4,7 @@ import type { CharacterBundle } from "@/types/msu";
 import brownBarnJson from "./fixtures/brownbarn.json";
 import orangeBarnJson from "./fixtures/orangebarn.json";
 import redBarnJson from "./fixtures/redbarn.json";
+import unjnaJson from "./fixtures/unjna.json";
 
 type Fixture = CharacterBundle & { metadata: Record<string, ItemMetadata> };
 
@@ -20,3 +21,5 @@ export const redBarn = load(redBarnJson);
 export const brownBarn = load(brownBarnJson);
 /** OrangeBarn (Shade Lv.225) */
 export const orangeBarn = load(orangeBarnJson);
+/** unjna (Paladin Lv.241) */
+export const unjna = load(unjnaJson);

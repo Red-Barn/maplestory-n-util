@@ -22,6 +22,7 @@ export const COMMON_PASSIVES: SkillRef[] = [
   { name: "Rope Lift", pick: ["STR", "DEX", "INT", "LUK"] },
   // "[Passive Effect - All Stats: +1]"
   { name: "Decent Sharp Eyes", pick: ["STR", "DEX", "INT", "LUK"], passiveOnly: true },
+  { name: "Decent Speed Infusion", pick: ["STR", "DEX", "INT", "LUK"], passiveOnly: true },
 ];
 
 export const SEASON_BUFF_ID = "season-tonic";

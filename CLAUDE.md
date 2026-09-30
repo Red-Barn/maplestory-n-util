@@ -7,6 +7,7 @@
 ## 사용자 캐릭터
 - 주력: RedBarn (Bowmaster Lv.244, `CHARd0irqke79c7c73dqmsb0`) — 스탯 엔진 검증 기준, 테스트 fixture
 - 서브: BrownBarn (Aran Lv.225, `CHARd2a1t3838phs73a2d2j0`), OrangeBarn (Shade Lv.225, `CHARd2j9bd47lb2s73e8hmeg`) — 둘 다 주스탯 STR / 부스탯 DEX / 공격력. 테스트 fixture 있음
+- 그 외 fixture: unjna (Paladin Lv.241, `CHARd0irrohs68ps73c0meig`) — 주스탯 STR / 부스탯 DEX / 공격력. AP 상수 미확인(18 적용 중)
 - 샘플 수집: `node --env-file=.env.local scripts/probe.mjs <assetKey> <폴더>` → `docs/samples/<폴더>/`, 이어서 `node scripts/make-fixture.mjs <이름> <폴더>`
 
 ## 현재 진행 상황 (2026-09-29)
@@ -30,6 +31,7 @@
   - 유니온: 점령 효과 주/부스탯은 스탯% **적용**, 공격대원 주/부스탯은 스탯% **미적용** (사용자 확인)
   - 마켓 이름 검색(`filter.name`)은 OAuth(`msu-authorization`) 없이는 필터가 무시됨 → 이름 검색은 지갑 내 `name` 필터로 대체
   - 직업 데이터(`src/data/jobs/`): 주스탯/부스탯/공격 타입은 API `apStat`에서 가장 큰 스탯·공격력/마력으로 확인 (`jobs.test.ts`가 검증). 액티브 스킬에 붙은 패시브는 `passiveOnly`로 "[Passive Effect ...]" 부분만 파싱, 문장형 효과는 `effects`로 고정값 지정
+  - 무기 종류에 따라 달라지는 스킬 문구("... when equipped with a Two-Handed Blunt weapon", "When shield or rosary is equipped -- ...")는 장착 무기·보조무기의 카테고리(tier3 라벨)와 일치하는 줄만 반영 (`collectors/skills.ts` `applicableText`). 중첩형 효과는 `SkillRef.stacks`로 배수 적용(팔라딘 Light Charge ×5)
   - 직업에 필요 없는 것 숨기기(`src/lib/stats/relevance.ts`): 다른 주스탯·반대 공격 타입은 버프/링크/도감/칭호 효과 설명에서 제외("공/마" → 직업의 공격 타입만), 효과가 하나도 안 남는 드롭다운은 숨김. 특정 직업 전용 프리셋은 `onlyJobs`(화살 = Bowmaster)로 UI와 계산 모두에서 제외
   - 링크 레벨·칭호 기본값은 RedBarn 기준이라 다른 캐릭터에서는 직접 맞춰야 함
   - 캐시: `msuFetch`는 `unstable_cache`로 감쌈 (게이트 650ms·429 재시도는 캐시 미스에만). 첫 조회 ~15초, 이후 즉시

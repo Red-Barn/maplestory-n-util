@@ -17,6 +17,8 @@ const ALIASES: [string, Target][] = (
     ["party member attack power", { flat: ["ATT"] }],
     ["att & magic att", { flat: ["ATT", "MATT"], pct: ["ATT%", "MATT%"] }],
     ["maxhp / maxmp", { flat: ["HP", "MP"], pct: ["HP%", "MP%"] }],
+    // Paladin's Light Charge: "Damage and HP Recovery:+5%"
+    ["damage and hp recovery", { pct: ["DMG%"] }],
     ["damage against normal monsters", { pct: ["NORMAL%"] }],
     ["damage against normal enemies", { pct: ["NORMAL%"] }],
     ["damage to normal monsters", { pct: ["NORMAL%"] }],
@@ -48,7 +50,7 @@ const ALIASES: [string, Target][] = (
   ] as [string, Target][]
 ).sort((a, b) => b[0].length - a[0].length);
 
-const PREFIX_RE = /^(?:\[?passive effects?\s*[:-]?\s*|permanently\s+|increases?\s+|increase\s+)+/i;
+const PREFIX_RE = /^(?:\[?passive effects?\s*[:-]?\s*|permanently\s+|increases?\s+|increase\s+|your\s+)+/i;
 const NUM_RE = /^\s*(?::|by)?\s*\+?\s*(\d+(?:\.\d+)?)\s*(%)?/i;
 const PER_LEVEL_RE = /^per\s+(\d+)\s+character\s+levels?\s*:?\s*\+?\s*(\d+)/i;
 
@@ -108,7 +110,7 @@ function splitFragments(text: string): string[] {
     .split(/,|\.(?!\d)|\n|;/)
     .flatMap((part) => {
       // keep combined labels like "Attack Power and Magic ATT: +12" intact
-      if (/attack power and magic att/i.test(part)) return [part];
+      if (/attack power and magic att|damage and hp recovery/i.test(part)) return [part];
       return part.split(/\s+and\s+/i);
     })
     .map((p) => p.trim())

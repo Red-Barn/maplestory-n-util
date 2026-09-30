@@ -11,6 +11,8 @@ export type SkillRef = {
   passiveOnly?: boolean;
   /** Fixed effects while the skill is learned, for text that isn't a "<stat>: +N" form. */
   effects?: StatEffect[];
+  /** The text gives the value per stack (e.g. per Light Charge); parsed values are multiplied by this. */
+  stacks?: number;
 };
 
 export type BuffDef = {

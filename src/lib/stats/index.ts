@@ -17,11 +17,13 @@ export function collectCharacter(bundle: CharacterBundle) {
   const { character, items, sets, skills } = bundle;
   const level = character.common.level;
   const job = findJob(character.common.job.jobCode);
+  // some passives depend on the weapon type held (e.g. High Paladin, Shield Mastery)
+  const equip = { weapon: items.weapon?.category.tier3?.label, subWeapon: items.subWeapon?.category.tier3?.label };
   const fixed: StatContribution[] = [
     ...collectEquipment(items, level),
     ...collectSets(items, sets),
     ...collectArcane(character),
-    ...collectPassives(skills, job),
+    ...collectPassives(skills, job, equip),
   ];
   const hyper = collectHyperStats(character);
   const ability = collectAbility(character);
@@ -37,7 +39,7 @@ export function collectCharacter(bundle: CharacterBundle) {
     petCount,
     apiEmpressBlessing: hasApiEmpressBlessing(skills),
     permanent,
-    buffs: resolveBuffs(skills, job),
+    buffs: resolveBuffs(skills, job, equip),
   };
 }
 

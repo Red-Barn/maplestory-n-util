@@ -14,7 +14,7 @@ import {
 } from "..";
 import type { JobView } from "..";
 import type { CharacterBundle } from "@/types/msu";
-import { brownBarn, orangeBarn, redBarn } from "./fixtures";
+import { brownBarn, orangeBarn, redBarn, unjna } from "./fixtures";
 
 const setup = (bundle: CharacterBundle) => {
   const c = collectCharacter(bundle);
@@ -28,6 +28,7 @@ describe.each([
   ["RedBarn", redBarn, "Bowmaster", "DEX", "STR"],
   ["BrownBarn", brownBarn, "Aran", "STR", "DEX"],
   ["OrangeBarn", orangeBarn, "Shade", "STR", "DEX"],
+  ["unjna", unjna, "Paladin", "STR", "DEX"],
 ] as const)("%s main/sub stat and attack type", (name, bundle, jobName, main, sub) => {
   const { c, api } = setup(bundle);
 
@@ -83,6 +84,66 @@ describe("BrownBarn (Aran Lv.225)", () => {
   test("one pet counts with its equipment as a set", () => {
     const pets = c.permanent.filter((x) => x.source === "pet" && x.stat === "ATT");
     expect(pets.map((x) => `${x.label}=${x.value}`)).toEqual(["펫 1마리=3", "펫장비 1개=5"]);
+  });
+});
+
+describe("unjna (Paladin Lv.241)", () => {
+  const { c, of, api, result } = setup(unjna);
+  const buff = (id: string) => c.buffs.find((b) => b.id === id)!.contributions.map((x) => `${x.stat}=${x.value}`);
+
+  test("final damage matches in-game exactly", () => {
+    expect(result.final["FD%"]).toBe(api["FD%"]); // High Paladin 40%
+  });
+
+  test("High Paladin: only the line for the equipped weapon type (Two-Handed Blunt) counts", () => {
+    expect(unjna.items.weapon?.category.tier3.label).toBe("Two-Handed Blunt");
+    expect(of("High Paladin")).toEqual(["CRIT%=40", "CDMG%=20", "IED%=30", "FD%=40", "CDMG%=5", "IED%=10"]);
+  });
+
+  test("Shield Mastery needs a shield or rosary", () => {
+    expect(unjna.items.subWeapon?.category.tier3.label).toBe("Rosary");
+    expect(of("Shield Mastery")).toEqual(["ATT=10"]);
+    const noRosary = collectCharacter({ ...unjna, items: { ...unjna.items, subWeapon: null } });
+    expect(noRosary.permanent.some((x) => x.label.startsWith("Shield Mastery"))).toBe(false);
+  });
+
+  test("with another weapon type the weapon line changes", () => {
+    const weapon = unjna.items.weapon!;
+    const sword = { ...weapon, category: { ...weapon.category, tier3: { code: "", label: "Two-Handed Sword" } } };
+    const c2 = collectCharacter({ ...unjna, items: { ...unjna.items, weapon: sword } });
+    const got = c2.permanent.filter((x) => x.label.startsWith("High Paladin")).map((x) => `${x.stat}=${x.value}`);
+    expect(got).toEqual(["CRIT%=40", "CDMG%=20", "IED%=30", "FD%=40", "CDMG%=5"]);
+  });
+
+  test("the API lists Empress's Blessing for Paladin", () => {
+    expect(c.apiEmpressBlessing).toBe(true);
+    expect(of("Empress's Blessing")).toEqual(["ATT=30", "MATT=30"]);
+  });
+
+  test("Decent skill passives add all stats", () => {
+    expect(of("Decent Sharp Eyes").sort()).toEqual(["DEX=2", "INT=2", "LUK=2", "STR=2"]);
+    expect(of("Decent Speed Infusion").sort()).toEqual(["DEX=2", "INT=2", "LUK=2", "STR=2"]);
+  });
+
+  test("buffs are off by default and read from the skill texts", () => {
+    expect(c.buffs.map((b) => b.id)).toEqual([
+      "season-tonic",
+      "echo-of-hero",
+      "maple-warrior",
+      "light-charge",
+      "divine-blessing",
+      "divine-shield",
+      "parashock-guard",
+      "weapon-aura",
+      "divine-echo",
+    ]);
+    expect(c.buffs.filter((b) => b.defaultOn).map((b) => b.id)).toEqual(["season-tonic"]);
+    expect(buff("light-charge")).toEqual(["DMG%=25", "ATT=60"]); // 5 charges × (5%, 12)
+    expect(buff("divine-blessing")).toEqual(["FD%=20"]);
+    expect(buff("divine-shield")).toEqual(["ATT=20"]);
+    expect(buff("parashock-guard")).toEqual(["ATT=20"]);
+    expect(buff("weapon-aura")).toEqual(["IED%=15", "FD%=5"]);
+    expect(buff("divine-echo")).toEqual(["FD%=72"]);
   });
 });
 

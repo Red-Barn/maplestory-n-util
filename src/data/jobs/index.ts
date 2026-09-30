@@ -1,10 +1,11 @@
 import { aran } from "./aran";
 import { bowmaster } from "./bowmaster";
+import { paladin } from "./paladin";
 import { shade } from "./shade";
 import type { JobData } from "./types";
 
 // Add new classes here in the same format as bowmaster.ts.
-const JOBS: JobData[] = [bowmaster, aran, shade];
+const JOBS: JobData[] = [bowmaster, aran, shade, paladin];
 
 export function findJob(jobCode: number): JobData | undefined {
   return JOBS.find((j) => j.jobCodes.includes(jobCode));
