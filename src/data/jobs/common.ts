@@ -16,10 +16,13 @@ export const COMMON_PASSIVES: SkillRef[] = [
   { name: "Decent Sharp Eyes", pick: ["STR", "DEX", "INT", "LUK"], passiveOnly: true },
 ];
 
+export const SEASON_BUFF_ID = "season-tonic";
+
 export const COMMON_BUFFS: BuffDef[] = [
   {
-    // Seasonal event buff (보약 버프). Included in the API stat snapshot while the season runs.
-    id: "season-tonic",
+    // Seasonal event buff (보약 버프). The API stat snapshot includes it for characters that have
+    // it on; the stat panel asks per character (set on the character list) instead of assuming.
+    id: SEASON_BUFF_ID,
     name: "시즌 버프 (보약)",
     effects: [
       { stat: "ATT", value: 10 },
