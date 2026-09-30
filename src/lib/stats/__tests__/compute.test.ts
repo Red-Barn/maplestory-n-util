@@ -191,9 +191,20 @@ describe("title and arrows", () => {
     expect(statsOf(got)).toEqual(["STR=10", "DEX=10", "INT=10", "LUK=10", "ATT=5", "MATT=5", "BOSS%=10"]);
   });
 
-  test("Chaos Vellum Crusher, or no title", () => {
-    expect(statsOf(collectChoices(TITLES, { title: "chaos-vellum-crusher" }, "misc-item"))).toEqual(["BOSS%=5"]);
+  test("MVP titles: all stats and ATT/Magic ATT", () => {
+    const of = (title: string) => {
+      const got = collectChoices(TITLES, { title }, "misc-item");
+      return [sumOf(got, "STR"), sumOf(got, "LUK"), sumOf(got, "ATT"), sumOf(got, "MATT")];
+    };
+    expect(of("mvp-gold")).toEqual([8, 8, 7, 7]);
+    expect(of("mvp-silver")).toEqual([7, 7, 5, 5]);
+    expect(of("mvp-bronze")).toEqual([6, 6, 4, 4]);
+    expect(TITLES[0].options.map((o) => o.label)).toEqual(["Holy Pink Beanity", "MVP Gold", "MVP Silver", "MVP Bronze"]);
+  });
+
+  test("no title, or one that was removed (Chaos Vellum Crusher is a medal)", () => {
     expect(collectChoices(TITLES, { title: "" }, "misc-item")).toEqual([]);
+    expect(collectChoices(TITLES, { title: "chaos-vellum-crusher" }, "misc-item")).toEqual([]);
   });
 
   test("arrows", () => {

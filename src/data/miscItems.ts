@@ -3,6 +3,15 @@ import type { PresetDef } from "@/lib/stats/collectors/presets";
 
 // Items the API doesn't return but the stat snapshot includes. Values confirmed in-game by the user.
 
+const mvp = (id: string, label: string, all: number, att: number): ChoiceDef["options"][number] => ({
+  id,
+  label,
+  effects: [
+    { key: "ALL", value: all },
+    { key: "ATT_MATT", value: att },
+  ],
+});
+
 /** Titles — only one can be worn. defaultOption is the user's current title. */
 export const TITLES: ChoiceDef[] = [
   {
@@ -18,7 +27,9 @@ export const TITLES: ChoiceDef[] = [
           { key: "BOSS%", value: 10 },
         ],
       },
-      { id: "chaos-vellum-crusher", label: "Chaos Vellum Crusher", effects: [{ key: "BOSS%", value: 5 }] },
+      mvp("mvp-gold", "MVP Gold", 8, 7),
+      mvp("mvp-silver", "MVP Silver", 7, 5),
+      mvp("mvp-bronze", "MVP Bronze", 6, 4),
     ],
     defaultOption: "holy-pink-beanity",
     noneLabel: "없음",
