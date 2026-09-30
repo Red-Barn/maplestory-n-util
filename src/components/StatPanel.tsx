@@ -98,7 +98,7 @@ const flatStatRow = (s: MainStat, role?: string): Row => ({
 const fixedStatRow = (s: MainStat, role?: string): Row => ({
   id: `fixed-${s}`,
   label: `${role ? `${role} (${s})` : s} %미적용`,
-  note: () => "하이퍼스탯·아케인·유니온 공격대원",
+  note: () => "하이퍼스탯·어빌리티·아케인·유니온 공격대원",
   parts: [`${s}_FIXED`],
   value: (r) => t(r, `${s}_FIXED`),
 });

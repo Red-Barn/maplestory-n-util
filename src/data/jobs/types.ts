@@ -35,6 +35,8 @@ export type JobData = {
   mainStat: MainStat;
   subStats: MainStat[];
   attackType: "ATT" | "MATT";
+  /** Main stat AP = 5 × level + apBonus. 18 when omitted; differs per job (Aran: 23). */
+  apBonus?: number;
   /** Innate values not tied to any skill/item (e.g. base critical rate). */
   base: StatEffect[];
   passives: SkillRef[];

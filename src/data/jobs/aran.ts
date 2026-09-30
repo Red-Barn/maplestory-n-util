@@ -9,6 +9,7 @@ export const aran: JobData = {
   mainStat: "STR",
   subStats: ["DEX"],
   attackType: "ATT",
+  apBonus: 23, // main stat AP = 5 × level + 23, confirmed in-game by the user
   base: [{ stat: "CRIT%", value: 5 }],
   passives: [
     { name: "Regained Memory", pick: ["ATT%"] },

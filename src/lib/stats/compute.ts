@@ -8,10 +8,16 @@ const MULTIPLICATIVE: StatKey[] = ["IED%", "FD%"];
 /**
  * AP per main stat. MSU doesn't expose AP: the main stat gets 5 × level + 18
  * (e.g. 1238 at Lv.244, confirmed in-game), every other stat stays at its minimum 4.
+ * The constant differs per job (JobData.apBonus, e.g. 23 for Aran).
  */
-export function estimateAp(level: number, job: Pick<JobData, "mainStat"> | undefined): Record<MainStat, number> {
+export const DEFAULT_AP_BONUS = 18;
+
+export function estimateAp(
+  level: number,
+  job: Pick<JobData, "mainStat" | "apBonus"> | undefined,
+): Record<MainStat, number> {
   const ap = { STR: 4, DEX: 4, INT: 4, LUK: 4 };
-  ap[job?.mainStat ?? "STR"] = 5 * level + 18;
+  ap[job?.mainStat ?? "STR"] = 5 * level + (job?.apBonus ?? DEFAULT_AP_BONUS);
   return ap;
 }
 
