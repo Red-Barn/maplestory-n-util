@@ -1,4 +1,4 @@
-import { COMMON_BUFFS, COMMON_PASSIVES, EXCLUSIVE_BLESSINGS } from "@/data/jobs/common";
+import { COMMON_BUFFS, COMMON_PASSIVES, EMPRESS_BLESSING, EXCLUSIVE_BLESSINGS } from "@/data/jobs/common";
 import type { BuffDef, JobData, SkillRef } from "@/data/jobs";
 import type { SkillEntry } from "@/types/msu";
 import { parseOption } from "../parseOption";
@@ -19,16 +19,29 @@ function fromSkill(skills: SkillEntry[], ref: SkillRef, source: StatSource, labe
   }));
 }
 
-export function collectPassives(skills: SkillEntry[], job: JobData | undefined): StatContribution[] {
+/** Whether the API lists Empress's Blessing for this character (otherwise the user enters its level). */
+export const hasApiEmpressBlessing = (skills: SkillEntry[]): boolean =>
+  skills.some((s) => s.skillName === EMPRESS_BLESSING.name && s.skillLevel > 0);
+
+/**
+ * Blessing of the Fairy / Empress's Blessing — only the stronger applies. `empressLevel` is the
+ * user-entered Empress's Blessing level, used when the API doesn't list the skill.
+ */
+export function collectBlessing(skills: SkillEntry[], empressLevel = 0): StatContribution[] {
   const blessings = EXCLUSIVE_BLESSINGS.map((ref) => fromSkill(skills, ref, "skill"));
-  const strongest = blessings.reduce<StatContribution[]>(
-    (best, cur) => (sum(cur) > sum(best) ? cur : best),
-    [],
-  );
+  const level = Math.max(0, Math.min(Math.floor(empressLevel), EMPRESS_BLESSING.maxLevel));
+  if (level > 0 && !hasApiEmpressBlessing(skills)) {
+    const label = `${EMPRESS_BLESSING.name} Lv.${level}`;
+    blessings.push((["ATT", "MATT"] as const).map((stat) => ({ stat, value: level, source: "skill", label })));
+  }
+  return blessings.reduce<StatContribution[]>((best, cur) => (sum(cur) > sum(best) ? cur : best), []);
+}
+
+/** Passive skills except the blessings (see collectBlessing). */
+export function collectPassives(skills: SkillEntry[], job: JobData | undefined): StatContribution[] {
   const base: StatContribution[] = (job?.base ?? []).map((e) => ({ ...e, source: "base", label: `${job!.name} 기본` }));
   return [
     ...base,
-    ...strongest,
     ...COMMON_PASSIVES.flatMap((ref) => fromSkill(skills, ref, "skill")),
     ...(job?.passives ?? []).flatMap((ref) => fromSkill(skills, ref, "skill")),
   ];

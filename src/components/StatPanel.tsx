@@ -6,7 +6,7 @@ import { LINK_SKILLS } from "@/data/links";
 import { COLLECTION } from "@/data/collection";
 import { HYPER_STATS } from "@/data/hyperStats";
 import { MISC_ITEMS, TITLES } from "@/data/miscItems";
-import { SEASON_BUFF_ID } from "@/data/jobs/common";
+import { EMPRESS_BLESSING, SEASON_BUFF_ID } from "@/data/jobs/common";
 import { load, loadSeasonBuff, pushRecent, save, statPanelKey } from "@/lib/client/storage";
 import {
   abilityTypesForJob,
@@ -16,6 +16,7 @@ import {
   apStatToFinal,
   choicesForJob,
   collectAbilityLines,
+  collectBlessing,
   collectPets,
   MAX_PETS,
   petAtt,
@@ -254,6 +255,7 @@ const PRESET_OPTIONS = [
   { id: API_PRESET, label: "API (현재 적용 중)" },
   ...PRESET_SLOTS.map((id) => ({ id, label: `프리셋 ${id}` })),
 ];
+const EMPRESS_OPTIONS = Array.from({ length: EMPRESS_BLESSING.maxLevel + 1 }, (_, n) => ({ id: String(n), label: `Lv.${n}` }));
 const PET_OPTIONS = Array.from({ length: MAX_PETS + 1 }, (_, n) => ({ id: String(n), label: `${n}마리` }));
 
 type CollectionSetInput = { ALL?: number };
@@ -270,6 +272,8 @@ type Saved = {
   collectionSet?: CollectionSetInput;
   /** number of pets (each with its equipment); unset = the API's count */
   pets?: number;
+  /** Empress's Blessing level, for characters the API doesn't list it for */
+  empress?: number;
   /** hyper stat preset in use: API_PRESET or a slot, and the levels entered per slot */
   hyperPreset?: string;
   hyperPresets?: Record<string, ChoiceInput>;
@@ -305,6 +309,7 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
   const [miscItems, setMiscItems] = useState<PresetInput>(() => defaultPresetInput(MISC_ITEMS));
   const [collectionSet, setCollectionSet] = useState<CollectionSetInput>({});
   const [pets, setPets] = useState<number>();
+  const [empress, setEmpress] = useState<number>();
   const [hyperPreset, setHyperPreset] = useState(API_PRESET);
   const [hyperPresets, setHyperPresets] = useState<Record<string, ChoiceInput>>({});
   const [abilityPreset, setAbilityPreset] = useState(API_PRESET);
@@ -328,6 +333,7 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
     if (saved.miscItems) setMiscItems({ ...defaultPresetInput(MISC_ITEMS), ...saved.miscItems });
     if (saved.collectionSet) setCollectionSet(saved.collectionSet);
     setPets(saved.pets);
+    setEmpress(saved.empress);
     setHyperPreset(saved.hyperPreset ?? API_PRESET);
     setHyperPresets(saved.hyperPresets ?? {});
     setAbilityPreset(saved.abilityPreset ?? API_PRESET);
@@ -352,6 +358,7 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
       miscItems,
       collectionSet,
       pets,
+      empress,
       hyperPreset,
       hyperPresets,
       abilityPreset,
@@ -387,11 +394,13 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
     [hyperPreset, hyperInput, abilityPreset, abilityLines, base.hyper, base.ability],
   );
   const petCount = pets ?? base.petCount;
+  const empressLevel = empress ?? EMPRESS_BLESSING.defaultLevel;
 
   // API-derived stats plus what the user typed in (the API includes these but doesn't list them).
   const known = useMemo(
     () => [
       ...base.fixed,
+      ...collectBlessing(bundle.skills, empressLevel),
       ...collectPets(petCount),
       ...collectUnion(union),
       ...collectUnionGrid(unionGrid),
@@ -401,7 +410,7 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
       ...collectChoices(TITLES, choices, "misc-item"),
       ...collectPresets(miscDefs, miscItems, "misc-item"),
     ],
-    [base.fixed, petCount, union, unionGrid, choices, miscItems, collectionSet, miscDefs],
+    [base.fixed, bundle.skills, empressLevel, petCount, union, unionGrid, choices, miscItems, collectionSet, miscDefs],
   );
 
   // Baseline = what the API snapshot includes: the API's hyper stat and ability presets, the
@@ -667,6 +676,24 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
                   <>
                     <Hint>API가 불러오지 못하지만 API 스탯에는 포함된 아이템입니다.</Hint>
                     <ChoiceList defs={titleDefs} values={choices} onChange={setChoice} job={base.job} />
+                    {!base.apiEmpressBlessing && (
+                      <>
+                        <SubHeading
+                          title="여제의 축복"
+                          hint="API가 이 캐릭터의 Empress's Blessing을 알려 주지 않아 직접 고릅니다. Blessing of the Fairy와 비교해 높은 쪽만 적용됩니다."
+                        />
+                        <SelectRow
+                          label={EMPRESS_BLESSING.name}
+                          value={String(empressLevel)}
+                          options={EMPRESS_OPTIONS}
+                          note={describeEffects([{ key: "ATT_MATT", value: empressLevel }], base.job)}
+                          onChange={(id) => {
+                            setEmpress(Number(id));
+                            persist({ empress: Number(id) });
+                          }}
+                        />
+                      </>
+                    )}
                     <SubHeading title="펫" hint="펫 1마리는 펫장비 1개와 한 세트로 계산합니다." />
                     <SelectRow
                       label="펫 수"

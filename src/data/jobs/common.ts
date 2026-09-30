@@ -8,6 +8,14 @@ export const EXCLUSIVE_BLESSINGS: SkillRef[] = [
   { name: "Empress's Blessing", pick: ["ATT", "MATT"] },
 ];
 
+/**
+ * The API lists Empress's Blessing for some classes only (Bowmaster yes; Aran and Shade no, though
+ * they have it in-game), so where it's missing the user picks the level on the character page.
+ * ATT & Magic ATT = level (Lv.30 → +30 from the API text; lower levels assumed linear).
+ * The default is the user's current level.
+ */
+export const EMPRESS_BLESSING = { name: "Empress's Blessing", maxLevel: 30, defaultLevel: 30 };
+
 export const COMMON_PASSIVES: SkillRef[] = [
   { name: "Will of the Alliance", pick: ["STR", "DEX", "INT", "LUK", "ATT", "MATT"] },
   // 5th job common skill: "[Passive Effect - All Stats: +8]"

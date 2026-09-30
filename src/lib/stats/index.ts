@@ -3,14 +3,15 @@ import type { CharacterBundle } from "@/types/msu";
 import { apiPetCount, collectAbility, collectArcane, collectHyperStats, collectPets } from "./collectors/character";
 import { collectEquipment } from "./collectors/equipment";
 import { collectSets } from "./collectors/sets";
-import { collectPassives, resolveBuffs } from "./collectors/skills";
+import { collectBlessing, collectPassives, hasApiEmpressBlessing, resolveBuffs } from "./collectors/skills";
 import { estimateAp } from "./compute";
 import type { StatContribution } from "./types";
 
 /**
  * Everything that is always on, plus the buffs the user can toggle. `permanent` is the whole
  * API state; the parts the user can change on the character page (hyper stat and ability
- * presets, number of pets) are also returned separately from the `fixed` rest.
+ * presets, number of pets, Empress's Blessing level when the API lacks it) are also returned
+ * separately from the `fixed` rest.
  */
 export function collectCharacter(bundle: CharacterBundle) {
   const { character, items, sets, skills } = bundle;
@@ -25,8 +26,19 @@ export function collectCharacter(bundle: CharacterBundle) {
   const hyper = collectHyperStats(character);
   const ability = collectAbility(character);
   const petCount = apiPetCount(character);
-  const permanent = [...fixed, ...hyper, ...ability, ...collectPets(petCount)];
-  return { job, level, ap: estimateAp(level, job), fixed, hyper, ability, petCount, permanent, buffs: resolveBuffs(skills, job) };
+  const permanent = [...fixed, ...collectBlessing(skills), ...hyper, ...ability, ...collectPets(petCount)];
+  return {
+    job,
+    level,
+    ap: estimateAp(level, job),
+    fixed,
+    hyper,
+    ability,
+    petCount,
+    apiEmpressBlessing: hasApiEmpressBlessing(skills),
+    permanent,
+    buffs: resolveBuffs(skills, job),
+  };
 }
 
 export { apStatToFinal, computeStats, estimateAp, sumStats } from "./compute";
@@ -60,6 +72,7 @@ export type { ComputedStats, MainStat, StatContribution, StatKey } from "./types
 export { formatEffect, mergeEffects, STAT_LABEL } from "./labels";
 export { collectCollectionSet } from "./collectors/collection";
 export { collectPets, MAX_PETS, petAtt } from "./collectors/character";
+export { collectBlessing } from "./collectors/skills";
 export {
   abilityTypesForJob,
   API_PRESET,
