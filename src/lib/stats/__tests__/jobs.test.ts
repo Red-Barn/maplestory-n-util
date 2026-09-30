@@ -87,6 +87,11 @@ describe("OrangeBarn (Shade Lv.225)", () => {
     expect(c.buffs.map((b) => b.id)).toEqual(["season-tonic", "echo-of-hero", "maple-warrior"]);
   });
 
+  test("ability line \"Attack: +9\" counts as ATT", () => {
+    const ability = c.permanent.filter((x) => x.source === "ability").map((x) => `${x.stat}=${x.value}`);
+    expect(ability).toEqual(["BOSS%=18", "ATT=9"]); // the abnormal status line is conditional
+  });
+
   test("passives", () => {
     expect(of("Fox God's Favor")).toEqual(["ATT=20", "DMG%=10"]);
     expect(of("Loaded Dice")).toEqual(["ATT=19"]);

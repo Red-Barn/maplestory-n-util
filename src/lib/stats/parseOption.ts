@@ -30,6 +30,8 @@ const ALIASES: [string, Target][] = (
     ["final damage", { pct: ["FD%"] }],
     ["magic att", { flat: ["MATT"], pct: ["MATT%"] }],
     ["attack power", { flat: ["ATT"], pct: ["ATT%"] }],
+    // ability line "Attack: +6" ("Attack Speed: +2" has no number right after, so it stays ignored)
+    ["attack", { flat: ["ATT"] }],
     ["att", { flat: ["ATT"], pct: ["ATT%"] }],
     ["all stats", { flat: ["STR", "DEX", "INT", "LUK"], pct: ["ALL%"] }],
     ["strength", { flat: ["STR"], pct: ["STR%"] }],

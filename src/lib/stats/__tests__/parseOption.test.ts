@@ -12,6 +12,9 @@ describe("parseOption", () => {
     ["Critical Damage: +8%", [{ stat: "CDMG%", value: 8 }]],
     ["Max HP: +5%", [{ stat: "HP%", value: 5 }]],
     ["DEF: +120", []],
+    ["Attack: +6", [{ stat: "ATT", value: 6 }]],
+    ["Attack Speed: +2", []],
+    ["Attack Power: +30", [{ stat: "ATT", value: 30 }]],
     ["3% chance to recover 47 HP when attacking.", []],
   ])("potential %s", (label, expected) => {
     expect(parseOption(label)).toEqual(expected);
