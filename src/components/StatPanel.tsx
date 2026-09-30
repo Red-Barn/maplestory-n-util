@@ -10,6 +10,7 @@ import {
   apStatToFinal,
   collectCharacter,
   collectChoices,
+  collectCollectionSet,
   collectPresets,
   collectUnion,
   collectUnionGrid,
@@ -204,6 +205,9 @@ const countChosen = (defs: { id: string }[], input: ChoiceInput) => defs.filter(
 const countFilled = (...inputs: Record<string, number | undefined>[]) =>
   inputs.reduce((n, i) => n + Object.values(i).filter(Boolean).length, 0);
 
+type CollectionSetInput = { ALL?: number };
+const COLLECTION_SET_FIELDS: Field<"ALL">[] = [{ key: "ALL", label: "세트 효과 올스탯" }];
+
 type Saved = {
   buffs?: Record<string, boolean>;
   union?: UnionInput;
@@ -211,6 +215,8 @@ type Saved = {
   /** link skill levels, collection tier, title */
   choices?: ChoiceInput;
   miscItems?: PresetInput;
+  /** all stats from collection set effects */
+  collectionSet?: CollectionSetInput;
 };
 
 export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
@@ -228,6 +234,7 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
   const [unionGrid, setUnionGrid] = useState<UnionGridInput>({});
   const [choices, setChoices] = useState<ChoiceInput>(() => defaultChoiceInput(ALL_CHOICES));
   const [miscItems, setMiscItems] = useState<PresetInput>(() => defaultPresetInput(MISC_ITEMS));
+  const [collectionSet, setCollectionSet] = useState<CollectionSetInput>({});
   const [open, setOpen] = useState<string>();
   const [tab, setTab] = useState("buffs");
 
@@ -240,6 +247,7 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
     if (saved.unionGrid) setUnionGrid(saved.unionGrid);
     if (saved.choices) setChoices({ ...defaultChoiceInput(ALL_CHOICES), ...saved.choices });
     if (saved.miscItems) setMiscItems({ ...defaultPresetInput(MISC_ITEMS), ...saved.miscItems });
+    if (saved.collectionSet) setCollectionSet(saved.collectionSet);
     setTab(load(TAB_KEY, "buffs"));
     /* eslint-enable react-hooks/set-state-in-effect */
     pushRecent({
@@ -252,7 +260,7 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
   }, [storageKey, defaults, character]);
 
   const persist = (next: Saved) =>
-    save(storageKey, { buffs, union, unionGrid, choices, miscItems, ...next } satisfies Saved);
+    save(storageKey, { buffs, union, unionGrid, choices, miscItems, collectionSet, ...next } satisfies Saved);
   const setChoice = (next: ChoiceInput) => {
     setChoices(next);
     persist({ choices: next });
@@ -266,10 +274,11 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
       ...collectUnionGrid(unionGrid),
       ...collectChoices(LINK_SKILLS, choices, "link"),
       ...collectChoices(COLLECTION, choices, "collection"),
+      ...collectCollectionSet(collectionSet.ALL),
       ...collectChoices(TITLES, choices, "misc-item"),
       ...collectPresets(MISC_ITEMS, miscItems, "misc-item"),
     ],
-    [base.permanent, union, unionGrid, choices, miscItems],
+    [base.permanent, union, unionGrid, choices, miscItems, collectionSet],
   );
 
   // Default buff set = what the API snapshot includes (season buff on, skill buffs off).
@@ -433,11 +442,20 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
               {
                 id: "collection",
                 label: "도감",
-                badge: countChosen(COLLECTION, choices),
+                badge: countChosen(COLLECTION, choices) + countFilled(collectionSet),
                 content: (
                   <>
                     <Hint>API 스탯에 포함된 도감 효과입니다. 현재 도감 레벨을 고르세요.</Hint>
                     <ChoiceList defs={COLLECTION} values={choices} onChange={setChoice} />
+                    <SubHeading title="세트 효과" hint="도감 세트 효과로 얻은 올스탯 합계를 입력하세요. 스탯%가 적용됩니다." />
+                    <FieldList
+                      fields={COLLECTION_SET_FIELDS}
+                      values={collectionSet}
+                      onChange={(next) => {
+                        setCollectionSet(next);
+                        persist({ collectionSet: next });
+                      }}
+                    />
                   </>
                 ),
               },

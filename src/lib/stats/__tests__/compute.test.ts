@@ -6,6 +6,7 @@ import {
   apStatToFinal,
   collectCharacter,
   collectChoices,
+  collectCollectionSet,
   collectPresets,
   collectUnion,
   collectUnionGrid,
@@ -158,6 +159,11 @@ describe("collection tiers", () => {
       "IED%=38",
       "CRIT%=38",
     ]);
+  });
+
+  test("set effect all stats", () => {
+    expect(statsOf(collectCollectionSet(30))).toEqual(["STR=30", "DEX=30", "INT=30", "LUK=30"]);
+    expect(collectCollectionSet(undefined)).toEqual([]);
   });
 
   test("tier 1 and tier 2 values", () => {
