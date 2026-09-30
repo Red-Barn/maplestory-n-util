@@ -1,6 +1,15 @@
 "use client";
 
-import { presetValue, type PresetDef, type PresetInput, type PresetState } from "@/lib/stats";
+import {
+  presetValue,
+  selectedOption,
+  type ChoiceDef,
+  type ChoiceInput,
+  type PresetDef,
+  type PresetInput,
+  type PresetState,
+} from "@/lib/stats";
+import type { PresetEffect } from "@/lib/stats/collectors/presets";
 
 export type Field<K extends string> = { key: K; label: string; pct?: boolean; unit?: string };
 
@@ -146,7 +155,48 @@ const EFFECT_LABEL: Record<string, string> = {
   ALL: "올스탯",
 };
 
-/** Checkbox rows of fixed-effect bundles (link skills, title, arrows) with editable values. */
+export function describeEffects(effects: PresetEffect[]): string {
+  return effects.map((e) => `${EFFECT_LABEL[e.key] ?? e.key} +${e.value}${e.key.endsWith("%") ? "%" : ""}`).join(" · ");
+}
+
+/** Dropdown rows (link skill level, collection tier, title) with the chosen option's effects below. */
+export function ChoiceList(props: {
+  defs: ChoiceDef[];
+  values: ChoiceInput;
+  onChange: (next: ChoiceInput) => void;
+  /** label of the empty option */
+  noneLabel?: string;
+}) {
+  return (
+    <ul className="divide-y divide-black/5 dark:divide-white/10">
+      {props.defs.map((d) => {
+        const option = selectedOption(d, props.values);
+        return (
+          <li key={d.id} className="py-1.5">
+            <label className="flex items-center justify-between gap-2 text-sm">
+              <span className="min-w-0 truncate">{d.name}</span>
+              <select
+                value={option?.id ?? ""}
+                onChange={(e) => props.onChange({ ...props.values, [d.id]: e.target.value })}
+                className="max-w-[60%] rounded border border-black/15 bg-[var(--background)] px-1.5 py-0.5 text-sm focus:border-orange-500 focus:outline-none dark:border-white/20"
+              >
+                <option value="">{props.noneLabel ?? "없음"}</option>
+                {d.options.map((o) => (
+                  <option key={o.id} value={o.id}>
+                    {o.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            {option && <p className="mt-0.5 text-right text-[11px] leading-snug text-zinc-500">{describeEffects(option.effects)}</p>}
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+/** Checkbox rows of fixed-effect bundles (arrows, ...) with editable values. */
 export function PresetList(props: { defs: PresetDef[]; values: PresetInput; onChange: (next: PresetInput) => void }) {
   return (
     <ul className="divide-y divide-black/5 dark:divide-white/10">

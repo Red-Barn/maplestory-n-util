@@ -1,14 +1,16 @@
 import { describe, expect, test } from "vitest";
 import { LINK_SKILLS } from "@/data/links";
-import { MISC_ITEMS } from "@/data/miscItems";
+import { COLLECTION } from "@/data/collection";
+import { MISC_ITEMS, TITLES } from "@/data/miscItems";
 import {
   apStatToFinal,
   collectCharacter,
-  collectCollection,
+  collectChoices,
   collectPresets,
   collectUnion,
   collectUnionGrid,
   computeStats,
+  defaultChoiceInput,
   defaultPresetInput,
 } from "..";
 import { collectSets, countSetPieces } from "../collectors/sets";
@@ -122,17 +124,6 @@ describe("user inputs", () => {
     expect(got).toEqual(["CRIT%=4", "CDMG%=6"]);
   });
 
-  test("collection expands all stats and ATT/MATT", () => {
-    const got = collectCollection({ ALL: 10, ATT: 5, "BOSS%": 3, DEX: 20 }).map((x) => `${x.stat}=${x.value}`);
-    expect(got).toEqual(["STR=10", "DEX=10", "INT=10", "LUK=10", "ATT=5", "MATT=5", "BOSS%=3", "DEX=20"]);
-  });
-
-  test("collection % stats add directly", () => {
-    const before = computeStats(base, c.ap).final;
-    const after = computeStats([...base, ...collectCollection({ "DMG%": 27, "CDMG%": 5 })], c.ap).final;
-    expect(after["DMG%"] - before["DMG%"]).toBe(27);
-    expect(after["CDMG%"] - before["CDMG%"]).toBe(5);
-  });
 });
 
 describe("pets", () => {
@@ -143,47 +134,74 @@ describe("pets", () => {
   });
 });
 
-describe("title and arrows", () => {
-  test("defaults", () => {
-    const got = collectPresets(MISC_ITEMS, defaultPresetInput(MISC_ITEMS), "misc-item").map((x) => `${x.stat}=${x.value}`);
-    expect(got).toEqual([
-      // Holy Pink Beanity
-      "STR=10",
-      "DEX=10",
-      "INT=10",
-      "LUK=10",
-      "ATT=5",
-      "MATT=5",
-      "BOSS%=10",
-      // Titanium Arrows for Bow
-      "ATT=9",
+const statsOf = (list: { stat: string; value: number }[]) => list.map((x) => `${x.stat}=${x.value}`);
+const sumOf = (list: { stat: string; value: number }[], k: string) =>
+  list.filter((x) => x.stat === k).reduce((a, x) => a + x.value, 0);
+
+describe("collection tiers", () => {
+  test("none by default", () => {
+    expect(collectChoices(COLLECTION, defaultChoiceInput(COLLECTION), "collection")).toEqual([]);
+  });
+
+  test("tier 12", () => {
+    const got = collectChoices(COLLECTION, { collection: "12" }, "collection");
+    expect(statsOf(got)).toEqual([
+      "STR=500",
+      "DEX=500",
+      "INT=500",
+      "LUK=500",
+      "ATT=50",
+      "MATT=50",
+      "DMG%=25",
+      "BOSS%=25",
+      "CDMG%=25",
+      "IED%=38",
+      "CRIT%=38",
     ]);
+  });
+
+  test("tier 1 and tier 2 values", () => {
+    const t1 = collectChoices(COLLECTION, { collection: "1" }, "collection");
+    expect([sumOf(t1, "DEX"), sumOf(t1, "ATT"), sumOf(t1, "BOSS%"), sumOf(t1, "CRIT%")]).toEqual([40, 4, 2, 2]);
+    const t2 = collectChoices(COLLECTION, { collection: "2" }, "collection");
+    expect([sumOf(t2, "DEX"), sumOf(t2, "ATT"), sumOf(t2, "CDMG%"), sumOf(t2, "IED%")]).toEqual([80, 8, 4, 6]);
+  });
+});
+
+describe("title and arrows", () => {
+  test("default title is Holy Pink Beanity", () => {
+    const got = collectChoices(TITLES, defaultChoiceInput(TITLES), "misc-item");
+    expect(statsOf(got)).toEqual(["STR=10", "DEX=10", "INT=10", "LUK=10", "ATT=5", "MATT=5", "BOSS%=10"]);
+  });
+
+  test("Chaos Vellum Crusher, or no title", () => {
+    expect(statsOf(collectChoices(TITLES, { title: "chaos-vellum-crusher" }, "misc-item"))).toEqual(["BOSS%=5"]);
+    expect(collectChoices(TITLES, { title: "" }, "misc-item")).toEqual([]);
+  });
+
+  test("arrows", () => {
+    expect(statsOf(collectPresets(MISC_ITEMS, defaultPresetInput(MISC_ITEMS), "misc-item"))).toEqual(["ATT=9"]);
   });
 });
 
 describe("link skills and union grid", () => {
-  test("default link skills", () => {
-    const got = collectPresets(LINK_SKILLS, defaultPresetInput(LINK_SKILLS), "link");
-    const sum = (k: string) => got.filter((x) => x.stat === k).reduce((a, x) => a + x.value, 0);
-    expect(sum("CRIT%")).toBe(25); // 궁수 10 + 팬텀 15
-    expect(sum("IED%")).toBe(25); // 루미너스 15 + 호영 10 (raw values; combined multiplicatively in computeStats)
-    expect(sum("ATT")).toBe(25);
-    expect(sum("MATT")).toBe(25);
-    expect(sum("DEX")).toBe(70);
-    expect(sum("BOSS%")).toBe(4);
-    expect(sum("DMG%")).toBe(2); // 아델 링크
+  test("default link levels", () => {
+    const got = collectChoices(LINK_SKILLS, defaultChoiceInput(LINK_SKILLS), "link");
+    expect(sumOf(got, "CRIT%")).toBe(25); // 궁수 Lv.6 10 + 팬텀 Lv.2 15
+    expect(sumOf(got, "IED%")).toBe(25); // 루미너스 Lv.2 15 + 호영 Lv.2 10 (raw; multiplicative in computeStats)
+    expect(sumOf(got, "ATT")).toBe(25); // 시그너스 Lv.10
+    expect(sumOf(got, "DEX")).toBe(70); // 해적 Lv.6
+    expect(sumOf(got, "BOSS%")).toBe(4);
+    expect(sumOf(got, "DMG%")).toBe(2);
   });
 
-  test("single-value link edits saved before multi-effect links still apply", () => {
-    const got = collectPresets(LINK_SKILLS, { adele: { on: true, value: 6 } }, "link");
-    expect(got.filter((x) => x.label.startsWith("아델")).map((x) => `${x.stat}=${x.value}`)).toEqual(["BOSS%=6", "DMG%=2"]);
-  });
-
-  test("link can be switched off or given another value", () => {
-    const input = { ...defaultPresetInput(LINK_SKILLS), bowman: { on: false }, adele: { on: true, value: 6 } };
-    const got = collectPresets(LINK_SKILLS, input, "link");
-    expect(got.some((x) => x.label.startsWith("궁수"))).toBe(false);
-    expect(got.find((x) => x.label.startsWith("아델"))?.value).toBe(6);
+  test("other levels, and not owned", () => {
+    const input = { ...defaultChoiceInput(LINK_SKILLS), bowman: "", adele: "1", cygnus: "3", pirate: "1" };
+    const got = collectChoices(LINK_SKILLS, input, "link");
+    expect(got.some((x) => x.label.startsWith("모험가 궁수"))).toBe(false);
+    expect(statsOf(got.filter((x) => x.label.startsWith("아델")))).toEqual(["BOSS%=2", "DMG%=1"]);
+    expect(sumOf(got, "ATT")).toBe(11);
+    expect(sumOf(got, "LUK")).toBe(20);
   });
 
   test("union grid cells", () => {

@@ -42,7 +42,14 @@ export {
   type PresetInput,
   type PresetState,
 } from "./collectors/presets";
-export { collectCollection, type CollectionInput } from "./collectors/collection";
+export {
+  collectChoices,
+  defaultChoiceInput,
+  selectedOption,
+  type ChoiceDef,
+  type ChoiceInput,
+  type ChoiceOption,
+} from "./collectors/choices";
 export { MAIN_STATS } from "./types";
 export type { ComputedStats, MainStat, StatContribution, StatKey } from "./types";
 export { formatEffect, mergeEffects, STAT_LABEL } from "./labels";

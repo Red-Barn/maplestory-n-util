@@ -3,12 +3,13 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import type { JobData } from "@/data/jobs";
 import { LINK_SKILLS } from "@/data/links";
-import { MISC_ITEMS } from "@/data/miscItems";
+import { COLLECTION } from "@/data/collection";
+import { MISC_ITEMS, TITLES } from "@/data/miscItems";
 import { load, pushRecent, save } from "@/lib/client/storage";
 import {
   apStatToFinal,
   collectCharacter,
-  collectCollection,
+  collectChoices,
   collectPresets,
   collectUnion,
   collectUnionGrid,
@@ -17,7 +18,8 @@ import {
   formatEffect,
   mergeEffects,
   MAIN_STATS,
-  type CollectionInput,
+  defaultChoiceInput,
+  type ChoiceInput,
   type ComputedStats,
   type FinalStats,
   type PresetInput,
@@ -29,7 +31,7 @@ import {
   type UnionInput,
 } from "@/lib/stats";
 import type { CharacterBundle } from "@/types/msu";
-import { CheckList, FieldList, Hint, InputTabs, PresetList, SubHeading, type Field, type Tab } from "./StatInputs";
+import { CheckList, ChoiceList, FieldList, Hint, InputTabs, PresetList, SubHeading, type Field, type Tab } from "./StatInputs";
 
 /** What the formulas need besides contributions. */
 type Ctx = { ap: Record<MainStat, number> };
@@ -151,19 +153,6 @@ function unionRaiderFields(job: JobData | undefined): Field<keyof UnionInput>[] 
   ];
 }
 
-function collectionFields(job: JobData | undefined): Field<keyof CollectionInput>[] {
-  return [
-    { key: "ALL", label: "올스탯" },
-    ...statFields(job),
-    { key: "ATT", label: !job ? "공격력/마력" : job.attackType === "ATT" ? "공격력" : "마력" },
-    { key: "DMG%", label: "데미지", pct: true },
-    { key: "BOSS%", label: "보스 데미지", pct: true },
-    { key: "IED%", label: "방어율 무시", pct: true },
-    { key: "CRIT%", label: "크리티컬 확률", pct: true },
-    { key: "CDMG%", label: "크리티컬 데미지", pct: true },
-  ];
-}
-
 function unionGridFields(job: JobData | undefined): Field<UnionGridKey>[] {
   const cell = { unit: "칸" };
   const atts: Field<UnionGridKey>[] = [
@@ -208,7 +197,10 @@ const signed = (v: number, pct?: boolean) => (v > 0 ? "+" : "") + fmt(v, pct);
 
 const TAB_KEY = "msn:stat-input-tab";
 
+const ALL_CHOICES = [...LINK_SKILLS, ...COLLECTION, ...TITLES];
+
 const countOn = (defs: { id: string }[], input: PresetInput) => defs.filter((d) => input[d.id]?.on ?? true).length;
+const countChosen = (defs: { id: string }[], input: ChoiceInput) => defs.filter((d) => input[d.id]).length;
 const countFilled = (...inputs: Record<string, number | undefined>[]) =>
   inputs.reduce((n, i) => n + Object.values(i).filter(Boolean).length, 0);
 
@@ -216,9 +208,9 @@ type Saved = {
   buffs?: Record<string, boolean>;
   union?: UnionInput;
   unionGrid?: UnionGridInput;
-  links?: PresetInput;
+  /** link skill levels, collection tier, title */
+  choices?: ChoiceInput;
   miscItems?: PresetInput;
-  collection?: CollectionInput;
 };
 
 export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
@@ -234,9 +226,8 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
   const [buffs, setBuffs] = useState<Record<string, boolean>>(defaults);
   const [union, setUnion] = useState<UnionInput>({});
   const [unionGrid, setUnionGrid] = useState<UnionGridInput>({});
-  const [links, setLinks] = useState<PresetInput>(() => defaultPresetInput(LINK_SKILLS));
+  const [choices, setChoices] = useState<ChoiceInput>(() => defaultChoiceInput(ALL_CHOICES));
   const [miscItems, setMiscItems] = useState<PresetInput>(() => defaultPresetInput(MISC_ITEMS));
-  const [collection, setCollection] = useState<CollectionInput>({});
   const [open, setOpen] = useState<string>();
   const [tab, setTab] = useState("buffs");
 
@@ -247,9 +238,8 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
     if (saved.buffs) setBuffs({ ...defaults, ...saved.buffs });
     if (saved.union) setUnion(saved.union);
     if (saved.unionGrid) setUnionGrid(saved.unionGrid);
-    if (saved.links) setLinks({ ...defaultPresetInput(LINK_SKILLS), ...saved.links });
+    if (saved.choices) setChoices({ ...defaultChoiceInput(ALL_CHOICES), ...saved.choices });
     if (saved.miscItems) setMiscItems({ ...defaultPresetInput(MISC_ITEMS), ...saved.miscItems });
-    if (saved.collection) setCollection(saved.collection);
     setTab(load(TAB_KEY, "buffs"));
     /* eslint-enable react-hooks/set-state-in-effect */
     pushRecent({
@@ -262,7 +252,11 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
   }, [storageKey, defaults, character]);
 
   const persist = (next: Saved) =>
-    save(storageKey, { buffs, union, unionGrid, links, miscItems, collection, ...next } satisfies Saved);
+    save(storageKey, { buffs, union, unionGrid, choices, miscItems, ...next } satisfies Saved);
+  const setChoice = (next: ChoiceInput) => {
+    setChoices(next);
+    persist({ choices: next });
+  };
 
   // API-derived stats plus what the user typed in (the API includes these but doesn't list them).
   const known = useMemo(
@@ -270,11 +264,12 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
       ...base.permanent,
       ...collectUnion(union),
       ...collectUnionGrid(unionGrid),
-      ...collectPresets(LINK_SKILLS, links, "link"),
+      ...collectChoices(LINK_SKILLS, choices, "link"),
+      ...collectChoices(COLLECTION, choices, "collection"),
+      ...collectChoices(TITLES, choices, "misc-item"),
       ...collectPresets(MISC_ITEMS, miscItems, "misc-item"),
-      ...collectCollection(collection),
     ],
-    [base.permanent, union, unionGrid, links, miscItems, collection],
+    [base.permanent, union, unionGrid, choices, miscItems],
   );
 
   // Default buff set = what the API snapshot includes (season buff on, skill buffs off).
@@ -400,18 +395,11 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
               {
                 id: "links",
                 label: "링크",
-                badge: countOn(LINK_SKILLS, links),
+                badge: countChosen(LINK_SKILLS, choices),
                 content: (
                   <>
-                    <Hint>API 스탯에 포함된 링크 스킬 효과입니다. 레벨이 다르면 수치를 고쳐 주세요.</Hint>
-                    <PresetList
-                      defs={LINK_SKILLS}
-                      values={links}
-                      onChange={(next) => {
-                        setLinks(next);
-                        persist({ links: next });
-                      }}
-                    />
+                    <Hint>API 스탯에 포함된 링크 스킬입니다. 보유한 링크의 레벨을 고르세요.</Hint>
+                    <ChoiceList defs={LINK_SKILLS} values={choices} onChange={setChoice} noneLabel="미보유" />
                   </>
                 ),
               },
@@ -445,28 +433,23 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
               {
                 id: "collection",
                 label: "도감",
-                badge: countFilled(collection),
+                badge: countChosen(COLLECTION, choices),
                 content: (
                   <>
-                    <Hint>인게임 도감 효과 합계를 입력하세요.</Hint>
-                    <FieldList
-                      fields={collectionFields(base.job)}
-                      values={collection}
-                      onChange={(next) => {
-                        setCollection(next);
-                        persist({ collection: next });
-                      }}
-                    />
+                    <Hint>API 스탯에 포함된 도감 효과입니다. 현재 도감 단계를 고르세요.</Hint>
+                    <ChoiceList defs={COLLECTION} values={choices} onChange={setChoice} noneLabel="선택 안 함" />
                   </>
                 ),
               },
               {
                 id: "misc",
                 label: "기타",
-                badge: countOn(MISC_ITEMS, miscItems),
+                badge: countChosen(TITLES, choices) + countOn(MISC_ITEMS, miscItems),
                 content: (
                   <>
-                    <SubHeading title="칭호·화살" hint="API가 불러오지 못하지만 API 스탯에는 포함된 아이템입니다." />
+                    <Hint>API가 불러오지 못하지만 API 스탯에는 포함된 아이템입니다.</Hint>
+                    <ChoiceList defs={TITLES} values={choices} onChange={setChoice} />
+                    <SubHeading title="화살" />
                     <PresetList
                       defs={MISC_ITEMS}
                       values={miscItems}
