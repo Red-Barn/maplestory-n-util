@@ -2,7 +2,16 @@ import { describe, expect, test } from "vitest";
 import { findJob } from "@/data/jobs";
 import { LINK_SKILLS } from "@/data/links";
 import { MISC_ITEMS, TITLES } from "@/data/miscItems";
-import { apStatToFinal, choicesForJob, collectCharacter, computeStats, effectsForJob, isRelevant, presetsForJob } from "..";
+import {
+  apStatToFinal,
+  choicesForJob,
+  collectBlessing,
+  collectCharacter,
+  computeStats,
+  effectsForJob,
+  isRelevant,
+  presetsForJob,
+} from "..";
 import type { JobView } from "..";
 import type { CharacterBundle } from "@/types/msu";
 import { brownBarn, orangeBarn, redBarn } from "./fixtures";
@@ -103,6 +112,29 @@ describe("OrangeBarn (Shade Lv.225)", () => {
     expect(of("Loaded Dice")).toEqual(["ATT=19"]);
     expect(of("Weaken")).toEqual(["IED%=20"]); // not the conditional +20% damage
     expect(of("Spirit Bond 4")).toEqual(["IED%=30", "BOSS%=30"]);
+  });
+});
+
+describe("Blessing of the Fairy / Empress's Blessing: only the stronger applies", () => {
+  const att = (list: { stat: string; label: string; value: number }[]) =>
+    list.filter((x) => x.stat === "ATT").map((x) => `${x.label}=${x.value}`);
+
+  test("RedBarn: the API lists both, Empress's Blessing wins", () => {
+    expect(collectCharacter(redBarn).apiEmpressBlessing).toBe(true);
+    expect(att(collectBlessing(redBarn.skills))).toEqual(["Empress's Blessing Lv.30=30"]);
+    // an entered level is ignored when the API already has the skill
+    expect(att(collectBlessing(redBarn.skills, 5))).toEqual(["Empress's Blessing Lv.30=30"]);
+  });
+
+  test.each([
+    ["BrownBarn", brownBarn],
+    ["OrangeBarn", orangeBarn],
+  ])("%s: the API lists only Blessing of the Fairy, the entered Empress's Blessing level is compared", (_, bundle) => {
+    expect(collectCharacter(bundle).apiEmpressBlessing).toBe(false);
+    expect(att(collectBlessing(bundle.skills))).toEqual(["Blessing of the Fairy Lv.20=20"]);
+    expect(att(collectBlessing(bundle.skills, 30))).toEqual(["Empress's Blessing Lv.30=30"]);
+    expect(collectBlessing(bundle.skills, 30).map((x) => x.stat)).toEqual(["ATT", "MATT"]); // not added on top
+    expect(att(collectBlessing(bundle.skills, 10))).toEqual(["Blessing of the Fairy Lv.20=20"]); // weaker
   });
 });
 
