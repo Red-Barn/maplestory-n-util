@@ -306,7 +306,7 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
   );
 
   // Default buff set = what the API snapshot includes (season buff on, skill buffs off).
-  // "버프 변화" and the API comparison use it.
+  // "버프 변화" is measured from it.
   const baseline = useMemo(
     () => [...known, ...base.buffs.filter((b) => b.defaultOn).flatMap((b) => b.contributions)],
     [known, base.buffs],
@@ -345,7 +345,8 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
                   const ref = row.value(reference, ctx);
                   const delta = v - ref;
                   const game = row.inGame && inGame[row.inGame];
-                  const err = game === undefined ? undefined : ref - game;
+                  // follows the checked buffs, so it moves together with "버프 변화"
+                  const err = game === undefined ? undefined : v - game;
                   return (
                     <Fragment key={row.id}>
                       <tr
@@ -382,8 +383,8 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
           </tbody>
         </table>
         <p className="px-3 py-2 text-xs text-zinc-500">
-          행을 누르면 출처별 내역이 보입니다. 오차 = 기본 버프 상태(시즌 버프만 켬)의 계산값 − 인게임 값. AP는 레벨 기준
-          자동 분배로 추정합니다.
+          행을 누르면 출처별 내역이 보입니다. 버프 변화 = 기본 버프 상태(시즌 버프만 켬) 대비 변화량. 오차 = 계산값 −
+          인게임 값으로, 버프를 바꾸면 함께 바뀝니다. AP는 레벨 기준 자동 분배로 추정합니다.
         </p>
       </div>
 
