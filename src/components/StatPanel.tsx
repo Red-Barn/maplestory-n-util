@@ -2,41 +2,21 @@
 
 import { Fragment, useEffect, useMemo, useState } from "react";
 import type { JobData } from "@/data/jobs";
-import { LINK_SKILLS } from "@/data/links";
 import { COLLECTION } from "@/data/collection";
-import { HYPER_STATS } from "@/data/hyperStats";
-import { MISC_ITEMS, TITLES } from "@/data/miscItems";
-import { EMPRESS_BLESSING, SEASON_BUFF_ID } from "@/data/jobs/common";
-import { load, loadSeasonBuff, pushRecent, save, statPanelKey } from "@/lib/client/storage";
+import { EMPRESS_BLESSING } from "@/data/jobs/common";
+import { load, save } from "@/lib/client/storage";
+import { useCharacterStats } from "@/lib/client/useCharacterStats";
 import {
-  abilityTypesForJob,
   API_PRESET,
-  apiAbilityLines,
-  apiHyperInput,
   apStatToFinal,
-  choicesForJob,
-  collectAbilityLines,
-  collectBlessing,
-  collectPets,
   MAX_PETS,
   petAtt,
   PRESET_SLOTS,
-  type AbilityLine,
-  collectCharacter,
-  collectChoices,
-  collectCollectionSet,
-  collectPresets,
-  collectUnion,
-  collectUnionGrid,
-  computeStats,
-  defaultPresetInput,
   formatEffect,
   isRelevant,
   mergeEffects,
-  presetsForJob,
   sumStats,
   MAIN_STATS,
-  defaultChoiceInput,
   type ChoiceInput,
   type ComputedStats,
   type FinalStats,
@@ -44,7 +24,6 @@ import {
   type MainStat,
   type StatContribution,
   type StatKey,
-  type UnionGridInput,
   type UnionGridKey,
   type UnionInput,
 } from "@/lib/stats";
@@ -238,8 +217,6 @@ const signed = (v: number, pct?: boolean) => (v > 0 ? "+" : "") + fmt(v, pct);
 
 const TAB_KEY = "msn:stat-input-tab";
 
-const ALL_CHOICES = [...LINK_SKILLS, ...COLLECTION, ...TITLES];
-
 /** Buff effects the job uses, plus the buff's note. */
 const describeBuff = (b: { contributions: StatContribution[]; note?: string }, job: JobData | undefined) =>
   [...mergeEffects(b.contributions.filter((c) => isRelevant(c.stat, job))).map(formatEffect), b.note]
@@ -258,179 +235,65 @@ const PRESET_OPTIONS = [
 const EMPRESS_OPTIONS = Array.from({ length: EMPRESS_BLESSING.maxLevel + 1 }, (_, n) => ({ id: String(n), label: `Lv.${n}` }));
 const PET_OPTIONS = Array.from({ length: MAX_PETS + 1 }, (_, n) => ({ id: String(n), label: `${n}마리` }));
 
-type CollectionSetInput = { ALL?: number };
 const COLLECTION_SET_FIELDS: Field<"ALL">[] = [{ key: "ALL", label: "세트 효과 올스탯" }];
-
-type Saved = {
-  buffs?: Record<string, boolean>;
-  union?: UnionInput;
-  unionGrid?: UnionGridInput;
-  /** link skill levels, collection tier, title */
-  choices?: ChoiceInput;
-  miscItems?: PresetInput;
-  /** all stats from collection set effects */
-  collectionSet?: CollectionSetInput;
-  /** number of pets (each with its equipment); unset = the API's count */
-  pets?: number;
-  /** Empress's Blessing level, for characters the API doesn't list it for */
-  empress?: number;
-  /** hyper stat preset in use: API_PRESET or a slot, and the levels entered per slot */
-  hyperPreset?: string;
-  hyperPresets?: Record<string, ChoiceInput>;
-  abilityPreset?: string;
-  abilityPresets?: Record<string, AbilityLine[]>;
-};
 
 export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
   const { character } = bundle;
-  const storageKey = statPanelKey(character.assetKey);
-
-  const base = useMemo(() => collectCharacter(bundle), [bundle]);
+  // inputs, their saved state and the stats built from them (shared with the calculators)
+  const {
+    base,
+    season,
+    miscDefs,
+    linkDefs,
+    titleDefs,
+    hyperDefs,
+    buffs,
+    setBuffs,
+    union,
+    setUnion,
+    unionGrid,
+    setUnionGrid,
+    choices,
+    setChoices,
+    miscItems,
+    setMiscItems,
+    collectionSet,
+    setCollectionSet,
+    petCount,
+    setPets,
+    empressLevel,
+    setEmpress,
+    hyperPreset,
+    setHyperPreset,
+    hyperPresets,
+    setHyperPresets,
+    hyperInput,
+    abilityPreset,
+    setAbilityPreset,
+    abilityPresets,
+    setAbilityPresets,
+    abilityLines,
+    abilityTypes,
+    persist,
+    result,
+    reference,
+  } = useCharacterStats(bundle);
   const sections = useMemo(() => buildSections(base.job), [base.job]);
   const inGame = useMemo(() => apStatToFinal(character.apStat), [character.apStat]);
-  // Whether this character uses the season buff (set on the character list); off until it's read.
-  const [season, setSeason] = useState(false);
-  // Buffs the API stat snapshot includes: they start checked and count as "no buff change".
-  const inSnapshot = useMemo(
-    () => Object.fromEntries(base.buffs.map((b) => [b.id, b.id === SEASON_BUFF_ID ? season : b.defaultOn])),
-    [base.buffs, season],
-  );
   const ctx: Ctx = { ap: base.ap };
-  // Inputs the character can't use (other jobs' items, stats the job ignores) are left out.
-  const jobName = character.common.job.jobName;
-  const miscDefs = useMemo(() => presetsForJob(MISC_ITEMS, jobName, base.job), [jobName, base.job]);
-  const linkDefs = useMemo(() => choicesForJob(LINK_SKILLS, base.job), [base.job]);
-  const titleDefs = useMemo(() => choicesForJob(TITLES, base.job), [base.job]);
-
-  const [buffs, setBuffs] = useState<Record<string, boolean>>(inSnapshot);
-  const [union, setUnion] = useState<UnionInput>({});
-  const [unionGrid, setUnionGrid] = useState<UnionGridInput>({});
-  const [choices, setChoices] = useState<ChoiceInput>(() => defaultChoiceInput(ALL_CHOICES));
-  const [miscItems, setMiscItems] = useState<PresetInput>(() => defaultPresetInput(MISC_ITEMS));
-  const [collectionSet, setCollectionSet] = useState<CollectionSetInput>({});
-  const [pets, setPets] = useState<number>();
-  const [empress, setEmpress] = useState<number>();
-  const [hyperPreset, setHyperPreset] = useState(API_PRESET);
-  const [hyperPresets, setHyperPresets] = useState<Record<string, ChoiceInput>>({});
-  const [abilityPreset, setAbilityPreset] = useState(API_PRESET);
-  const [abilityPresets, setAbilityPresets] = useState<Record<string, AbilityLine[]>>({});
   const [open, setOpen] = useState<string>();
   const [tab, setTab] = useState("buffs");
 
   useEffect(() => {
-    // restore per-character settings and record this visit (localStorage is client-only)
-    const saved = load<Saved>(storageKey, {});
-    /* eslint-disable react-hooks/set-state-in-effect */
-    const usesSeason = loadSeasonBuff(character.assetKey);
-    setSeason(usesSeason);
-    setBuffs({
-      ...Object.fromEntries(base.buffs.map((b) => [b.id, b.id === SEASON_BUFF_ID ? usesSeason : b.defaultOn])),
-      ...saved.buffs,
-    });
-    if (saved.union) setUnion(saved.union);
-    if (saved.unionGrid) setUnionGrid(saved.unionGrid);
-    if (saved.choices) setChoices({ ...defaultChoiceInput(ALL_CHOICES), ...saved.choices });
-    if (saved.miscItems) setMiscItems({ ...defaultPresetInput(MISC_ITEMS), ...saved.miscItems });
-    if (saved.collectionSet) setCollectionSet(saved.collectionSet);
-    setPets(saved.pets);
-    setEmpress(saved.empress);
-    setHyperPreset(saved.hyperPreset ?? API_PRESET);
-    setHyperPresets(saved.hyperPresets ?? {});
-    setAbilityPreset(saved.abilityPreset ?? API_PRESET);
-    setAbilityPresets(saved.abilityPresets ?? {});
+    // localStorage is only readable after mount
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTab(load(TAB_KEY, "buffs"));
-    /* eslint-enable react-hooks/set-state-in-effect */
-    pushRecent({
-      assetKey: character.assetKey,
-      name: character.common.name,
-      jobName: character.common.job.jobName,
-      level: character.common.level,
-      imageUrl: character.image.imageUrl,
-    });
-  }, [storageKey, base.buffs, character]);
+  }, []);
 
-  const persist = (next: Saved) =>
-    save(storageKey, {
-      buffs,
-      union,
-      unionGrid,
-      choices,
-      miscItems,
-      collectionSet,
-      pets,
-      empress,
-      hyperPreset,
-      hyperPresets,
-      abilityPreset,
-      abilityPresets,
-      ...next,
-    } satisfies Saved);
   const setChoice = (next: ChoiceInput) => {
     setChoices(next);
     persist({ choices: next });
   };
-
-  // Hyper stat / ability presets: the API one, or a slot the user filled in (starts as a copy of it).
-  const hyperDefs = useMemo(() => choicesForJob(HYPER_STATS, base.job), [base.job]);
-  const hyperInput = useMemo(
-    () => hyperPresets[hyperPreset] ?? apiHyperInput(character),
-    [hyperPresets, hyperPreset, character],
-  );
-  const abilityLines = useMemo(
-    () => abilityPresets[abilityPreset] ?? apiAbilityLines(character),
-    [abilityPresets, abilityPreset, character],
-  );
-  const abilityTypes = useMemo(
-    () => abilityTypesForJob(base.job, abilityLines.map((l) => l.type)),
-    [base.job, abilityLines],
-  );
-  const chosenPresets = useMemo(
-    () => [
-      ...(hyperPreset === API_PRESET ? base.hyper : collectChoices(HYPER_STATS, hyperInput, "hyper")),
-      ...(abilityPreset === API_PRESET
-        ? base.ability
-        : collectAbilityLines(abilityLines, `어빌리티 프리셋 ${abilityPreset}`)),
-    ],
-    [hyperPreset, hyperInput, abilityPreset, abilityLines, base.hyper, base.ability],
-  );
-  const petCount = pets ?? base.petCount;
-  const empressLevel = empress ?? EMPRESS_BLESSING.defaultLevel;
-
-  // API-derived stats plus what the user typed in (the API includes these but doesn't list them).
-  const known = useMemo(
-    () => [
-      ...base.fixed,
-      ...collectBlessing(bundle.skills, empressLevel),
-      ...collectPets(petCount),
-      ...collectUnion(union),
-      ...collectUnionGrid(unionGrid),
-      ...collectChoices(LINK_SKILLS, choices, "link"),
-      ...collectChoices(COLLECTION, choices, "collection"),
-      ...collectCollectionSet(collectionSet.ALL),
-      ...collectChoices(TITLES, choices, "misc-item"),
-      ...collectPresets(miscDefs, miscItems, "misc-item"),
-    ],
-    [base.fixed, bundle.skills, empressLevel, petCount, union, unionGrid, choices, miscItems, collectionSet, miscDefs],
-  );
-
-  // Baseline = what the API snapshot includes: the API's hyper stat and ability presets, the
-  // season buff if the character uses it, skill buffs off. "변화" is measured from it.
-  const baseline = useMemo(
-    () => [
-      ...known,
-      ...base.hyper,
-      ...base.ability,
-      ...base.buffs.filter((b) => inSnapshot[b.id]).flatMap((b) => b.contributions),
-    ],
-    [known, base.hyper, base.ability, base.buffs, inSnapshot],
-  );
-  const active = useMemo(
-    () => [...known, ...chosenPresets, ...base.buffs.filter((b) => buffs[b.id]).flatMap((b) => b.contributions)],
-    [known, chosenPresets, base.buffs, buffs],
-  );
-
-  const result = useMemo(() => computeStats(active, base.ap), [active, base.ap]);
-  const reference = useMemo(() => computeStats(baseline, base.ap), [baseline, base.ap]);
 
   return (
     <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">

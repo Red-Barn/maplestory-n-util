@@ -1,11 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
 import EquipmentGrid from "@/components/EquipmentGrid";
 import StatPanel from "@/components/StatPanel";
 import { findJob } from "@/data/jobs";
-import { loadSpecialRing, saveSpecialRing } from "@/lib/client/storage";
-import { withoutSpecialRing } from "@/lib/manualItems";
+import { useWornBundle } from "@/lib/client/useCharacterStats";
 import type { CharacterBundle } from "@/types/msu";
 
 /**
@@ -15,18 +13,7 @@ import type { CharacterBundle } from "@/types/msu";
 export default function CharacterSections({ bundle, missing }: { bundle: CharacterBundle; missing: number }) {
   const { character } = bundle;
   const job = findJob(character.common.job.jobCode);
-  const [specialRing, setSpecialRing] = useState(true);
-
-  useEffect(() => {
-    // localStorage is only readable after mount
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setSpecialRing(loadSpecialRing(character.assetKey));
-  }, [character.assetKey]);
-
-  const worn = useMemo(
-    () => (specialRing ? bundle : { ...bundle, items: withoutSpecialRing(bundle.items) }),
-    [bundle, specialRing],
-  );
+  const { worn, specialRing, setSpecialRing } = useWornBundle(bundle);
 
   return (
     <>
@@ -42,10 +29,7 @@ export default function CharacterSections({ bundle, missing }: { bundle: Charact
             <input
               type="checkbox"
               checked={specialRing}
-              onChange={(e) => {
-                setSpecialRing(e.target.checked);
-                saveSpecialRing(character.assetKey, e.target.checked);
-              }}
+              onChange={(e) => setSpecialRing(e.target.checked)}
             />
             특수 반지 착용
           </label>

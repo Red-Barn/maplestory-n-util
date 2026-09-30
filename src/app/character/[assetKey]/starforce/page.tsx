@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import CharacterHeader from "@/components/CharacterHeader";
-import CharacterSections from "@/components/CharacterSections";
 import { getCharacterBundle } from "@/lib/character";
 import { MsuApiError } from "@/lib/msu";
 
-export const metadata: Metadata = { title: "캐릭터 · MapleStory N 유틸" };
+export const metadata: Metadata = { title: "스타포스 계산기 · MapleStory N 유틸" };
 
-export default async function CharacterPage({ params }: PageProps<"/character/[assetKey]">) {
+export default async function StarforcePage({ params }: PageProps<"/character/[assetKey]/starforce">) {
   const { assetKey } = await params;
 
   let bundle;
@@ -17,13 +16,13 @@ export default async function CharacterPage({ params }: PageProps<"/character/[a
     return <p className="text-red-600">{message}</p>;
   }
 
-  const { character, items } = bundle;
-  const missing = Object.entries(character.wearing.equip).filter(([slot, ref]) => ref?.itemId && !items[slot]).length;
-
   return (
     <div className="space-y-8">
-      <CharacterHeader character={character} />
-      <CharacterSections bundle={bundle} missing={missing} />
+      <CharacterHeader character={bundle.character} />
+      <section className="space-y-3">
+        <h2 className="text-lg font-semibold">스타포스 계산기</h2>
+        <p className="text-sm text-zinc-500">준비 중입니다.</p>
+      </section>
     </div>
   );
 }

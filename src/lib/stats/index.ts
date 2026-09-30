@@ -72,6 +72,7 @@ export {
 export { MAIN_STATS } from "./types";
 export type { ComputedStats, MainStat, StatContribution, StatKey } from "./types";
 export { formatEffect, mergeEffects, STAT_LABEL } from "./labels";
+export { damageScore, damageTerms, MONSTER_DEF, type DamageTerms } from "./damage";
 export { collectCollectionSet } from "./collectors/collection";
 export { collectPets, MAX_PETS, petAtt } from "./collectors/character";
 export { collectBlessing } from "./collectors/skills";

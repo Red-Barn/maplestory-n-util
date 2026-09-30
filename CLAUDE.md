@@ -39,8 +39,35 @@
   1. #7 Vercel 연동 (저장소 Import + 환경변수 `MSU_API_KEY`, Production Branch = `master`)
   2. #8 인게임 스탯창과 비교해 보정 없는 오차 줄이기 (AP 추정식 `estimateAp`, 기본 크리율, Marksmanship ATT% 해석 확인)
   3. #9 물약/소비·시너지 데이터(인게임 수치 확인 필요). 아란 Advanced Combo Ability의 콤보 공격력 +20이 스탯창에 반영되는지 인게임 확인 필요
-  4. #10 계산기: 스탯 등가치 → 장비 교체 비교 → 스타포스/잠재/하이퍼스탯
+  4. #10 계산기: #32 하이퍼 스탯 최적화, #33 스타포스, #34 잠재능력 등급 업을 worktree 3개에서 병렬 진행 (아래 "병렬 작업 규칙"). 이후 장비 교체 비교, 잠재 옵션 출현 확률
 - 이슈 추적 도입 전 작업은 closed 이슈 #2~#6에 기능 단위로 정리
+
+## 계산기 공통 기반
+- 페이지: `src/app/character/[assetKey]/{hyper,starforce,potential}/page.tsx`. 상단 탭은 `src/components/CharacterTabs.tsx`, 캐릭터 머리글은 `CharacterHeader`
+- 현재 스탯: `useWornBundle(bundle)`(특수 반지 해제 반영) → `useCharacterStats(worn)` (`src/lib/client/useCharacterStats.ts`). 스탯 패널과 같은 저장소(localStorage)를 읽으므로 링크·유니온·도감·프리셋·펫·버프가 모두 반영됨. `result`(현재), `reference`(API 기준), `withoutHyper`(하이퍼 스탯만 뺀 기여분)
+- 데미지 점수: `damageTerms` / `damageScore` (`src/lib/stats/damage.ts`). 스탯 반영치 × 총 공격력 × 데미지%(데미지+보공) × 방어율 보정(몬스터 방어율 300%) × 크리티컬 보정(크확 100% 상한). 최종 데미지·무기 상수·숙련도·스킬 데미지%·속성 내성은 비교 대상끼리 같은 상수라 제외 → **절대값이 아니라 비율로 비교**
+- 강화 가격: `GET /api/enhancement/{itemId}` (`src/lib/enhancement.ts`, MSU `/enhancement/items/{itemId}/dynamicprice`). 장비 하나의 성별 스타포스 비용과 큐브별 비용(NESO)을 함께 줌. 가격은 장비마다 다르고 1분마다 바뀜(캐시 60초). 큐브 ID는 `src/data/itemIds.ts`의 `CUBES`, 이름 → ID 표 `ITEM_IDS`는 사용자가 제공 예정(장착 장비는 `common.itemId`로 바로 조회)
+
+## 병렬 작업 규칙 (worktree)
+계산기 3종은 worktree 3개에서 에이전트가 동시에 작업한다. 메인 폴더(`maplestory-n-util`, `develop`)는 통합 담당이다.
+
+| 작업 | 이슈 | 폴더 | 브랜치 | 담당 경로 | 포트 |
+|---|---|---|---|---|---|
+| 하이퍼 스탯 최적화 | #32 | `msn-hyper` | `feature/32-hyper-stat-optimizer` | `src/app/character/[assetKey]/hyper/`, `src/lib/calc/hyper/`, `src/components/calc/hyper/` | 3001 |
+| 스타포스 계산기 | #33 | `msn-starforce` | `feature/33-starforce-calculator` | `src/app/character/[assetKey]/starforce/`, `src/lib/calc/starforce/`, `src/components/calc/starforce/`, `src/data/starforce.ts` | 3002 |
+| 잠재능력 등급 업 | #34 | `msn-potential` | `feature/34-potential-calculator` | `src/app/character/[assetKey]/potential/`, `src/lib/calc/potential/`, `src/components/calc/potential/`, `src/data/potential.ts` | 3003 |
+
+worktree에서 작업하는 에이전트는 위 워크플로에 더해 다음을 지킨다.
+- **담당 경로만 수정한다.** 추가로 자기 문서 `docs/calc/<hyper|starforce|potential>.md`만 만들 수 있다.
+- **공용 파일은 수정하지 않는다**: 담당 경로 밖의 모든 파일. 특히 `StatPanel.tsx`, `StatInputs.tsx`, `CharacterTabs.tsx`, `src/lib/stats/**`, `src/lib/client/**`, `src/data/jobs/**`, `src/data/itemIds.ts`, `CLAUDE.md`, `package.json`. 고쳐야 하면 작업을 멈추고 필요한 변경을 사용자에게 알린다 → 메인 폴더에서 처리해 `develop`에 병합 → worktree는 `git fetch` 후 `git merge origin/develop`으로 받는다(rebase 금지).
+- **브랜치는 이미 만들어져 있다.** 새 브랜치를 만들거나 다른 브랜치로 바꾸지 않는다. 이슈도 표의 것을 쓴다.
+- **진행 기록은 자기 이슈에** 남긴다. CLAUDE.md에는 쓰지 않는다. 확인된 수치와 출처는 `docs/calc/<이름>.md`에 정리한다(병합 후 메인에서 CLAUDE.md에 요약).
+- **개발 서버는 자기 포트로만** 띄운다(`npx next dev -p <포트>`). 끝나면 그 포트의 프로세스만 종료한다. 3000번(메인)과 다른 작업의 포트는 건드리지 않는다.
+- **MSU API 한도는 모든 폴더가 같이 쓴다.** 테스트는 fixture(`src/lib/stats/__tests__/fixtures/`)로 하고, 실제 호출은 최종 화면 확인 때만 한다.
+- **게임 수치는 추측으로 채우지 않는다.** 사용자가 이슈에 준 값은 그대로 쓴다. 검색으로 찾은 값은 출처를 주석에 남기고 PR에 "확인 필요"로 적는다. 모르면 사용자에게 묻거나 입력값으로 둔다.
+- 계산 로직은 `src/lib/calc/<이름>/`에 순수 함수로 두고 같은 폴더의 `__tests__`에서 Vitest로 검증한다.
+- PR 전에 `git diff --stat origin/develop`으로 담당 경로 밖 파일이 없는지 확인한다.
+- `Closes #N`이 이 저장소에서 자동으로 이슈를 닫지 못한다 → 병합 후 이슈를 직접 닫는다.
 
 ## 개발 워크플로 (Gitflow + 이슈)
 모든 작업(기능·버그·문서·오타)은 **이슈 → 브랜치 → PR** 순서로 진행한다. `master`, `develop`에 직접 커밋하지 않는다.
