@@ -1,10 +1,12 @@
 "use client";
 
 import {
+  effectsForJob,
   presetValue,
   selectedOption,
   type ChoiceDef,
   type ChoiceInput,
+  type JobView,
   type PresetDef,
   type PresetInput,
   type PresetState,
@@ -155,8 +157,9 @@ const EFFECT_LABEL: Record<string, string> = {
   ALL: "올스탯",
 };
 
-export function describeEffects(effects: PresetEffect[]): string {
-  return effects.map((e) => `${EFFECT_LABEL[e.key] ?? e.key} +${e.value}${e.key.endsWith("%") ? "%" : ""}`).join(" · ");
+/** Effects as text, limited to what the job uses (e.g. "공/마" reads as "공격력" for an ATT job). */
+export function describeEffects(effects: PresetEffect[], job?: JobView): string {
+  return effectsForJob(effects, job).map((e) => `${EFFECT_LABEL[e.key] ?? e.key} +${e.value}${e.key.endsWith("%") ? "%" : ""}`).join(" · ");
 }
 
 /** Dropdown rows (link skill level, collection tier, title) with the chosen option's effects below. */
@@ -164,6 +167,7 @@ export function ChoiceList(props: {
   defs: ChoiceDef[];
   values: ChoiceInput;
   onChange: (next: ChoiceInput) => void;
+  job?: JobView;
 }) {
   return (
     <ul className="divide-y divide-black/5 dark:divide-white/10">
@@ -188,7 +192,7 @@ export function ChoiceList(props: {
                 ))}
               </select>
             </label>
-            {shown && <p className="mt-0.5 text-right text-[11px] leading-snug text-zinc-500">{describeEffects(shown)}</p>}
+            {shown && <p className="mt-0.5 text-right text-[11px] leading-snug text-zinc-500">{describeEffects(shown, props.job)}</p>}
           </li>
         );
       })}
@@ -197,7 +201,12 @@ export function ChoiceList(props: {
 }
 
 /** Checkbox rows of fixed-effect bundles (arrows, ...) with editable values. */
-export function PresetList(props: { defs: PresetDef[]; values: PresetInput; onChange: (next: PresetInput) => void }) {
+export function PresetList(props: {
+  defs: PresetDef[];
+  values: PresetInput;
+  onChange: (next: PresetInput) => void;
+  job?: JobView;
+}) {
   return (
     <ul className="divide-y divide-black/5 dark:divide-white/10">
       {props.defs.map((d) => {
@@ -218,18 +227,23 @@ export function PresetList(props: { defs: PresetDef[]; values: PresetInput; onCh
               </span>
             </label>
             <span className={`flex shrink-0 flex-col items-end gap-1 ${state.on ? "" : "opacity-40"}`}>
-              {d.effects.map((e, i) => (
-                <span key={i} className="flex items-center gap-1">
-                  <span className="text-[11px] text-zinc-500">{EFFECT_LABEL[e.key] ?? e.key}</span>
-                  <NumberInput
-                    label={`${d.name} ${EFFECT_LABEL[e.key] ?? e.key}`}
-                    value={presetValue(d, state, i)}
-                    decimal={e.key.endsWith("%")}
-                    onChange={(v) => setValue(i, v ?? 0)}
-                  />
-                  <Unit>{e.key.endsWith("%") ? "%" : ""}</Unit>
-                </span>
-              ))}
+              {d.effects.map((effect, i) => {
+                // values stay index-aligned with the definition, so unused effects are skipped, not removed
+                const [e] = effectsForJob([effect], props.job);
+                if (!e) return null;
+                return (
+                  <span key={i} className="flex items-center gap-1">
+                    <span className="text-[11px] text-zinc-500">{EFFECT_LABEL[e.key] ?? e.key}</span>
+                    <NumberInput
+                      label={`${d.name} ${EFFECT_LABEL[e.key] ?? e.key}`}
+                      value={presetValue(d, state, i)}
+                      decimal={e.key.endsWith("%")}
+                      onChange={(v) => setValue(i, v ?? 0)}
+                    />
+                    <Unit>{e.key.endsWith("%") ? "%" : ""}</Unit>
+                  </span>
+                );
+              })}
             </span>
           </li>
         );

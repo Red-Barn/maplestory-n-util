@@ -31,5 +31,6 @@ export const MISC_ITEMS: PresetDef[] = [
     name: "Titanium Arrows for Bow",
     tag: "화살",
     effects: [{ key: "ATT", value: 9 }],
+    onlyJobs: ["Bowmaster"],
   },
 ];

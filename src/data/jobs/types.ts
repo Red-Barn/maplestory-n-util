@@ -4,7 +4,14 @@ import type { MainStat, StatEffect, StatKey } from "@/lib/stats/types";
  * A skill whose effect text (at the character's current level, from /skills) is parsed.
  * `pick` limits which parsed stats count — effect texts also contain skill damage %, MP cost, etc.
  */
-export type SkillRef = { name: string; pick: StatKey[] };
+export type SkillRef = {
+  name: string;
+  pick: StatKey[];
+  /** Only read the "[Passive Effect ...]" part — the rest describes the active skill. */
+  passiveOnly?: boolean;
+  /** Fixed effects while the skill is learned, for text that isn't a "<stat>: +N" form. */
+  effects?: StatEffect[];
+};
 
 export type BuffDef = {
   id: string;
@@ -13,8 +20,8 @@ export type BuffDef = {
   skills?: SkillRef[];
   /** Fixed effects when the text can't be parsed (e.g. Maple Warrior's "AP by 15%"). */
   effects?: StatEffect[];
-  /** Shown instead of the effect list, e.g. for effects the engine does not model. */
-  description?: string;
+  /** Shown after the effect list, e.g. for effects the engine does not model. */
+  note?: string;
   /**
    * Whether the API stat snapshot already includes this buff. Those start checked, so the
    * computed stats line up with the in-game values; the rest start unchecked and add on top.

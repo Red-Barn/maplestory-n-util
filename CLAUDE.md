@@ -6,7 +6,8 @@
 
 ## 사용자 캐릭터
 - 주력: RedBarn (Bowmaster Lv.244, `CHARd0irqke79c7c73dqmsb0`) — 스탯 엔진 검증 기준, 테스트 fixture
-- 서브: BrownBarn (Aran), OrangeBarn (Shade) — 직업 데이터 미작성
+- 서브: BrownBarn (Aran Lv.225, `CHARd2a1t3838phs73a2d2j0`), OrangeBarn (Shade Lv.225, `CHARd2j9bd47lb2s73e8hmeg`) — 둘 다 주스탯 STR / 부스탯 DEX / 공격력. 테스트 fixture 있음
+- 샘플 수집: `node --env-file=.env.local scripts/probe.mjs <assetKey> <폴더>` → `docs/samples/<폴더>/`, 이어서 `node scripts/make-fixture.mjs <이름> <폴더>`
 
 ## 현재 진행 상황 (2026-09-29)
 - 완료: 캐릭터 불러오기(지갑 주소 + 이름 필터), 캐릭터 페이지(장비·잠재 그리드, 스탯 패널), 스탯 엔진 1차, Vitest
@@ -25,11 +26,14 @@
   - 특수 반지(S.Ring)는 API에 아예 없음 → `src/lib/manualItems.ts`가 모든 캐릭터에 올스탯 +4, 공마 +4 장비로 추가
   - 유니온: 점령 효과 주/부스탯은 스탯% **적용**, 공격대원 주/부스탯은 스탯% **미적용** (사용자 확인)
   - 마켓 이름 검색(`filter.name`)은 OAuth(`msu-authorization`) 없이는 필터가 무시됨 → 이름 검색은 지갑 내 `name` 필터로 대체
+  - 직업 데이터(`src/data/jobs/`): 주스탯/부스탯/공격 타입은 API `apStat`에서 가장 큰 스탯·공격력/마력으로 확인 (`jobs.test.ts`가 검증). 액티브 스킬에 붙은 패시브는 `passiveOnly`로 "[Passive Effect ...]" 부분만 파싱, 문장형 효과는 `effects`로 고정값 지정
+  - 직업에 필요 없는 것 숨기기(`src/lib/stats/relevance.ts`): 다른 주스탯·반대 공격 타입은 버프/링크/도감/칭호 효과 설명에서 제외("공/마" → 직업의 공격 타입만), 효과가 하나도 안 남는 드롭다운은 숨김. 특정 직업 전용 프리셋은 `onlyJobs`(화살 = Bowmaster)로 UI와 계산 모두에서 제외
+  - 링크 레벨·칭호 기본값은 RedBarn 기준이라 다른 캐릭터에서는 직접 맞춰야 함
   - 캐시: `msuFetch`는 `unstable_cache`로 감쌈 (게이트 650ms·429 재시도는 캐시 미스에만). 첫 조회 ~15초, 이후 즉시
 - 다음 할 일 (GitHub 이슈가 기준 — `gh issue list`):
   1. #7 Vercel 연동 (저장소 Import + 환경변수 `MSU_API_KEY`, Production Branch = `master`)
   2. #8 인게임 스탯창과 비교해 보정 없는 오차 줄이기 (AP 추정식 `estimateAp`, 기본 크리율, Marksmanship ATT% 해석 확인)
-  3. #9 서브캐릭 직업 데이터(`src/data/jobs/aran.ts`, `shade.ts`), 물약/소비·시너지 데이터(인게임 수치 확인 필요)
+  3. #9 물약/소비·시너지 데이터(인게임 수치 확인 필요). 아란 Advanced Combo Ability의 콤보 공격력 +20이 스탯창에 반영되는지 인게임 확인 필요
   4. #10 계산기: 스탯 등가치 → 장비 교체 비교 → 스타포스/잠재/하이퍼스탯
 - 이슈 추적 도입 전 작업은 closed 이슈 #2~#6에 기능 단위로 정리
 
