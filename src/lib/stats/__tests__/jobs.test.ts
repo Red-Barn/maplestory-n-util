@@ -19,7 +19,7 @@ describe.each([
   ["RedBarn", redBarn, "Bowmaster", "DEX", "STR"],
   ["BrownBarn", brownBarn, "Aran", "STR", "DEX"],
   ["OrangeBarn", orangeBarn, "Shade", "STR", "DEX"],
-] as const)("%s main/sub stat and attack type", (_, bundle, jobName, main, sub) => {
+] as const)("%s main/sub stat and attack type", (name, bundle, jobName, main, sub) => {
   const { c, api } = setup(bundle);
 
   test("job data matches the API job", () => {
@@ -36,7 +36,8 @@ describe.each([
 
   test("main stat gets the AP", () => {
     const level = bundle.character.common.level;
-    expect(c.ap[main]).toBe(5 * level + 18);
+    expect(c.ap[main]).toBe(5 * level + (name === "BrownBarn" ? 23 : 18)); // Aran: 5n + 23
+    if (name === "BrownBarn") expect(c.ap.STR).toBe(1148);
     expect(c.ap[sub]).toBe(4);
   });
 });
@@ -90,6 +91,11 @@ describe("OrangeBarn (Shade Lv.225)", () => {
   test("ability line \"Attack: +9\" counts as ATT", () => {
     const ability = c.permanent.filter((x) => x.source === "ability").map((x) => `${x.stat}=${x.value}`);
     expect(ability).toEqual(["BOSS%=18", "ATT=9"]); // the abnormal status line is conditional
+  });
+
+  test("ability all stats are not multiplied by stat %", () => {
+    const b = setup(brownBarn).c.permanent.filter((x) => x.source === "ability").map((x) => `${x.stat}=${x.value}`);
+    expect(b).toEqual(["BOSS%=19", "STR_FIXED=7", "DEX_FIXED=7", "INT_FIXED=7", "LUK_FIXED=7"]);
   });
 
   test("passives", () => {

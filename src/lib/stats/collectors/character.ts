@@ -2,7 +2,7 @@ import type { CharacterDetail } from "@/types/msu";
 import { parseOption } from "../parseOption";
 import { MAIN_STATS, type MainStat, type StatContribution, type StatKey } from "../types";
 
-// Hyper stat and arcane symbol main stats are not multiplied by stat %.
+// Hyper stat, ability and arcane symbol main stats are not multiplied by stat %.
 const toFixed = (stat: StatKey): StatKey =>
   (MAIN_STATS as readonly string[]).includes(stat) ? (`${stat as MainStat}_FIXED` as StatKey) : stat;
 
@@ -17,7 +17,9 @@ export function collectHyperStats(character: CharacterDetail): StatContribution[
 export function collectAbility(character: CharacterDetail): StatContribution[] {
   return Object.values(character.ability)
     .filter((a) => a != null)
-    .flatMap((a) => parseOption(a.desc).map((e) => ({ ...e, source: "ability" as const, label: a.desc })));
+    .flatMap((a) =>
+      parseOption(a.desc).map((e) => ({ stat: toFixed(e.stat), value: e.value, source: "ability" as const, label: a.desc })),
+    );
 }
 
 export function collectArcane(character: CharacterDetail): StatContribution[] {

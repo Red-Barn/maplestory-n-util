@@ -66,7 +66,14 @@ describe("ability presets", () => {
 
   test("entered lines", () => {
     const lines = [{ type: "ATT", value: 6 }, { type: "DEX+INT", value: 27 }, { type: "", value: 5 }];
-    expect(statsOf(collectAbilityLines(lines, "x"))).toEqual(["ATT=6", "DEX=27", "INT=13"]);
+    // main stats from abilities are not multiplied by stat %
+    expect(statsOf(collectAbilityLines(lines, "x"))).toEqual(["ATT=6", "DEX_FIXED=27", "INT_FIXED=13"]);
+    expect(statsOf(collectAbilityLines([{ type: "ALL", value: 7 }], "x"))).toEqual([
+      "STR_FIXED=7",
+      "DEX_FIXED=7",
+      "INT_FIXED=7",
+      "LUK_FIXED=7",
+    ]);
     expect(collectAbilityLines([{ type: "BOSS%" }], "x")).toEqual([]); // no value yet
   });
 
