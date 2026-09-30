@@ -24,7 +24,7 @@ export function collectCharacter(bundle: CharacterBundle) {
   return { job, level, ap: estimateAp(level, job), permanent, buffs: resolveBuffs(skills, job) };
 }
 
-export { apStatToFinal, computeStats, estimateAp } from "./compute";
+export { apStatToFinal, computeStats, estimateAp, sumStats } from "./compute";
 export type { FinalStats } from "./compute";
 export {
   collectUnion,

@@ -18,6 +18,7 @@ import {
   defaultPresetInput,
   formatEffect,
   mergeEffects,
+  sumStats,
   MAIN_STATS,
   defaultChoiceInput,
   type ChoiceInput,
@@ -82,6 +83,16 @@ const pctRow = (key: StatKey, label: string, inGame?: keyof FinalStats): Row => 
   inGame,
 });
 
+// Main/sub stat % include all stats %, since it applies to them the same way.
+const statPctRow = (s: MainStat, role?: string): Row => ({
+  id: `${s}%`,
+  label: role ? `${role} % (${s})` : `${s} %`,
+  note: (r) => `${s}% ${r2(t(r, `${s}%`))} + 올스탯% ${r2(t(r, "ALL%"))}`,
+  pct: true,
+  parts: [`${s}%`, "ALL%"],
+  value: (r) => t(r, `${s}%`) + t(r, "ALL%"),
+});
+
 const flatRow = (key: "ATT" | "MATT"): Row => ({
   id: `flat-${key}`,
   label: key === "ATT" ? "공격력" : "마력",
@@ -122,8 +133,7 @@ function buildSections(job: JobData | undefined): Section[] {
         ...stats.map(([s, role]) => flatStatRow(s, role)),
         ...stats.map(([s, role]) => fixedStatRow(s, role)),
         ...atts.map(flatRow),
-        ...stats.map(([s, role]) => pctRow(`${s}%`, role ? `${role} % (${s})` : `${s} %`)),
-        pctRow("ALL%", "올스탯 %"),
+        ...stats.map(([s, role]) => statPctRow(s, role)),
         ...atts.map((a) => pctRow(`${a}%`, a === "ATT" ? "공격력 %" : "마력 %")),
         pctRow("DMG%", "데미지 %", "DMG%"),
         pctRow("BOSS%", "보스 데미지 %", "BOSS%"),
@@ -487,29 +497,101 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
   );
 }
 
+// Sources shown together under one expandable heading in the breakdown.
+const SOURCE_GROUPS: { id: string; name: string; sources: StatContribution["source"][] }[] = [
+  { id: "equip", name: "장비", sources: ["equip-base", "starforce", "flame", "potential", "bonus-potential", "set"] },
+  { id: "skill", name: "스킬", sources: ["skill", "link", "pet", "job-buff"] },
+];
+
+/** Per-stat totals of a set of contributions, in first-seen order (IED/FD combined multiplicatively). */
+function summarize(list: StatContribution[]): string {
+  const totals = sumStats(list);
+  const order = [...new Set(list.map((c) => c.stat))];
+  return order
+    .map((stat) => ({ stat, value: totals[stat] ?? 0 }))
+    .filter((e) => Math.abs(e.value) >= 0.005)
+    .map(formatEffect)
+    .join(" · ");
+}
+
+function bySource(list: StatContribution[]): Map<StatContribution["source"], StatContribution[]> {
+  const map = new Map<StatContribution["source"], StatContribution[]>();
+  for (const c of list) map.set(c.source, [...(map.get(c.source) ?? []), c]);
+  return map;
+}
+
+function SourceBlock({ source, list }: { source: StatContribution["source"]; list: StatContribution[] }) {
+  return (
+    <div>
+      <p className="text-xs font-semibold">{SOURCE_NAMES[source]}</p>
+      <ul className="text-[11px] text-zinc-600 dark:text-zinc-400">
+        {list.map((c, i) => (
+          <li key={i} className="flex justify-between gap-2">
+            <span className="truncate">{c.label}</span>
+            <span className="shrink-0 tabular-nums">{formatEffect(c)}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function Breakdown({ contributions }: { contributions: StatContribution[] }) {
-  const bySource = new Map<string, StatContribution[]>();
-  for (const c of contributions) bySource.set(c.source, [...(bySource.get(c.source) ?? []), c]);
+  const [openGroups, setOpenGroups] = useState<Set<string>>(new Set());
+  const sources = bySource(contributions);
+  const grouped = new Set(SOURCE_GROUPS.flatMap((g) => g.sources));
+  const others = [...sources].filter(([source]) => !grouped.has(source));
+
+  const toggle = (id: string) =>
+    setOpenGroups((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+
   return (
     <tr>
       <td colSpan={5} className="bg-black/[.02] px-3 py-2 dark:bg-white/[.03]">
         {contributions.length === 0 ? (
           <p className="text-xs text-zinc-500">내역 없음</p>
         ) : (
-          <div className="grid gap-3 sm:grid-cols-2">
-            {[...bySource].map(([source, list]) => (
-              <div key={source}>
-                <p className="text-xs font-semibold">{SOURCE_NAMES[source as StatContribution["source"]]}</p>
-                <ul className="text-[11px] text-zinc-600 dark:text-zinc-400">
-                  {list.map((c, i) => (
-                    <li key={i} className="flex justify-between gap-2">
-                      <span className="truncate">{c.label}</span>
-                      <span className="shrink-0 tabular-nums">{formatEffect(c)}</span>
-                    </li>
-                  ))}
-                </ul>
+          <div className="space-y-2">
+            {SOURCE_GROUPS.map((g) => {
+              const members = g.sources.filter((s) => sources.has(s));
+              if (members.length === 0) return null;
+              const open = openGroups.has(g.id);
+              return (
+                <div key={g.id} className="rounded border border-black/10 dark:border-white/10">
+                  <button
+                    type="button"
+                    onClick={() => toggle(g.id)}
+                    aria-expanded={open}
+                    className="flex w-full items-start gap-2 px-2 py-1.5 text-left hover:bg-black/[.03] dark:hover:bg-white/[.04]"
+                  >
+                    <span className="w-3 shrink-0 text-[10px] leading-5 text-zinc-500">{open ? "▾" : "▸"}</span>
+                    <span className="shrink-0 text-xs font-semibold leading-5">{g.name}</span>
+                    <span className="flex-1 text-right text-[11px] leading-5 tabular-nums text-zinc-600 dark:text-zinc-400">
+                      {summarize(members.flatMap((s) => sources.get(s)!))}
+                    </span>
+                  </button>
+                  {open && (
+                    <div className="grid gap-3 border-t border-black/10 px-2 py-2 sm:grid-cols-2 dark:border-white/10">
+                      {members.map((s) => (
+                        <SourceBlock key={s} source={s} list={sources.get(s)!} />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+            {others.length > 0 && (
+              <div className="grid gap-3 px-2 pt-1 sm:grid-cols-2">
+                {others.map(([source, list]) => (
+                  <SourceBlock key={source} source={source} list={list} />
+                ))}
               </div>
-            ))}
+            )}
           </div>
         )}
       </td>
