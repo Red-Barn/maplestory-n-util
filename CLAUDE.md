@@ -21,7 +21,8 @@
   - 어빌리티 "상태이상 대상 추가 데미지"는 데미지%가 아님 (`parseOption`에서 조건부 문구 제외)
   - 주스탯 AP = 5×레벨+18 (Lv.244 → 1238, 사용자 확인), 나머지 스탯 AP는 4
   - 럭키 아이템(카오스 루타 모자 4종, `src/data/luckyItems.ts`)은 3개 이상 착용한 **장비 세트**에만 +1. 장신구 세트(모든 부위가 Accessory)는 제외
-  - 펫: `wearing.pet`에서 펫 수(1/2/3마리 → 공마 3/14/30)와 펫장비 수(개당 공마 5)로 자동 계산. 칭호·화살은 API에 없어 `src/data/miscItems.ts` 프리셋(링크 스킬과 같은 구조)
+  - 펫: 펫 수(1/2/3마리 → 공마 3/14/30) + 펫장비(개당 공마 5). 펫과 펫장비는 한 세트(펫 수 = 펫장비 수)로 보고, 펫 수는 기타 탭에서 사용자가 선택(기본값만 `wearing.pet`의 펫 수).
+  - 하이퍼 스탯·어빌리티: API는 적용 중인 프리셋만 줌 → "프리셋" 탭에서 `API` 또는 직접 입력한 프리셋 1~3 선택(`collectors/slots.ts`, 레벨별 수치는 `src/data/hyperStats.ts`, 어빌리티 종류는 `src/data/abilities.ts`). "변화" 열의 기준은 API 프리셋 + 스킬 버프 끔. 칭호·화살은 API에 없어 `src/data/miscItems.ts` 프리셋(링크 스킬과 같은 구조)
   - 민팅 불가 아이템(훈장, Pivotal Adventure Ring 등)은 `/gamemeta/items/{itemId}` 메타데이터로 기본 스탯·세트 번호를 얻음 (`src/lib/itemMeta.ts`). 메타데이터에 없는 효과는 이름 기준 `src/data/itemExtras.ts`
   - 특수 반지(S.Ring)는 API에 아예 없음 → `src/lib/manualItems.ts`가 모든 캐릭터에 올스탯 +4, 공마 +4 장비로 추가. 끼지 않은 캐릭터는 장착 장비의 "특수 반지 착용" 체크 해제(localStorage `msn:special-ring`, 기본 체크) → `CharacterSections`가 스탯 패널·장비 그리드 양쪽에서 제외
   - 유니온: 점령 효과 주/부스탯은 스탯% **적용**, 공격대원 주/부스탯은 스탯% **미적용** (사용자 확인)

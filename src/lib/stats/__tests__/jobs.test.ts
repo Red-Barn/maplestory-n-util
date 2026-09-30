@@ -70,9 +70,9 @@ describe("BrownBarn (Aran Lv.225)", () => {
     expect(buff("weapon-aura")).toEqual(["IED%=12", "FD%=2"]);
   });
 
-  test("one pet, no pet equipment", () => {
+  test("one pet counts with its equipment as a set", () => {
     const pets = c.permanent.filter((x) => x.source === "pet" && x.stat === "ATT");
-    expect(pets.map((x) => `${x.label}=${x.value}`)).toEqual(["펫 1마리=3"]);
+    expect(pets.map((x) => `${x.label}=${x.value}`)).toEqual(["펫 1마리=3", "펫장비 1개=5"]);
   });
 });
 

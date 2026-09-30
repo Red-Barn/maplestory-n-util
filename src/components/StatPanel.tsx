@@ -4,12 +4,23 @@ import { Fragment, useEffect, useMemo, useState } from "react";
 import type { JobData } from "@/data/jobs";
 import { LINK_SKILLS } from "@/data/links";
 import { COLLECTION } from "@/data/collection";
+import { HYPER_STATS } from "@/data/hyperStats";
 import { MISC_ITEMS, TITLES } from "@/data/miscItems";
 import { SEASON_BUFF_ID } from "@/data/jobs/common";
 import { load, loadSeasonBuff, pushRecent, save, statPanelKey } from "@/lib/client/storage";
 import {
+  abilityTypesForJob,
+  API_PRESET,
+  apiAbilityLines,
+  apiHyperInput,
   apStatToFinal,
   choicesForJob,
+  collectAbilityLines,
+  collectPets,
+  MAX_PETS,
+  petAtt,
+  PRESET_SLOTS,
+  type AbilityLine,
   collectCharacter,
   collectChoices,
   collectCollectionSet,
@@ -37,7 +48,21 @@ import {
   type UnionInput,
 } from "@/lib/stats";
 import type { CharacterBundle } from "@/types/msu";
-import { CheckList, ChoiceList, FieldList, Hint, InputTabs, PresetList, SubHeading, type Field, type Tab } from "./StatInputs";
+import {
+  AbilityLineList,
+  CheckList,
+  ChoiceList,
+  describeEffects,
+  FieldList,
+  Hint,
+  InputTabs,
+  PresetList,
+  SelectRow,
+  SubHeading,
+  TextLines,
+  type Field,
+  type Tab,
+} from "./StatInputs";
 
 /** What the formulas need besides contributions. */
 type Ctx = { ap: Record<MainStat, number> };
@@ -225,6 +250,12 @@ const countChosen = (defs: { id: string }[], input: ChoiceInput) => defs.filter(
 const countFilled = (...inputs: Record<string, number | undefined>[]) =>
   inputs.reduce((n, i) => n + Object.values(i).filter(Boolean).length, 0);
 
+const PRESET_OPTIONS = [
+  { id: API_PRESET, label: "API (현재 적용 중)" },
+  ...PRESET_SLOTS.map((id) => ({ id, label: `프리셋 ${id}` })),
+];
+const PET_OPTIONS = Array.from({ length: MAX_PETS + 1 }, (_, n) => ({ id: String(n), label: `${n}마리` }));
+
 type CollectionSetInput = { ALL?: number };
 const COLLECTION_SET_FIELDS: Field<"ALL">[] = [{ key: "ALL", label: "세트 효과 올스탯" }];
 
@@ -237,6 +268,13 @@ type Saved = {
   miscItems?: PresetInput;
   /** all stats from collection set effects */
   collectionSet?: CollectionSetInput;
+  /** number of pets (each with its equipment); unset = the API's count */
+  pets?: number;
+  /** hyper stat preset in use: API_PRESET or a slot, and the levels entered per slot */
+  hyperPreset?: string;
+  hyperPresets?: Record<string, ChoiceInput>;
+  abilityPreset?: string;
+  abilityPresets?: Record<string, AbilityLine[]>;
 };
 
 export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
@@ -266,6 +304,11 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
   const [choices, setChoices] = useState<ChoiceInput>(() => defaultChoiceInput(ALL_CHOICES));
   const [miscItems, setMiscItems] = useState<PresetInput>(() => defaultPresetInput(MISC_ITEMS));
   const [collectionSet, setCollectionSet] = useState<CollectionSetInput>({});
+  const [pets, setPets] = useState<number>();
+  const [hyperPreset, setHyperPreset] = useState(API_PRESET);
+  const [hyperPresets, setHyperPresets] = useState<Record<string, ChoiceInput>>({});
+  const [abilityPreset, setAbilityPreset] = useState(API_PRESET);
+  const [abilityPresets, setAbilityPresets] = useState<Record<string, AbilityLine[]>>({});
   const [open, setOpen] = useState<string>();
   const [tab, setTab] = useState("buffs");
 
@@ -284,6 +327,11 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
     if (saved.choices) setChoices({ ...defaultChoiceInput(ALL_CHOICES), ...saved.choices });
     if (saved.miscItems) setMiscItems({ ...defaultPresetInput(MISC_ITEMS), ...saved.miscItems });
     if (saved.collectionSet) setCollectionSet(saved.collectionSet);
+    setPets(saved.pets);
+    setHyperPreset(saved.hyperPreset ?? API_PRESET);
+    setHyperPresets(saved.hyperPresets ?? {});
+    setAbilityPreset(saved.abilityPreset ?? API_PRESET);
+    setAbilityPresets(saved.abilityPresets ?? {});
     setTab(load(TAB_KEY, "buffs"));
     /* eslint-enable react-hooks/set-state-in-effect */
     pushRecent({
@@ -296,16 +344,55 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
   }, [storageKey, base.buffs, character]);
 
   const persist = (next: Saved) =>
-    save(storageKey, { buffs, union, unionGrid, choices, miscItems, collectionSet, ...next } satisfies Saved);
+    save(storageKey, {
+      buffs,
+      union,
+      unionGrid,
+      choices,
+      miscItems,
+      collectionSet,
+      pets,
+      hyperPreset,
+      hyperPresets,
+      abilityPreset,
+      abilityPresets,
+      ...next,
+    } satisfies Saved);
   const setChoice = (next: ChoiceInput) => {
     setChoices(next);
     persist({ choices: next });
   };
 
+  // Hyper stat / ability presets: the API one, or a slot the user filled in (starts as a copy of it).
+  const hyperDefs = useMemo(() => choicesForJob(HYPER_STATS, base.job), [base.job]);
+  const hyperInput = useMemo(
+    () => hyperPresets[hyperPreset] ?? apiHyperInput(character),
+    [hyperPresets, hyperPreset, character],
+  );
+  const abilityLines = useMemo(
+    () => abilityPresets[abilityPreset] ?? apiAbilityLines(character),
+    [abilityPresets, abilityPreset, character],
+  );
+  const abilityTypes = useMemo(
+    () => abilityTypesForJob(base.job, abilityLines.map((l) => l.type)),
+    [base.job, abilityLines],
+  );
+  const chosenPresets = useMemo(
+    () => [
+      ...(hyperPreset === API_PRESET ? base.hyper : collectChoices(HYPER_STATS, hyperInput, "hyper")),
+      ...(abilityPreset === API_PRESET
+        ? base.ability
+        : collectAbilityLines(abilityLines, `어빌리티 프리셋 ${abilityPreset}`)),
+    ],
+    [hyperPreset, hyperInput, abilityPreset, abilityLines, base.hyper, base.ability],
+  );
+  const petCount = pets ?? base.petCount;
+
   // API-derived stats plus what the user typed in (the API includes these but doesn't list them).
   const known = useMemo(
     () => [
-      ...base.permanent,
+      ...base.fixed,
+      ...collectPets(petCount),
       ...collectUnion(union),
       ...collectUnionGrid(unionGrid),
       ...collectChoices(LINK_SKILLS, choices, "link"),
@@ -314,18 +401,23 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
       ...collectChoices(TITLES, choices, "misc-item"),
       ...collectPresets(miscDefs, miscItems, "misc-item"),
     ],
-    [base.permanent, union, unionGrid, choices, miscItems, collectionSet, miscDefs],
+    [base.fixed, petCount, union, unionGrid, choices, miscItems, collectionSet, miscDefs],
   );
 
-  // Default buff set = what the API snapshot includes (the season buff if the character uses it,
-  // skill buffs off). "버프 변화" is measured from it.
+  // Baseline = what the API snapshot includes: the API's hyper stat and ability presets, the
+  // season buff if the character uses it, skill buffs off. "변화" is measured from it.
   const baseline = useMemo(
-    () => [...known, ...base.buffs.filter((b) => inSnapshot[b.id]).flatMap((b) => b.contributions)],
-    [known, base.buffs, inSnapshot],
+    () => [
+      ...known,
+      ...base.hyper,
+      ...base.ability,
+      ...base.buffs.filter((b) => inSnapshot[b.id]).flatMap((b) => b.contributions),
+    ],
+    [known, base.hyper, base.ability, base.buffs, inSnapshot],
   );
   const active = useMemo(
-    () => [...known, ...base.buffs.filter((b) => buffs[b.id]).flatMap((b) => b.contributions)],
-    [known, base.buffs, buffs],
+    () => [...known, ...chosenPresets, ...base.buffs.filter((b) => buffs[b.id]).flatMap((b) => b.contributions)],
+    [known, chosenPresets, base.buffs, buffs],
   );
 
   const result = useMemo(() => computeStats(active, base.ap), [active, base.ap]);
@@ -339,7 +431,7 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
             <tr>
               <th className="px-3 py-2 text-left font-medium">스탯</th>
               <th className="px-3 py-2 text-right font-medium">계산값</th>
-              <th className="px-3 py-2 text-right font-medium">버프 변화</th>
+              <th className="px-3 py-2 text-right font-medium">변화</th>
               <th className="px-3 py-2 text-right font-medium">인게임(API)</th>
               <th className="px-3 py-2 text-right font-medium">오차</th>
             </tr>
@@ -395,8 +487,8 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
           </tbody>
         </table>
         <p className="px-3 py-2 text-xs text-zinc-500">
-          행을 누르면 출처별 내역이 보입니다. 버프 변화 = 기본 버프 상태(스킬 버프 끔) 대비 변화량. 오차 = 계산값 −
-          인게임 값으로, 버프를 바꾸면 함께 바뀝니다. AP는 레벨 기준 자동 분배로 추정합니다.
+          행을 누르면 출처별 내역이 보입니다. 변화 = API 기준 상태(API의 하이퍼 스탯·어빌리티 프리셋, 스킬 버프 끔) 대비
+          변화량. 오차 = 계산값 − 인게임 값으로, 버프나 프리셋을 바꾸면 함께 바뀝니다. AP는 레벨 기준 자동 분배로 추정합니다.
         </p>
       </div>
 
@@ -437,6 +529,72 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
                           const next = { ...buffs, [id]: on };
                           setBuffs(next);
                           persist({ buffs: next });
+                        }}
+                      />
+                    )}
+                  </>
+                ),
+              },
+              {
+                id: "presets",
+                label: "프리셋",
+                badge: (hyperPreset === API_PRESET ? 0 : 1) + (abilityPreset === API_PRESET ? 0 : 1),
+                content: (
+                  <>
+                    <Hint>
+                      API는 지금 적용 중인 프리셋만 알려 줍니다. 프리셋 1~3은 직접 입력하며, 처음에는 API 값으로 채워져
+                      있습니다. 바꾸면 API 프리셋 대비 변화량이 표에 나옵니다.
+                    </Hint>
+                    <SubHeading title="하이퍼 스탯" />
+                    <SelectRow
+                      label="프리셋"
+                      value={hyperPreset}
+                      options={PRESET_OPTIONS}
+                      onChange={(id) => {
+                        setHyperPreset(id);
+                        persist({ hyperPreset: id });
+                      }}
+                    />
+                    {hyperPreset === API_PRESET ? (
+                      <TextLines
+                        lines={mergeEffects(base.hyper.filter((c) => isRelevant(c.stat, base.job))).map(formatEffect)}
+                        empty="스탯 표에 반영되는 하이퍼 스탯이 없습니다."
+                      />
+                    ) : (
+                      <ChoiceList
+                        defs={hyperDefs}
+                        values={hyperInput}
+                        job={base.job}
+                        onChange={(next) => {
+                          const all = { ...hyperPresets, [hyperPreset]: next };
+                          setHyperPresets(all);
+                          persist({ hyperPresets: all });
+                        }}
+                      />
+                    )}
+                    <SubHeading title="어빌리티" />
+                    <SelectRow
+                      label="프리셋"
+                      value={abilityPreset}
+                      options={PRESET_OPTIONS}
+                      onChange={(id) => {
+                        setAbilityPreset(id);
+                        persist({ abilityPreset: id });
+                      }}
+                    />
+                    {abilityPreset === API_PRESET ? (
+                      <TextLines
+                        lines={Object.values(character.ability).flatMap((a) => (a ? [a.desc] : []))}
+                        empty="어빌리티가 없습니다."
+                      />
+                    ) : (
+                      <AbilityLineList
+                        types={abilityTypes}
+                        lines={abilityLines}
+                        onChange={(next) => {
+                          const all = { ...abilityPresets, [abilityPreset]: next };
+                          setAbilityPresets(all);
+                          persist({ abilityPresets: all });
                         }}
                       />
                     )}
@@ -509,6 +667,17 @@ export default function StatPanel({ bundle }: { bundle: CharacterBundle }) {
                   <>
                     <Hint>API가 불러오지 못하지만 API 스탯에는 포함된 아이템입니다.</Hint>
                     <ChoiceList defs={titleDefs} values={choices} onChange={setChoice} job={base.job} />
+                    <SubHeading title="펫" hint="펫 1마리는 펫장비 1개와 한 세트로 계산합니다." />
+                    <SelectRow
+                      label="펫 수"
+                      value={String(petCount)}
+                      options={PET_OPTIONS}
+                      note={describeEffects([{ key: "ATT_MATT", value: petAtt(petCount) }], base.job)}
+                      onChange={(id) => {
+                        setPets(Number(id));
+                        persist({ pets: Number(id) });
+                      }}
+                    />
                     {miscDefs.length > 0 && (
                       <>
                         <SubHeading title="화살" />

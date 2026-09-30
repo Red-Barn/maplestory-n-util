@@ -39,15 +39,22 @@ export function collectArcane(character: CharacterDetail): StatContribution[] {
 // Confirmed in-game by the user.
 const PET_ATT_BY_COUNT = [0, 3, 14, 30];
 const PET_EQUIP_ATT = 5;
+export const MAX_PETS = 3;
 
-export function collectPets(character: CharacterDetail): StatContribution[] {
-  const pets = Object.values(character.wearing.pet ?? {}).filter((p) => p?.itemId);
-  const equips = pets.filter((p) => p!.petAcc?.itemId).length;
-  const petAtt = PET_ATT_BY_COUNT[Math.min(pets.length, 3)];
+/** Pets the API lists. Only the starting value — the user sets the number on the character page. */
+export const apiPetCount = (character: CharacterDetail): number =>
+  Math.min(Object.values(character.wearing.pet ?? {}).filter((p) => p?.itemId).length, MAX_PETS);
+
+/** ATT & Magic ATT from `count` pets. A pet and its equipment count as one set. */
+export const petAtt = (count: number): number => PET_ATT_BY_COUNT[count] + count * PET_EQUIP_ATT;
+
+export function collectPets(count: number): StatContribution[] {
+  const pets = Math.max(0, Math.min(Math.floor(count), MAX_PETS));
+  if (!pets) return [];
   const out: StatContribution[] = [];
   for (const stat of ["ATT", "MATT"] as const) {
-    if (petAtt) out.push({ stat, value: petAtt, source: "pet", label: `펫 ${pets.length}마리` });
-    if (equips) out.push({ stat, value: equips * PET_EQUIP_ATT, source: "pet", label: `펫장비 ${equips}개` });
+    out.push({ stat, value: PET_ATT_BY_COUNT[pets], source: "pet", label: `펫 ${pets}마리` });
+    out.push({ stat, value: pets * PET_EQUIP_ATT, source: "pet", label: `펫장비 ${pets}개` });
   }
   return out;
 }

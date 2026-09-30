@@ -11,6 +11,8 @@ import {
   type PresetInput,
   type PresetState,
 } from "@/lib/stats";
+import type { AbilityType } from "@/data/abilities";
+import type { AbilityLine } from "@/lib/stats";
 import type { PresetEffect } from "@/lib/stats/collectors/presets";
 
 export type Field<K extends string> = { key: K; label: string; pct?: boolean; unit?: string };
@@ -155,7 +157,92 @@ const EFFECT_LABEL: Record<string, string> = {
   MATT: "마력",
   ATT_MATT: "공/마",
   ALL: "올스탯",
+  STR_FIXED: "STR",
+  DEX_FIXED: "DEX",
+  INT_FIXED: "INT",
+  LUK_FIXED: "LUK",
 };
+
+const SELECT_CLASS =
+  "rounded border border-black/15 bg-[var(--background)] px-1.5 py-0.5 text-sm focus:border-orange-500 focus:outline-none dark:border-white/20";
+
+/** One labelled dropdown row, e.g. which preset is in use or how many pets. */
+export function SelectRow(props: {
+  label: string;
+  value: string;
+  options: { id: string; label: string }[];
+  onChange: (id: string) => void;
+  note?: string;
+}) {
+  return (
+    <div className="py-1.5">
+      <label className="flex items-center justify-between gap-2 text-sm">
+        <span className="min-w-0 truncate">{props.label}</span>
+        <select value={props.value} onChange={(e) => props.onChange(e.target.value)} className={`max-w-[60%] ${SELECT_CLASS}`}>
+          {props.options.map((o) => (
+            <option key={o.id} value={o.id}>
+              {o.label}
+            </option>
+          ))}
+        </select>
+      </label>
+      {props.note && <p className="mt-0.5 text-right text-[11px] leading-snug text-zinc-500">{props.note}</p>}
+    </div>
+  );
+}
+
+/** Read-only lines, e.g. what the API preset gives. */
+export function TextLines({ lines, empty }: { lines: string[]; empty: string }) {
+  if (lines.length === 0) return <p className="py-1 text-[11px] text-zinc-500">{empty}</p>;
+  return (
+    <ul className="py-1 text-[11px] leading-relaxed text-zinc-600 dark:text-zinc-400">
+      {lines.map((line, i) => (
+        <li key={i}>{line}</li>
+      ))}
+    </ul>
+  );
+}
+
+/** The lines of a hand-entered ability preset: kind + value each. */
+export function AbilityLineList(props: {
+  types: AbilityType[];
+  lines: AbilityLine[];
+  onChange: (next: AbilityLine[]) => void;
+}) {
+  const set = (i: number, line: AbilityLine) => props.onChange(props.lines.map((l, j) => (j === i ? line : l)));
+  return (
+    <ul className="divide-y divide-black/5 dark:divide-white/10">
+      {props.lines.map((line, i) => {
+        const type = props.types.find((t) => t.id === line.type);
+        return (
+          <li key={i} className="flex items-center justify-between gap-2 py-1.5">
+            <select
+              aria-label={`어빌리티 ${i + 1}번 줄`}
+              value={type?.id ?? ""}
+              onChange={(e) => set(i, { type: e.target.value, value: line.value })}
+              className={`min-w-0 flex-1 ${SELECT_CLASS}`}
+            >
+              <option value="">기타 (스탯 표에 없음)</option>
+              {props.types.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.label}
+                </option>
+              ))}
+            </select>
+            <span className={`flex shrink-0 items-center gap-1 ${type ? "" : "opacity-40"}`}>
+              <NumberInput
+                label={`어빌리티 ${i + 1}번 줄 수치`}
+                value={line.value}
+                onChange={(value) => set(i, { type: line.type, value })}
+              />
+              <Unit>{type?.pct ? "%" : ""}</Unit>
+            </span>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
 
 /** Effects as text, limited to what the job uses (e.g. "공/마" reads as "공격력" for an ATT job). */
 export function describeEffects(effects: PresetEffect[], job?: JobView): string {
@@ -182,7 +269,7 @@ export function ChoiceList(props: {
               <select
                 value={option?.id ?? ""}
                 onChange={(e) => props.onChange({ ...props.values, [d.id]: e.target.value })}
-                className="max-w-[60%] rounded border border-black/15 bg-[var(--background)] px-1.5 py-0.5 text-sm focus:border-orange-500 focus:outline-none dark:border-white/20"
+                className={`max-w-[60%] ${SELECT_CLASS}`}
               >
                 <option value="">{d.noneLabel}</option>
                 {d.options.map((o) => (
