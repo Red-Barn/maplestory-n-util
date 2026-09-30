@@ -26,11 +26,37 @@
   - 유니온: 점령 효과 주/부스탯은 스탯% **적용**, 공격대원 주/부스탯은 스탯% **미적용** (사용자 확인)
   - 마켓 이름 검색(`filter.name`)은 OAuth(`msu-authorization`) 없이는 필터가 무시됨 → 이름 검색은 지갑 내 `name` 필터로 대체
   - 캐시: `msuFetch`는 `unstable_cache`로 감쌈 (게이트 650ms·429 재시도는 캐시 미스에만). 첫 조회 ~15초, 이후 즉시
-- 다음 할 일:
-  1. Vercel 연동 (저장소 Import + 환경변수 `MSU_API_KEY`)
-  2. 인게임 스탯창과 비교해 보정 없는 오차 줄이기 (AP 추정식 `estimateAp`, 기본 크리율, Marksmanship ATT% 해석 확인)
-  3. 서브캐릭 직업 데이터(`src/data/jobs/aran.ts`, `shade.ts`), 물약/소비·시너지 데이터(인게임 수치 확인 필요)
-  4. 계산기: 스탯 등가치 → 장비 교체 비교 → 스타포스/잠재/하이퍼스탯
+- 다음 할 일 (GitHub 이슈가 기준 — `gh issue list`):
+  1. #7 Vercel 연동 (저장소 Import + 환경변수 `MSU_API_KEY`, Production Branch = `master`)
+  2. #8 인게임 스탯창과 비교해 보정 없는 오차 줄이기 (AP 추정식 `estimateAp`, 기본 크리율, Marksmanship ATT% 해석 확인)
+  3. #9 서브캐릭 직업 데이터(`src/data/jobs/aran.ts`, `shade.ts`), 물약/소비·시너지 데이터(인게임 수치 확인 필요)
+  4. #10 계산기: 스탯 등가치 → 장비 교체 비교 → 스타포스/잠재/하이퍼스탯
+- 이슈 추적 도입 전 작업은 closed 이슈 #2~#6에 기능 단위로 정리
+
+## 개발 워크플로 (Gitflow + 이슈)
+모든 작업(기능·버그·문서·오타)은 **이슈 → 브랜치 → PR** 순서로 진행한다. `master`, `develop`에 직접 커밋하지 않는다.
+
+### 브랜치
+| 종류 | 이름 | 분기 | 병합 대상 |
+|---|---|---|---|
+| 기능 | `feature/<이슈번호>-<짧은-설명>` | `develop` | `develop` (PR) |
+| 버그 | `fix/<이슈번호>-<짧은-설명>` | `develop` | `develop` (PR) |
+| 릴리스 | `release/vX.Y.Z` | `develop` | `master` + `develop`, 태그 `vX.Y.Z` |
+| 긴급 수정 | `hotfix/<이슈번호>-<짧은-설명>` | `master` | `master` + `develop`, 태그 |
+
+- `master` = 배포(Vercel production), `develop` = 통합(GitHub 기본 브랜치, PR 기본 대상).
+- 릴리스(`develop` → `master`)는 사용자가 요청할 때만 한다.
+
+### 작업 순서
+1. **시작 전**: 이슈를 만들거나 기존 이슈를 고른다. 본문 = 배경, 계획 체크리스트, 완료 조건. 라벨: `enhancement`/`bug` + `stats-engine`/`calculator`/`data`/`infra`/`chore`.
+2. **브랜치**: `develop`을 최신으로 받은 뒤 분기한다.
+3. **진행 중**: 의미 있는 지점마다 이슈에 댓글을 남긴다 — 결정한 것과 이유, 막힌 점, 계획에서 달라진 점. 본문 체크리스트도 갱신한다.
+4. **완료**: PR을 만들고(본문에 `Closes #N`), 이슈에 마무리 요약 댓글을 남긴다 — 바꾼 것, 주요 파일, 검증 결과(`npm test`, `npm run build`, 화면 확인), 남은 일·후속 이슈.
+5. **병합**: PR은 만들어 두고 사용자가 확인한 뒤 병합한다(사용자가 바로 병합하라고 하면 `gh pr merge --merge --delete-branch`). squash·rebase는 쓰지 않는다.
+
+- 이슈·PR·댓글은 한국어로, 사용자가 읽고 작업 내용을 파악할 수 있게 쓴다. 아주 작은 수정은 이슈 본문을 한두 줄로.
+- 커밋 메시지는 영어 명령형 + 끝에 `(#이슈번호)`.
+- 작업 중 범위 밖 문제를 발견하면 고치지 말고 새 이슈로 등록한다.
 
 ## 규칙
 - API 키는 절대 클라이언트 코드나 커밋에 넣지 않는다 (`import "server-only"` 모듈에서만 사용).
