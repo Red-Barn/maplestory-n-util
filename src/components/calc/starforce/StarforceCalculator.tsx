@@ -1,9 +1,11 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
+import ItemPicker from "@/components/ItemPicker";
 import { MAX_STAR, PROTECT_MAX_STAR, PROTECT_MIN_STAR } from "@/data/starforce";
 import {
   expectedToTarget,
+  pricedUpTo,
   seededRng,
   simulateRuns,
   summarize,
@@ -12,10 +14,12 @@ import {
   type StarPrices,
   type Summary,
 } from "@/lib/calc/starforce";
+import type { ItemRef } from "@/types/items";
 import type { CharacterBundle, ItemDetail } from "@/types/msu";
 import { count, neso } from "./format";
 import PriceTable from "./PriceTable";
 import ResultTable, { type Combo } from "./ResultTable";
+import { useItemInfo } from "./useItemInfo";
 import { useStarforcePrices } from "./useStarforcePrices";
 
 const SLOT_NAMES: Record<string, string> = {
@@ -60,7 +64,16 @@ const CHUNK_STEPS = 250_000;
 
 const maxStarOf = (item: ItemDetail) => Math.min(item.enhance.starforce.maxStarforce, MAX_STAR);
 
-/** Star force calculator: pick an equipped item, then the stars to go from and to. */
+/** What the calculator needs of an item, whether equipped or found by name. */
+type Target = { itemId: number; name: string; maxStar: number; current: number };
+
+type Mode = "equip" | "search";
+const MODES: [Mode, string][] = [
+  ["equip", "장착 장비"],
+  ["search", "아이템 이름으로 찾기"],
+];
+
+/** Star force calculator: pick an equipped item or find one by name, then the stars to go from and to. */
 export default function StarforceCalculator({ bundle }: { bundle: CharacterBundle }) {
   const items = useMemo(
     () =>
@@ -69,22 +82,62 @@ export default function StarforceCalculator({ bundle }: { bundle: CharacterBundl
       ),
     [bundle.items],
   );
+  const [mode, setMode] = useState<Mode>(items.length > 0 ? "equip" : "search");
   const [slot, setSlot] = useState(items[0]?.[0]);
-  const item = items.find(([s]) => s === slot)?.[1];
+  // kept while switching modes, so going back shows the same item
+  const [picked, setPicked] = useState<ItemRef>();
 
+  return (
+    <div className="space-y-6">
+      <div role="tablist" className="flex gap-1 border-b border-black/10 dark:border-white/15">
+        {MODES.map(([m, label]) => (
+          <button
+            key={m}
+            type="button"
+            role="tab"
+            aria-selected={m === mode}
+            onClick={() => setMode(m)}
+            className={`-mb-px border-b-2 px-3 py-2 text-sm font-medium ${
+              m === mode ? "border-orange-500" : "border-transparent text-zinc-500 hover:text-current"
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+      {mode === "equip" ? (
+        <EquippedItems items={items} slot={slot} onSelect={setSlot} />
+      ) : (
+        <SearchedItem picked={picked} onPick={setPicked} />
+      )}
+    </div>
+  );
+}
+
+function EquippedItems(props: { items: [string, ItemDetail][]; slot?: string; onSelect: (slot: string) => void }) {
+  const item = props.items.find(([s]) => s === props.slot)?.[1];
   if (!item) return <p className="text-sm text-zinc-500">스타포스를 강화할 수 있는 장착 장비가 없습니다.</p>;
+  const maxStar = maxStarOf(item);
+  const target: Target = {
+    itemId: item.common.itemId,
+    name: item.name,
+    maxStar,
+    current: Math.min(item.enhance.starforce.enhanced, maxStar),
+  };
 
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-        {items.map(([s, it]) => (
+        {props.items.map(([s, it]) => (
           <button
             key={s}
             type="button"
-            onClick={() => setSlot(s)}
-            aria-pressed={s === slot}
+            onClick={() => props.onSelect(s)}
+            aria-pressed={s === props.slot}
             className={`flex items-center gap-2 rounded-lg border p-2 text-left ${
-              s === slot ? "border-orange-500 bg-orange-500/10" : "border-black/10 hover:border-orange-500 dark:border-white/15"
+              s === props.slot
+                ? "border-orange-500 bg-orange-500/10"
+                : "border-black/10 hover:border-orange-500 dark:border-white/15"
             }`}
           >
             {/* eslint-disable-next-line @next/next/no-img-element -- small external icons */}
@@ -99,22 +152,60 @@ export default function StarforceCalculator({ bundle }: { bundle: CharacterBundl
           </button>
         ))}
       </div>
-      {/* keyed by slot: stars, prices typed in and simulation results belong to one item */}
-      <ItemCalculator key={slot} item={item} />
+      {/* keyed by item: stars, prices typed in and simulation results belong to one item */}
+      <ItemCalculator key={`equip:${props.slot}`} target={target} />
+    </div>
+  );
+}
+
+function SearchedItem({ picked, onPick }: { picked?: ItemRef; onPick: (item: ItemRef) => void }) {
+  const { info, error, loading } = useItemInfo(picked?.id);
+  const maxStar = Math.min(info?.maxStarforce ?? 0, MAX_STAR);
+
+  return (
+    <div className="space-y-6">
+      <div className="max-w-md space-y-1">
+        <ItemPicker onSelect={onPick} placeholder="장비 이름 (2글자 이상, 영문)" />
+        <p className="text-xs text-zinc-500">장착하지 않은 장비도 이름으로 찾아 0성부터 계산할 수 있습니다.</p>
+      </div>
+      {loading && <p className="text-sm text-zinc-500">아이템 정보를 불러오는 중…</p>}
+      {error && <p className="text-sm text-red-600">{error}</p>}
+      {info && (
+        <>
+          <div className="flex items-center gap-3">
+            {/* eslint-disable-next-line @next/next/no-img-element -- small external icons */}
+            <img src={info.iconUrl} alt="" className="h-10 w-10 shrink-0 object-contain" />
+            <div className="min-w-0 text-sm">
+              <p className="font-medium">{info.name}</p>
+              <p className="text-xs text-zinc-500">
+                Lv.{info.requiredLevel} · {info.category.tier3 ?? info.category.label}
+                {maxStar > 0 && ` · 최대 ★${maxStar}`}
+              </p>
+            </div>
+          </div>
+          {maxStar > 0 ? (
+            <ItemCalculator
+              key={`search:${info.id}`}
+              target={{ itemId: info.id, name: info.name, maxStar, current: 0 }}
+            />
+          ) : (
+            <p className="text-sm text-zinc-500">스타포스를 강화할 수 없는 아이템입니다.</p>
+          )}
+        </>
+      )}
     </div>
   );
 }
 
 type Simulation = { key: string; summary?: Summary; progress: number; runs: number };
 
-function ItemCalculator({ item }: { item: ItemDetail }) {
-  const maxStar = maxStarOf(item);
-  const current = Math.min(item.enhance.starforce.enhanced, maxStar);
+function ItemCalculator({ target }: { target: Target }) {
+  const { maxStar, current } = target;
   const [from, setFrom] = useState(current);
   const [to, setTo] = useState(Math.min(current + 1, maxStar));
   const [opts, setOpts] = useState<StarforceOptions>(COMBOS[0]);
   const [overrides, setOverrides] = useState<StarPrices>({});
-  const { prices: api, error, loading, reload } = useStarforcePrices(item.common.itemId);
+  const { prices: api, error, loading, reload } = useStarforcePrices(target.itemId);
 
   const prices = useMemo(() => ({ ...api?.starforce, ...overrides }), [api, overrides]);
   const combos: Combo[] = useMemo(
@@ -154,10 +245,13 @@ function ItemCalculator({ item }: { item: ItemDetail }) {
     setSim({ key: simKey, progress: runs, runs, summary: summarize(done) });
   }
 
-  const starOptions = (min: number, max: number) =>
+  // Targets past the first star the price API gives 0 for (e.g. 22–24 ★ while the metadata says
+  // 25) stay selectable for typed-in prices, but are marked.
+  const pricedTo = api ? pricedUpTo(prices, from, maxStar) : maxStar;
+  const starOptions = (min: number, max: number, markUnpriced = false) =>
     Array.from({ length: Math.max(0, max - min + 1) }, (_, i) => min + i).map((star) => (
       <option key={star} value={star}>
-        {star}성
+        {star}성{markUnpriced && star > pricedTo ? " (가격 없음)" : ""}
       </option>
     ));
   const select =
@@ -166,7 +260,7 @@ function ItemCalculator({ item }: { item: ItemDetail }) {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-        <span className="font-medium">{item.name}</span>
+        <span className="font-medium">{target.name}</span>
         <label className="flex items-center gap-2">
           현재
           <select
@@ -184,7 +278,7 @@ function ItemCalculator({ item }: { item: ItemDetail }) {
         <label className="flex items-center gap-2">
           목표
           <select className={select} value={to} onChange={(e) => setTo(Number(e.target.value))}>
-            {starOptions(from + 1, maxStar)}
+            {starOptions(from + 1, maxStar, true)}
           </select>
         </label>
         <label className="flex cursor-pointer items-center gap-2">
@@ -212,8 +306,8 @@ function ItemCalculator({ item }: { item: ItemDetail }) {
             <ResultTable combos={combos} selected={opts} priced={priced} onSelect={setOpts} />
             {!priced && !waiting && (
               <p className="text-xs text-red-600">
-                {missing.map((s) => `${s}성`).join(", ")}의 비용이 없어 기대 비용을 계산할 수 없습니다. 아래 표에 직접
-                입력해 주세요.
+                {missing.map((s) => `${s}성`).join(", ")}의 비용이 없어 기대 비용을 계산할 수 없습니다. 가격 API가
+                주지 않는 성은 아직 강화할 수 없는 구간일 수 있습니다. 계산하려면 아래 표에 직접 입력해 주세요.
               </p>
             )}
             <p className="text-xs text-zinc-500">

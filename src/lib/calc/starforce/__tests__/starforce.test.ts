@@ -4,6 +4,7 @@ import {
   attemptCost,
   expectedToTarget,
   outcomes,
+  pricedUpTo,
   seededRng,
   simulateRuns,
   starOdds,
@@ -166,5 +167,25 @@ describe("simulation", () => {
     if (exact.majorFailures > 0) expect(sim.majorFailures.mean / exact.majorFailures).toBeCloseTo(1, 1);
     expect(sim.cost.p10).toBeLessThanOrEqual(sim.cost.median);
     expect(sim.cost.median).toBeLessThanOrEqual(sim.cost.p90);
+  });
+});
+
+describe("pricedUpTo", () => {
+  // like Fafnir Wind Chaser (1452205): metadata says 25 ★, the price API gives 0 from 22 ★
+  const partial: StarPrices = Object.fromEntries(Array.from({ length: 25 }, (_, star) => [star, star < 22 ? 100 : 0]));
+
+  it("stops at the first star without a price", () => {
+    expect(pricedUpTo(partial, 0, 25)).toBe(22);
+    expect(pricedUpTo(partial, 17, 25)).toBe(22);
+  });
+
+  it("is capped by the item's max star", () => {
+    expect(pricedUpTo(partial, 0, 15)).toBe(15);
+    expect(pricedUpTo(prices, 0, 25)).toBe(25);
+  });
+
+  it("returns the start when the first attempt has no price", () => {
+    expect(pricedUpTo(partial, 22, 25)).toBe(22);
+    expect(pricedUpTo({}, 5, 25)).toBe(5);
   });
 });
