@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import CharacterHeader from "@/components/CharacterHeader";
+import StarforceCalculator from "@/components/calc/starforce/StarforceCalculator";
 import { getCharacterBundle } from "@/lib/character";
 import { MsuApiError } from "@/lib/msu";
 
@@ -21,7 +22,7 @@ export default async function StarforcePage({ params }: PageProps<"/character/[a
       <CharacterHeader character={bundle.character} />
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">스타포스 계산기</h2>
-        <p className="text-sm text-zinc-500">준비 중입니다.</p>
+        <StarforceCalculator bundle={bundle} />
       </section>
     </div>
   );
