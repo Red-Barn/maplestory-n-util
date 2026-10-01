@@ -39,8 +39,7 @@
   1. #7 Vercel 연동 (저장소 Import + 환경변수 `MSU_API_KEY`, Production Branch = `master`)
   2. #8 인게임 스탯창과 비교해 보정 없는 오차 줄이기 (AP 추정식 `estimateAp`, 기본 크리율, Marksmanship ATT% 해석 확인)
   3. #9 물약/소비·시너지 데이터(인게임 수치 확인 필요). 아란 Advanced Combo Ability의 콤보 공격력 +20이 스탯창에 반영되는지 인게임 확인 필요
-  4. #42 잠재 옵션 확률 라우트 `GET /api/potential/probability` — **미구현**. 잠재능력 페이지의 "옵션 출현 확률" 섹션이 이 라우트를 부르므로 그 전까지 동작하지 않음 (계약은 이슈 본문)
-  5. #10 계산기 남은 것: 스탯 등가치, 장비 교체 비교
+  4. #10 계산기 남은 것: 스탯 등가치, 장비 교체 비교
 - 이슈 추적 도입 전 작업은 closed 이슈 #2~#6에 기능 단위로 정리
 
 ## 계산기 공통 기반
@@ -70,7 +69,7 @@
 ### 잠재능력 (#34, `/character/{assetKey}/potential`)
 - 등급 업 확률(`src/data/potential.ts`, 사용자 제공): Occult 0.9901%(Rare→Epic만) / Red 6·1.8·0.3% / Black 15·3.5·1% / Bonus Potential·White 4.7619·1.9608·0.4975%. 표의 "Bonus White Cube" = API "White Cube"(5062503). **Bonus Occult Cube는 확률 미확인이라 제외**
 - 등급 번호 = API 옵션 `grade`(1 Rare ~ 4 Legendary), 장비 등급 = 세 줄 중 최고 `grade`. 기대 개수 1/p, 90%·99% 개수, 여러 단계는 차례로 통과하는 분포로 계산
-- 옵션 출현 확률(`src/lib/calc/potential/options.ts`): msu.io 확률 페이지의 **비공식** 엔드포인트(`msu.io/maplestoryn/api/msn/probability`, CORS 없음 → 서버 경유 #42 필요)의 줄별 표로 3줄 조합을 열거. 레벨은 `min(level, 120)`. 줄 수 제한(Decent 스킬·무적 시간 최대 1줄 등)은 페이지 문구 기준, 무적 관련 두 규칙은 **확인 필요**. 큐브 사용 중 등급 업은 무시
+- 옵션 출현 확률(`src/lib/calc/potential/options.ts`): msu.io 확률 페이지의 **비공식** 엔드포인트(`msu.io/maplestoryn/api/msn/probability`, CORS 없음 → 서버 경유 `/api/potential/probability`, #42)의 줄별 표로 3줄 조합을 열거. 레벨은 `min(level, 120)`. 줄 수 제한(Decent 스킬·무적 시간 최대 1줄 등)은 페이지 문구 기준, 무적 관련 두 규칙은 **확인 필요**. 큐브 사용 중 등급 업은 무시
 - 이름으로 찾은 장비는 잠재 등급을 알 수 없어 현재 등급을 직접 고름. 민팅 불가 장비·특수 반지는 목록에서 제외
 
 ## 병렬 작업 규칙 (worktree)
