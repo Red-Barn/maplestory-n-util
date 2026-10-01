@@ -2,8 +2,10 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import { GRADES, MIN_GRADE, POTENTIAL_KINDS, TIER_UP_CUBES, type PotentialKind } from "@/data/potential";
+import ItemPicker from "@/components/ItemPicker";
 import { maxTargetGrade, potentialGrade, tierUpPlan } from "@/lib/calc/potential/tierUp";
 import type { EnhancementPrices } from "@/types/enhancement";
+import type { ItemRef } from "@/types/items";
 import type { ItemDetail } from "@/types/msu";
 import TierUpResult from "./TierUpResult";
 
@@ -40,6 +42,14 @@ const INPUT_CLASS =
 
 type PriceState = { itemId: number; data?: EnhancementPrices; error?: string };
 
+/** Where the item comes from: the character's equipment, or any item found by name. */
+type Source = "equipped" | "name";
+
+const SOURCES: { source: Source; label: string }[] = [
+  { source: "equipped", label: "장착 장비" },
+  { source: "name", label: "아이템 이름으로 찾기" },
+];
+
 const gradeLabel = (grade: number) => GRADES.find((g) => g.grade === grade)?.label ?? "없음";
 const neso = (v: number) => v.toLocaleString(undefined, { maximumFractionDigits: 6 });
 const positive = (raw: string) => {
@@ -47,17 +57,22 @@ const positive = (raw: string) => {
   return Number.isFinite(v) && v > 0 ? v : undefined;
 };
 
-function Field({ label, hint, children }: { label: string; hint?: ReactNode; children: ReactNode }) {
+/** A labelled control. `group` renders a div instead of a label (for controls with several inputs/buttons). */
+function Field(props: { label: string; hint?: ReactNode; group?: boolean; children: ReactNode }) {
+  const Tag = props.group ? "div" : "label";
   return (
-    <label className="block space-y-1">
-      <span className="text-xs font-medium text-zinc-500">{label}</span>
-      {children}
-      {hint && <span className="block text-[11px] leading-snug text-zinc-500">{hint}</span>}
-    </label>
+    <Tag className="block space-y-1">
+      <span className="block text-xs font-medium text-zinc-500">{props.label}</span>
+      {props.children}
+      {props.hint && <span className="block text-[11px] leading-snug text-zinc-500">{props.hint}</span>}
+    </Tag>
   );
 }
 
-/** Potential tier-up calculator: cubes and cost to raise an equipped item's (bonus) potential grade. */
+/**
+ * Potential tier-up calculator: cubes and cost to raise an item's (bonus) potential grade. The item
+ * is one the character has equipped (grade read from it) or any item found by name (grade entered).
+ */
 export default function PotentialCalculator({ items }: { items: Record<string, ItemDetail | null> }) {
   // Items that can hold a potential: metadata-only and manually added ones can't be enhanced.
   const equipped = SLOTS.flatMap(([slot, label]) => {
@@ -65,7 +80,9 @@ export default function PotentialCalculator({ items }: { items: Record<string, I
     return item && !item.fromMetadata && !item.manual ? [{ slot, label, item }] : [];
   });
 
+  const [source, setSource] = useState<Source>(equipped.length > 0 ? "equipped" : "name");
   const [slot, setSlot] = useState(equipped[0]?.slot ?? "");
+  const [picked, setPicked] = useState<ItemRef>();
   const [kind, setKind] = useState<PotentialKind>("potential");
   const [cubeId, setCubeId] = useState<number>();
   // Unset = follow the item (its current grade) / the cube (as far as it goes) / the API price.
@@ -75,8 +92,8 @@ export default function PotentialCalculator({ items }: { items: Record<string, I
   const [tries, setTries] = useState<number>();
   const [prices, setPrices] = useState<PriceState>();
 
-  const item = equipped.find((e) => e.slot === slot)?.item;
-  const itemId = item?.common.itemId;
+  const item = source === "equipped" ? equipped.find((e) => e.slot === slot)?.item : undefined;
+  const itemId = source === "equipped" ? item?.common.itemId : picked?.id;
 
   useEffect(() => {
     if (!itemId) return;
@@ -115,9 +132,10 @@ export default function PotentialCalculator({ items }: { items: Record<string, I
   const kindLabel = POTENTIAL_KINDS.find((k) => k.kind === kind)!.label;
 
   let priceHint: ReactNode;
-  if (!item) priceHint = "장비를 고르면 현재 시세를 불러옵니다.";
+  if (!itemId) priceHint = "아이템을 고르면 현재 시세를 불러옵니다.";
   else if (!loaded) priceHint = "시세를 불러오는 중…";
-  else if (loaded.error) priceHint = `${loaded.error} 가격을 직접 입력하세요.`;
+  // items without a market price come back as an API NotFound — not worth showing verbatim
+  else if (loaded.error) priceHint = "이 장비의 큐브 시세를 불러오지 못했습니다. 가격을 직접 입력하세요.";
   else if (apiPrice === undefined) priceHint = "이 장비에는 이 큐브의 시세가 없습니다. 가격을 직접 입력하세요.";
   else
     priceHint = (
@@ -129,25 +147,69 @@ export default function PotentialCalculator({ items }: { items: Record<string, I
 
   return (
     <div className="space-y-4">
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        <Field label="장비" hint="가격은 장비마다 다르고 1분마다 바뀝니다.">
-          <select
-            value={slot}
-            onChange={(e) => {
-              setSlot(e.target.value);
+      <div className="flex flex-wrap gap-1 border-b border-black/10 dark:border-white/15" role="tablist">
+        {SOURCES.map((s) => (
+          <button
+            key={s.source}
+            type="button"
+            role="tab"
+            aria-selected={source === s.source}
+            onClick={() => {
+              setSource(s.source);
               setGradeInput(undefined);
               setPriceInput(undefined);
             }}
-            className={SELECT_CLASS}
+            className={`-mb-px border-b-2 px-3 py-1.5 text-sm font-medium ${
+              source === s.source ? "border-orange-500 text-current" : "border-transparent text-zinc-500 hover:text-current"
+            }`}
           >
-            {equipped.map((e) => (
-              <option key={e.slot} value={e.slot}>
-                {e.label} · {e.item.name}
-              </option>
-            ))}
-            <option value="">장비 없이 계산 (등급·가격 직접 입력)</option>
-          </select>
-        </Field>
+            {s.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {source === "equipped" ? (
+          <Field label="장비" hint="가격은 장비마다 다르고 1분마다 바뀝니다.">
+            {equipped.length > 0 ? (
+              <select
+                value={slot}
+                onChange={(e) => {
+                  setSlot(e.target.value);
+                  setGradeInput(undefined);
+                  setPriceInput(undefined);
+                }}
+                className={SELECT_CLASS}
+              >
+                {equipped.map((e) => (
+                  <option key={e.slot} value={e.slot}>
+                    {e.label} · {e.item.name}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <span className="block text-sm text-zinc-500">잠재능력을 가진 장착 장비가 없습니다.</span>
+            )}
+          </Field>
+        ) : (
+          <Field
+            label="아이템"
+            group
+            hint={
+              picked
+                ? `${picked.name} (ID ${picked.id}). 등급은 직접 고르세요.`
+                : "장비 이름 일부를 영문으로 입력하세요. 고르지 않으면 가격을 직접 입력해 계산합니다."
+            }
+          >
+            <ItemPicker
+              onSelect={(found) => {
+                setPicked(found);
+                setGradeInput(undefined);
+                setPriceInput(undefined);
+              }}
+            />
+          </Field>
+        )}
 
         <Field label="종류">
           <select
