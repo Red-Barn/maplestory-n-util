@@ -104,6 +104,21 @@ describe("optimizeHyper", () => {
     expect(optimizeHyper(capped, 5000).levels.criticalRate).toBe(0);
   });
 
+  test("with Critical Reinforce, crit rate is worth points above the cap", () => {
+    const capped = { ...small, base: [...small.base, stat("CRIT%", 3)] };
+    const plan = optimizeHyper({ ...capped, cdmgPerCrit: 0.25 }, 5000);
+    expect(plan.levels.criticalRate).toBe(15);
+  });
+
+  test("matches brute force with Critical Reinforce", () => {
+    const ctx = { ...small, cdmgPerCrit: 0.2322 };
+    const budgets = [0, 3, 8, 20, 45, 70];
+    const expected = bruteForce(ctx, budgets, 4);
+    budgets.forEach((budget, n) => {
+      expect(optimizeHyper(ctx, budget, 4).score).toBeCloseTo(expected[n], 6);
+    });
+  });
+
   test("with points to spare every useful stat is maxed and the rest is left over", () => {
     const plan = optimizeHyper(small, 5000);
     // DEX, STR, ATT, damage, boss, IED, crit damage at Lv.15 + crit rate Lv.3

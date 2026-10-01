@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import CritReinforceCard, { DEFAULT_CRIT_REINFORCE, type CritReinforceSettings } from "./CritReinforceCard";
 import { HYPER_MAX_LEVEL } from "@/data/hyperStats";
 import {
   apiSpentPoints,
@@ -10,12 +11,13 @@ import {
   spentPoints,
   type HyperLevels,
 } from "@/lib/calc/hyper/cost";
-import { hyperTerms, optimizeHyper } from "@/lib/calc/hyper/optimize";
+import { cdmgPerCrit, hasCritReinforce } from "@/lib/calc/hyper/critReinforce";
+import { hyperFinal, optimizeHyper, termsOf } from "@/lib/calc/hyper/optimize";
+import { load, save } from "@/lib/client/storage";
 import { useCharacterStats, useWornBundle } from "@/lib/client/useCharacterStats";
 import {
   API_PRESET,
   damageScore,
-  damageTerms,
   effectsForJob,
   PRESET_SLOTS,
   STAT_LABEL,
@@ -75,13 +77,29 @@ export default function HyperOptimizer({ bundle }: { bundle: CharacterBundle }) 
   const maxPoints = hyperDefs.length * cumulativeCost(HYPER_MAX_LEVEL);
   const budget = Math.max(0, Math.min(Math.floor(entered ?? apiPoints), maxPoints));
 
-  const current: HyperLevels = useMemo(() => levelsFromInput(hyperInput), [hyperInput]);
-  const plan = useMemo(
-    () => job && optimizeHyper({ base: withoutHyper, ap: base.ap, job }, budget),
-    [withoutHyper, base.ap, job, budget],
-  );
+  // Critical Reinforce (Bowman jobs), saved per character
+  const reinforceKey = `msn:hyper-crit-reinforce:${character.assetKey}`;
+  const canReinforce = hasCritReinforce(character.common.job.className);
+  const [reinforce, setReinforce] = useState<CritReinforceSettings>(DEFAULT_CRIT_REINFORCE);
+  useEffect(() => {
+    // localStorage is only readable after mount
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setReinforce({ ...DEFAULT_CRIT_REINFORCE, ...load<Partial<CritReinforceSettings>>(reinforceKey, {}) });
+  }, [reinforceKey]);
+  const changeReinforce = (next: CritReinforceSettings) => {
+    setReinforce(next);
+    save(reinforceKey, next);
+  };
+  const perCrit = canReinforce && reinforce.on ? cdmgPerCrit(reinforce) : undefined;
 
-  if (!job || !plan) {
+  const current: HyperLevels = useMemo(() => levelsFromInput(hyperInput), [hyperInput]);
+  const ctx = useMemo(
+    () => job && { base: withoutHyper, ap: base.ap, job, cdmgPerCrit: perCrit },
+    [withoutHyper, base.ap, job, perCrit],
+  );
+  const plan = useMemo(() => ctx && optimizeHyper(ctx, budget), [ctx, budget]);
+
+  if (!job || !ctx || !plan) {
     return (
       <p className="text-sm text-zinc-500">
         {character.common.job.jobName} 직업 데이터가 아직 없어 하이퍼 스탯을 계산할 수 없습니다.
@@ -89,8 +107,10 @@ export default function HyperOptimizer({ bundle }: { bundle: CharacterBundle }) 
     );
   }
 
-  const before = damageTerms(result.final, job);
-  const after = hyperTerms({ base: withoutHyper, ap: base.ap, job }, plan.levels);
+  // both sides with the same Critical Reinforce average
+  const before = termsOf(result.final, job, perCrit);
+  const afterFinal = hyperFinal(ctx, plan.levels);
+  const after = termsOf(afterFinal, job, perCrit);
   const currentPoints = spentPoints(Object.fromEntries(hyperDefs.map((d) => [d.id, current[d.id] ?? 0])));
   const presetName = hyperPreset === API_PRESET ? "API 프리셋" : `프리셋 ${hyperPreset}`;
 
@@ -170,6 +190,15 @@ export default function HyperOptimizer({ bundle }: { bundle: CharacterBundle }) 
         </div>
 
         <div className="space-y-4">
+          {canReinforce && (
+            <CritReinforceCard
+              settings={reinforce}
+              onChange={changeReinforce}
+              perCrit={perCrit}
+              critBefore={result.final["CRIT%"]}
+              critAfter={afterFinal["CRIT%"]}
+            />
+          )}
           <div className={card}>
             <table className="w-full text-sm">
               <thead className={head}>

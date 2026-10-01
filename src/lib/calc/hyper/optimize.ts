@@ -6,11 +6,13 @@ import {
   damageScore,
   damageTerms,
   type DamageTerms,
+  type FinalStats,
   type JobView,
   type MainStat,
   type StatContribution,
 } from "@/lib/stats";
 import { cumulativeCost, inputFromLevels, type HyperLevels } from "./cost";
+import { applyCritReinforce } from "./critReinforce";
 
 // Best hyper stat levels for a point budget, by damage score.
 //
@@ -34,13 +36,22 @@ export type HyperContext = {
   base: StatContribution[];
   ap: Record<MainStat, number>;
   job: JobView;
+  /** Critical Reinforce: average extra crit damage % per 1% crit rate (see critReinforce.ts). */
+  cdmgPerCrit?: number;
 };
 
 export const hyperContributions = (levels: HyperLevels): StatContribution[] =>
   collectChoices(HYPER_STATS, inputFromLevels(levels), "hyper");
 
-export const hyperTerms = ({ base, ap, job }: HyperContext, levels: HyperLevels): DamageTerms =>
-  damageTerms(computeStats([...base, ...hyperContributions(levels)], ap).final, job);
+/** Damage terms of the final stats, with Critical Reinforce added when it's in use. */
+export const termsOf = (final: FinalStats, job: JobView, cdmgPerCrit?: number): DamageTerms =>
+  applyCritReinforce(damageTerms(final, job), final, cdmgPerCrit);
+
+export const hyperFinal = ({ base, ap }: HyperContext, levels: HyperLevels): FinalStats =>
+  computeStats([...base, ...hyperContributions(levels)], ap).final;
+
+export const hyperTerms = (ctx: HyperContext, levels: HyperLevels): DamageTerms =>
+  termsOf(hyperFinal(ctx, levels), ctx.job, ctx.cdmgPerCrit);
 
 export const hyperScore = (ctx: HyperContext, levels: HyperLevels): number => damageScore(hyperTerms(ctx, levels));
 
