@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import HyperOptimizer from "@/components/calc/hyper/HyperOptimizer";
 import CharacterHeader from "@/components/CharacterHeader";
 import { getCharacterBundle } from "@/lib/character";
 import { MsuApiError } from "@/lib/msu";
@@ -21,7 +22,7 @@ export default async function HyperPage({ params }: PageProps<"/character/[asset
       <CharacterHeader character={bundle.character} />
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">하이퍼 스탯 최적화</h2>
-        <p className="text-sm text-zinc-500">준비 중입니다.</p>
+        <HyperOptimizer bundle={bundle} />
       </section>
     </div>
   );
