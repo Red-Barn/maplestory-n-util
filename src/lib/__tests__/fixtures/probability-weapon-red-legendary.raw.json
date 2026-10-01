@@ -1,0 +1,356 @@
+{
+ "cubeType": "CubeType_RED",
+ "gradeType": "GradeType_LEGENDARY",
+ "partsType": "PartsType_WEAPON",
+ "equipLevelMin": 120,
+ "equipLevelMax": 120,
+ "probabilityInfos": [
+  {
+   "probabilityInfo": [
+    {
+     "optionDescription": "STR : +12%",
+     "probability": "10.256411",
+     "displayOrder": 1
+    },
+    {
+     "optionDescription": "DEX : +12%",
+     "probability": "10.256411",
+     "displayOrder": 2
+    },
+    {
+     "optionDescription": "INT : +12%",
+     "probability": "10.256411",
+     "displayOrder": 3
+    },
+    {
+     "optionDescription": "LUK : +12%",
+     "probability": "10.256411",
+     "displayOrder": 4
+    },
+    {
+     "optionDescription": "ATT: +12%",
+     "probability": "5.128205",
+     "displayOrder": 5
+    },
+    {
+     "optionDescription": "Magic ATT: +12%",
+     "probability": "5.128205",
+     "displayOrder": 6
+    },
+    {
+     "optionDescription": "Critical Rate: +12%",
+     "probability": "5.128205",
+     "displayOrder": 7
+    },
+    {
+     "optionDescription": "Damage: +12%",
+     "probability": "5.128205",
+     "displayOrder": 8
+    },
+    {
+     "optionDescription": "All Stats: +9%",
+     "probability": "7.692308",
+     "displayOrder": 9
+    },
+    {
+     "optionDescription": "ATT per 10 Character Levels: +1",
+     "probability": "5.128205",
+     "displayOrder": 10
+    },
+    {
+     "optionDescription": "M. ATT per 10 Character Levels: +1",
+     "probability": "5.128205",
+     "displayOrder": 11
+    },
+    {
+     "optionDescription": "DEF Ignored: +35%",
+     "probability": "5.128205",
+     "displayOrder": 12
+    },
+    {
+     "optionDescription": "DEF Ignored: +40%",
+     "probability": "5.128205",
+     "displayOrder": 13
+    },
+    {
+     "optionDescription": "Boss Damage: +35%",
+     "probability": "5.128205",
+     "displayOrder": 14
+    },
+    {
+     "optionDescription": "Boss Damage: +40%",
+     "probability": "5.128205",
+     "displayOrder": 15
+    }
+   ]
+  },
+  {
+   "probabilityInfo": [
+    {
+     "optionDescription": "STR : +9%",
+     "probability": "10.465117",
+     "displayOrder": 1
+    },
+    {
+     "optionDescription": "DEX : +9%",
+     "probability": "10.465117",
+     "displayOrder": 2
+    },
+    {
+     "optionDescription": "INT : +9%",
+     "probability": "10.465117",
+     "displayOrder": 3
+    },
+    {
+     "optionDescription": "LUK : +9%",
+     "probability": "10.465117",
+     "displayOrder": 4
+    },
+    {
+     "optionDescription": "ATT: +9%",
+     "probability": "6.279070",
+     "displayOrder": 5
+    },
+    {
+     "optionDescription": "Magic ATT: +9%",
+     "probability": "6.279070",
+     "displayOrder": 6
+    },
+    {
+     "optionDescription": "Critical Rate: +9%",
+     "probability": "8.372093",
+     "displayOrder": 7
+    },
+    {
+     "optionDescription": "Damage: +9%",
+     "probability": "6.279070",
+     "displayOrder": 8
+    },
+    {
+     "optionDescription": "All Stats: +6%",
+     "probability": "8.372093",
+     "displayOrder": 9
+    },
+    {
+     "optionDescription": "DEF Ignored: +30%",
+     "probability": "6.279070",
+     "displayOrder": 10
+    },
+    {
+     "optionDescription": "Boss Damage: +30%",
+     "probability": "6.279070",
+     "displayOrder": 11
+    },
+    {
+     "optionDescription": "STR : +12%",
+     "probability": "1.025641",
+     "displayOrder": 12
+    },
+    {
+     "optionDescription": "DEX : +12%",
+     "probability": "1.025641",
+     "displayOrder": 13
+    },
+    {
+     "optionDescription": "INT : +12%",
+     "probability": "1.025641",
+     "displayOrder": 14
+    },
+    {
+     "optionDescription": "LUK : +12%",
+     "probability": "1.025641",
+     "displayOrder": 15
+    },
+    {
+     "optionDescription": "ATT: +12%",
+     "probability": "0.512821",
+     "displayOrder": 16
+    },
+    {
+     "optionDescription": "Magic ATT: +12%",
+     "probability": "0.512821",
+     "displayOrder": 17
+    },
+    {
+     "optionDescription": "Critical Rate: +12%",
+     "probability": "0.512821",
+     "displayOrder": 18
+    },
+    {
+     "optionDescription": "Damage: +12%",
+     "probability": "0.512821",
+     "displayOrder": 19
+    },
+    {
+     "optionDescription": "All Stats: +9%",
+     "probability": "0.769231",
+     "displayOrder": 20
+    },
+    {
+     "optionDescription": "ATT per 10 Character Levels: +1",
+     "probability": "0.512821",
+     "displayOrder": 21
+    },
+    {
+     "optionDescription": "M. ATT per 10 Character Levels: +1",
+     "probability": "0.512821",
+     "displayOrder": 22
+    },
+    {
+     "optionDescription": "DEF Ignored: +35%",
+     "probability": "0.512821",
+     "displayOrder": 23
+    },
+    {
+     "optionDescription": "DEF Ignored: +40%",
+     "probability": "0.512821",
+     "displayOrder": 24
+    },
+    {
+     "optionDescription": "Boss Damage: +35%",
+     "probability": "0.512821",
+     "displayOrder": 25
+    },
+    {
+     "optionDescription": "Boss Damage: +40%",
+     "probability": "0.512821",
+     "displayOrder": 26
+    }
+   ]
+  },
+  {
+   "probabilityInfo": [
+    {
+     "optionDescription": "STR : +9%",
+     "probability": "11.511628",
+     "displayOrder": 1
+    },
+    {
+     "optionDescription": "DEX : +9%",
+     "probability": "11.511628",
+     "displayOrder": 2
+    },
+    {
+     "optionDescription": "INT : +9%",
+     "probability": "11.511628",
+     "displayOrder": 3
+    },
+    {
+     "optionDescription": "LUK : +9%",
+     "probability": "11.511628",
+     "displayOrder": 4
+    },
+    {
+     "optionDescription": "ATT: +9%",
+     "probability": "6.906977",
+     "displayOrder": 5
+    },
+    {
+     "optionDescription": "Magic ATT: +9%",
+     "probability": "6.906977",
+     "displayOrder": 6
+    },
+    {
+     "optionDescription": "Critical Rate: +9%",
+     "probability": "9.209302",
+     "displayOrder": 7
+    },
+    {
+     "optionDescription": "Damage: +9%",
+     "probability": "6.906977",
+     "displayOrder": 8
+    },
+    {
+     "optionDescription": "All Stats: +6%",
+     "probability": "9.209302",
+     "displayOrder": 9
+    },
+    {
+     "optionDescription": "DEF Ignored: +30%",
+     "probability": "6.906977",
+     "displayOrder": 10
+    },
+    {
+     "optionDescription": "Boss Damage: +30%",
+     "probability": "6.906977",
+     "displayOrder": 11
+    },
+    {
+     "optionDescription": "STR : +12%",
+     "probability": "0.102564",
+     "displayOrder": 12
+    },
+    {
+     "optionDescription": "DEX : +12%",
+     "probability": "0.102564",
+     "displayOrder": 13
+    },
+    {
+     "optionDescription": "INT : +12%",
+     "probability": "0.102564",
+     "displayOrder": 14
+    },
+    {
+     "optionDescription": "LUK : +12%",
+     "probability": "0.102564",
+     "displayOrder": 15
+    },
+    {
+     "optionDescription": "ATT: +12%",
+     "probability": "0.051282",
+     "displayOrder": 16
+    },
+    {
+     "optionDescription": "Magic ATT: +12%",
+     "probability": "0.051282",
+     "displayOrder": 17
+    },
+    {
+     "optionDescription": "Critical Rate: +12%",
+     "probability": "0.051282",
+     "displayOrder": 18
+    },
+    {
+     "optionDescription": "Damage: +12%",
+     "probability": "0.051282",
+     "displayOrder": 19
+    },
+    {
+     "optionDescription": "All Stats: +9%",
+     "probability": "0.076923",
+     "displayOrder": 20
+    },
+    {
+     "optionDescription": "ATT per 10 Character Levels: +1",
+     "probability": "0.051282",
+     "displayOrder": 21
+    },
+    {
+     "optionDescription": "M. ATT per 10 Character Levels: +1",
+     "probability": "0.051282",
+     "displayOrder": 22
+    },
+    {
+     "optionDescription": "DEF Ignored: +35%",
+     "probability": "0.051282",
+     "displayOrder": 23
+    },
+    {
+     "optionDescription": "DEF Ignored: +40%",
+     "probability": "0.051282",
+     "displayOrder": 24
+    },
+    {
+     "optionDescription": "Boss Damage: +35%",
+     "probability": "0.051282",
+     "displayOrder": 25
+    },
+    {
+     "optionDescription": "Boss Damage: +40%",
+     "probability": "0.051282",
+     "displayOrder": 26
+    }
+   ]
+  }
+ ]
+}
