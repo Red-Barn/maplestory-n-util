@@ -1,4 +1,5 @@
 // Item IDs for price lookups (GET /api/enhancement/{itemId}, see src/lib/enhancement.ts).
+// Other items are found by name with GET /api/items/search (src/lib/itemSearch.ts, ItemPicker).
 
 /** Cubes, as the API names them (/gamemeta/items/{id}). Prices come per equipment item. */
 export const CUBES = [
@@ -11,12 +12,3 @@ export const CUBES = [
 ] as const;
 
 export type CubeId = (typeof CUBES)[number]["id"];
-
-/**
- * Equipment item name → item ID, for looking an item up by name. To be filled from the list the
- * user provides. Items a character has equipped already carry their ID (`common.itemId`), so
- * those don't need an entry.
- */
-export const ITEM_IDS: Record<string, number> = {};
-
-export const itemIdByName = (name: string): number | undefined => ITEM_IDS[name.trim()];

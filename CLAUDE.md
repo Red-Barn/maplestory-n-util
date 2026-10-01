@@ -46,7 +46,8 @@
 - 페이지: `src/app/character/[assetKey]/{hyper,starforce,potential}/page.tsx`. 상단 탭은 `src/components/CharacterTabs.tsx`, 캐릭터 머리글은 `CharacterHeader`
 - 현재 스탯: `useWornBundle(bundle)`(특수 반지 해제 반영) → `useCharacterStats(worn)` (`src/lib/client/useCharacterStats.ts`). 스탯 패널과 같은 저장소(localStorage)를 읽으므로 링크·유니온·도감·프리셋·펫·버프가 모두 반영됨. `result`(현재), `reference`(API 기준), `withoutHyper`(하이퍼 스탯만 뺀 기여분)
 - 데미지 점수: `damageTerms` / `damageScore` (`src/lib/stats/damage.ts`). 스탯 반영치 × 총 공격력 × 데미지%(데미지+보공) × 방어율 보정(몬스터 방어율 300%) × 크리티컬 보정(크확 100% 상한). 최종 데미지·무기 상수·숙련도·스킬 데미지%·속성 내성은 비교 대상끼리 같은 상수라 제외 → **절대값이 아니라 비율로 비교**
-- 강화 가격: `GET /api/enhancement/{itemId}` (`src/lib/enhancement.ts`, MSU `/enhancement/items/{itemId}/dynamicprice`). 장비 하나의 성별 스타포스 비용과 큐브별 비용(NESO)을 함께 줌. 가격은 장비마다 다르고 1분마다 바뀜(캐시 60초). 큐브 ID는 `src/data/itemIds.ts`의 `CUBES`, 이름 → ID 표 `ITEM_IDS`는 사용자가 제공 예정(장착 장비는 `common.itemId`로 바로 조회)
+- 강화 가격: `GET /api/enhancement/{itemId}` (`src/lib/enhancement.ts`, MSU `/enhancement/items/{itemId}/dynamicprice`). 장비 하나의 성별 스타포스 비용과 큐브별 비용(NESO)을 함께 줌. 가격은 장비마다 다르고 1분마다 바뀜(캐시 60초). 큐브 ID는 `src/data/itemIds.ts`의 `CUBES`. 장착 장비는 `common.itemId`로 바로 조회
+- 아이템 이름으로 찾기: `<ItemPicker onSelect={(item) => …} />` (`src/components/ItemPicker.tsx`) → `GET /api/items/search?q=`(장비만, `&all=1`이면 전체). MSU `/search/suggest?type=item`이 이름 일부로 `이름 + itemId + categoryNo`를 줌(1일 캐시) → 이름·ID 목록을 따로 관리하지 않음. 고른 아이템의 메타데이터(아이콘·요구 레벨·카테고리·최대 스타포스)는 `GET /api/items/{itemId}`
 
 ## 병렬 작업 규칙 (worktree)
 계산기 3종은 worktree 3개에서 에이전트가 동시에 작업한다. 메인 폴더(`maplestory-n-util`, `develop`)는 통합 담당이다.
