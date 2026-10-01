@@ -37,6 +37,7 @@
   키 없이 호출되지만 CORS가 없어 서버 경유 필요 → 공용 라우트 `GET /api/potential/probability` (#42, 1일 캐시). **비공식 엔드포인트라 바뀔 수 있음.**
 - 응답의 `probabilityInfos[0..2]` = 1·2·3번째 줄 표(각 합 100%, 표기는 소수 6자리 반올림). 2·3번째 줄은 이미 "현재 등급(Red 10%/1%) + 한 단계 아래 등급"이 섞인 값.
 - 사이트는 레벨을 `min(level, 120)`으로 보냄 → 120 이상은 같은 표.
+- 표는 부위마다 **실제 장비가 있는 레벨에만** 있다(구간이 아님). 2026-10-01 Red 기준 1~130 전수 확인: 무기 10·50·110·120, 모자 50·70·100·120, 반지 100·110·120. 그 밖의 레벨은 `probabilityInfos: []`(사이트도 같음) → 화면에 "옵션 확률이 없습니다". 장착 장비의 레벨을 그대로 쓰면 표가 나옴
 - 큐브 → `cubeType`: Occult `OCCULT`, Red `RED`, Black `BLACK`, Bonus Occult `BONUS_OCCULT`, Bonus Potential·White `BONUS_POTENTIAL`.
 - Bonus Occult Cube 페이지에는 등급 업 표가 없고 레어 열만 있음 → 등급 업 계산기에서는 계속 제외.
 - 부위: 장비 카테고리(tier2/tier3 라벨)로 자동 결정(`partOfCategory`), 화면에서 바꿀 수 있음. 포켓·뱃지는 해당 부위 없음.
