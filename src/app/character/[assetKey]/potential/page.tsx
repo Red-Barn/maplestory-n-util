@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import PotentialCalculator from "@/components/calc/potential/PotentialCalculator";
 import CharacterHeader from "@/components/CharacterHeader";
 import { getCharacterBundle } from "@/lib/character";
 import { MsuApiError } from "@/lib/msu";
@@ -19,10 +20,7 @@ export default async function PotentialPage({ params }: PageProps<"/character/[a
   return (
     <div className="space-y-8">
       <CharacterHeader character={bundle.character} />
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">잠재능력 계산기</h2>
-        <p className="text-sm text-zinc-500">준비 중입니다.</p>
-      </section>
+      <PotentialCalculator items={bundle.items} />
     </div>
   );
 }

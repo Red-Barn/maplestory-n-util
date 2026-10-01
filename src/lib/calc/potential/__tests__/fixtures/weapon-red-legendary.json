@@ -1,0 +1,286 @@
+{
+ "cube": "RED",
+ "grade": "LEGENDARY",
+ "part": "WEAPON",
+ "level": 120,
+ "levelRange": [
+  120,
+  120
+ ],
+ "lines": [
+  [
+   {
+    "option": "STR : +12%",
+    "probability": 10.256411
+   },
+   {
+    "option": "DEX : +12%",
+    "probability": 10.256411
+   },
+   {
+    "option": "INT : +12%",
+    "probability": 10.256411
+   },
+   {
+    "option": "LUK : +12%",
+    "probability": 10.256411
+   },
+   {
+    "option": "ATT: +12%",
+    "probability": 5.128205
+   },
+   {
+    "option": "Magic ATT: +12%",
+    "probability": 5.128205
+   },
+   {
+    "option": "Critical Rate: +12%",
+    "probability": 5.128205
+   },
+   {
+    "option": "Damage: +12%",
+    "probability": 5.128205
+   },
+   {
+    "option": "All Stats: +9%",
+    "probability": 7.692308
+   },
+   {
+    "option": "ATT per 10 Character Levels: +1",
+    "probability": 5.128205
+   },
+   {
+    "option": "M. ATT per 10 Character Levels: +1",
+    "probability": 5.128205
+   },
+   {
+    "option": "DEF Ignored: +35%",
+    "probability": 5.128205
+   },
+   {
+    "option": "DEF Ignored: +40%",
+    "probability": 5.128205
+   },
+   {
+    "option": "Boss Damage: +35%",
+    "probability": 5.128205
+   },
+   {
+    "option": "Boss Damage: +40%",
+    "probability": 5.128205
+   }
+  ],
+  [
+   {
+    "option": "STR : +9%",
+    "probability": 10.465117
+   },
+   {
+    "option": "DEX : +9%",
+    "probability": 10.465117
+   },
+   {
+    "option": "INT : +9%",
+    "probability": 10.465117
+   },
+   {
+    "option": "LUK : +9%",
+    "probability": 10.465117
+   },
+   {
+    "option": "ATT: +9%",
+    "probability": 6.27907
+   },
+   {
+    "option": "Magic ATT: +9%",
+    "probability": 6.27907
+   },
+   {
+    "option": "Critical Rate: +9%",
+    "probability": 8.372093
+   },
+   {
+    "option": "Damage: +9%",
+    "probability": 6.27907
+   },
+   {
+    "option": "All Stats: +6%",
+    "probability": 8.372093
+   },
+   {
+    "option": "DEF Ignored: +30%",
+    "probability": 6.27907
+   },
+   {
+    "option": "Boss Damage: +30%",
+    "probability": 6.27907
+   },
+   {
+    "option": "STR : +12%",
+    "probability": 1.025641
+   },
+   {
+    "option": "DEX : +12%",
+    "probability": 1.025641
+   },
+   {
+    "option": "INT : +12%",
+    "probability": 1.025641
+   },
+   {
+    "option": "LUK : +12%",
+    "probability": 1.025641
+   },
+   {
+    "option": "ATT: +12%",
+    "probability": 0.512821
+   },
+   {
+    "option": "Magic ATT: +12%",
+    "probability": 0.512821
+   },
+   {
+    "option": "Critical Rate: +12%",
+    "probability": 0.512821
+   },
+   {
+    "option": "Damage: +12%",
+    "probability": 0.512821
+   },
+   {
+    "option": "All Stats: +9%",
+    "probability": 0.769231
+   },
+   {
+    "option": "ATT per 10 Character Levels: +1",
+    "probability": 0.512821
+   },
+   {
+    "option": "M. ATT per 10 Character Levels: +1",
+    "probability": 0.512821
+   },
+   {
+    "option": "DEF Ignored: +35%",
+    "probability": 0.512821
+   },
+   {
+    "option": "DEF Ignored: +40%",
+    "probability": 0.512821
+   },
+   {
+    "option": "Boss Damage: +35%",
+    "probability": 0.512821
+   },
+   {
+    "option": "Boss Damage: +40%",
+    "probability": 0.512821
+   }
+  ],
+  [
+   {
+    "option": "STR : +9%",
+    "probability": 11.511628
+   },
+   {
+    "option": "DEX : +9%",
+    "probability": 11.511628
+   },
+   {
+    "option": "INT : +9%",
+    "probability": 11.511628
+   },
+   {
+    "option": "LUK : +9%",
+    "probability": 11.511628
+   },
+   {
+    "option": "ATT: +9%",
+    "probability": 6.906977
+   },
+   {
+    "option": "Magic ATT: +9%",
+    "probability": 6.906977
+   },
+   {
+    "option": "Critical Rate: +9%",
+    "probability": 9.209302
+   },
+   {
+    "option": "Damage: +9%",
+    "probability": 6.906977
+   },
+   {
+    "option": "All Stats: +6%",
+    "probability": 9.209302
+   },
+   {
+    "option": "DEF Ignored: +30%",
+    "probability": 6.906977
+   },
+   {
+    "option": "Boss Damage: +30%",
+    "probability": 6.906977
+   },
+   {
+    "option": "STR : +12%",
+    "probability": 0.102564
+   },
+   {
+    "option": "DEX : +12%",
+    "probability": 0.102564
+   },
+   {
+    "option": "INT : +12%",
+    "probability": 0.102564
+   },
+   {
+    "option": "LUK : +12%",
+    "probability": 0.102564
+   },
+   {
+    "option": "ATT: +12%",
+    "probability": 0.051282
+   },
+   {
+    "option": "Magic ATT: +12%",
+    "probability": 0.051282
+   },
+   {
+    "option": "Critical Rate: +12%",
+    "probability": 0.051282
+   },
+   {
+    "option": "Damage: +12%",
+    "probability": 0.051282
+   },
+   {
+    "option": "All Stats: +9%",
+    "probability": 0.076923
+   },
+   {
+    "option": "ATT per 10 Character Levels: +1",
+    "probability": 0.051282
+   },
+   {
+    "option": "M. ATT per 10 Character Levels: +1",
+    "probability": 0.051282
+   },
+   {
+    "option": "DEF Ignored: +35%",
+    "probability": 0.051282
+   },
+   {
+    "option": "DEF Ignored: +40%",
+    "probability": 0.051282
+   },
+   {
+    "option": "Boss Damage: +35%",
+    "probability": 0.051282
+   },
+   {
+    "option": "Boss Damage: +40%",
+    "probability": 0.051282
+   }
+  ]
+ ]
+}
