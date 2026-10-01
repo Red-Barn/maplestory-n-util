@@ -6,6 +6,7 @@ import { MAX_STAR, PROTECT_MAX_STAR, PROTECT_MIN_STAR } from "@/data/starforce";
 import {
   expectedToTarget,
   pricedUpTo,
+  PROTECTABLE_STARS,
   seededRng,
   simulateRuns,
   summarize,
@@ -48,12 +49,10 @@ const SLOT_NAMES: Record<string, string> = {
   medal: "훈장",
 };
 
-const COMBOS: StarforceOptions[] = [
-  { starCatch: false, protect: false },
-  { starCatch: true, protect: false },
-  { starCatch: false, protect: true },
-  { starCatch: true, protect: true },
-];
+const NO_PROTECT: readonly number[] = [];
+
+const sameOptions = (a: StarforceOptions, b: StarforceOptions) =>
+  a.starCatch === b.starCatch && a.protect.join() === b.protect.join();
 
 // Simulation size: up to MAX_RUNS items, fewer when one item takes many attempts, so the total
 // stays around STEP_BUDGET attempts. Below MIN_RUNS the percentiles aren't worth showing.
@@ -203,16 +202,43 @@ function ItemCalculator({ target }: { target: Target }) {
   const { maxStar, current } = target;
   const [from, setFrom] = useState(current);
   const [to, setTo] = useState(Math.min(current + 1, maxStar));
-  const [opts, setOpts] = useState<StarforceOptions>(COMBOS[0]);
+  const [starCatch, setStarCatch] = useState(false);
+  // Protect is chosen per star; the master switch turns the chosen stars on or off as a whole,
+  // so comparing with and without Protect doesn't lose the selection.
+  const [protectOn, setProtectOn] = useState(false);
+  const [protectStars, setProtectStars] = useState<readonly number[]>(PROTECTABLE_STARS);
+  const opts: StarforceOptions = useMemo(
+    () => ({ starCatch, protect: protectOn ? protectStars : NO_PROTECT }),
+    [starCatch, protectOn, protectStars],
+  );
+  const selectCombo = (o: StarforceOptions) => {
+    setStarCatch(o.starCatch);
+    setProtectOn(o.protect.length > 0);
+  };
+  const toggleProtectStar = (star: number, on: boolean) => {
+    // with the master switch off no star shows as checked, so start from none
+    const current = protectOn ? protectStars : NO_PROTECT;
+    const next = PROTECTABLE_STARS.filter((s) => (s === star ? on : current.includes(s)));
+    // keep the last selection when everything is unchecked, so the switch can bring it back
+    if (next.length > 0) setProtectStars(next);
+    setProtectOn(next.length > 0);
+  };
   const [overrides, setOverrides] = useState<StarPrices>({});
   const { prices: api, error, loading, reload } = useStarforcePrices(target.itemId);
 
   const prices = useMemo(() => ({ ...api?.starforce, ...overrides }), [api, overrides]);
+  // Star Catch off/on × Protect none/the chosen stars
   const combos: Combo[] = useMemo(
-    () => COMBOS.map((o) => ({ opts: o, expected: expectedToTarget(from, to, prices, o) })),
-    [from, to, prices],
+    () =>
+      (protectStars.length > 0 ? [NO_PROTECT, protectStars] : [NO_PROTECT]).flatMap((protect) =>
+        [false, true].map((sc) => {
+          const o = { starCatch: sc, protect };
+          return { opts: o, expected: expectedToTarget(from, to, prices, o) };
+        }),
+      ),
+    [from, to, prices, protectStars],
   );
-  const chosen = combos.find((c) => c.opts.starCatch === opts.starCatch && c.opts.protect === opts.protect) ?? combos[0];
+  const chosen = combos.find((c) => sameOptions(c.opts, opts)) ?? combos[0];
   // Without Protect every star that any option can visit is reachable, so list those.
   const stars = useMemo(
     () => Object.keys(combos[0].expected.attemptsAt).map(Number).sort((a, b) => a - b),
@@ -282,17 +308,36 @@ function ItemCalculator({ target }: { target: Target }) {
           </select>
         </label>
         <label className="flex cursor-pointer items-center gap-2">
-          <input
-            type="checkbox"
-            checked={opts.starCatch}
-            onChange={(e) => setOpts({ ...opts, starCatch: e.target.checked })}
-          />
+          <input type="checkbox" checked={starCatch} onChange={(e) => setStarCatch(e.target.checked)} />
           Star Catch
         </label>
-        <label className="flex cursor-pointer items-center gap-2">
-          <input type="checkbox" checked={opts.protect} onChange={(e) => setOpts({ ...opts, protect: e.target.checked })} />
-          Major Failure Protect ({PROTECT_MIN_STAR}~{PROTECT_MAX_STAR}성)
-        </label>
+        <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
+          <label className="flex cursor-pointer items-center gap-2">
+            <input
+              type="checkbox"
+              checked={protectOn}
+              disabled={protectStars.length === 0}
+              onChange={(e) => setProtectOn(e.target.checked)}
+            />
+            Major Failure Protect
+          </label>
+          {PROTECTABLE_STARS.map((star) => (
+            <label
+              key={star}
+              className={`flex cursor-pointer items-center gap-1 text-xs ${
+                star < from || star >= to ? "text-zinc-400" : ""
+              }`}
+              title={star < from || star >= to ? "이번 구간에서는 이 성을 지나지 않을 수 있습니다" : undefined}
+            >
+              <input
+                type="checkbox"
+                checked={protectOn && protectStars.includes(star)}
+                onChange={(e) => toggleProtectStar(star, e.target.checked)}
+              />
+              {star}성
+            </label>
+          ))}
+        </span>
       </div>
 
       {to <= from ? (
@@ -303,7 +348,7 @@ function ItemCalculator({ target }: { target: Target }) {
             <h3 className="text-sm font-semibold">
               {from}성 → {to}성 기대값
             </h3>
-            <ResultTable combos={combos} selected={opts} priced={priced} onSelect={setOpts} />
+            <ResultTable combos={combos} selected={opts} priced={priced} onSelect={selectCombo} />
             {!priced && !waiting && (
               <p className="text-xs text-red-600">
                 {missing.map((s) => `${s}성`).join(", ")}의 비용이 없어 기대 비용을 계산할 수 없습니다. 가격 API가
@@ -311,8 +356,8 @@ function ItemCalculator({ target }: { target: Target }) {
               </p>
             )}
             <p className="text-xs text-zinc-500">
-              줄을 누르면 그 옵션으로 바뀝니다. Protect는 {PROTECT_MIN_STAR}~{PROTECT_MAX_STAR}성의 비용을 2배로 하고
-              Major Failure를 없앱니다. Drop이 2번 연속되면 다음 강화는 100% 성공합니다(이때는 Protect 비용 없음).
+              줄을 누르면 그 옵션으로 바뀝니다. Protect는 {PROTECT_MIN_STAR}~{PROTECT_MAX_STAR}성 중 체크한 성에서만
+              비용을 2배로 하고 Major Failure를 없앱니다. Drop이 2번 연속되면 다음 강화는 100% 성공합니다(이때는 Protect 비용 없음).
             </p>
           </section>
 

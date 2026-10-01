@@ -5,6 +5,7 @@ import {
   expectedToTarget,
   outcomes,
   pricedUpTo,
+  PROTECTABLE_STARS,
   seededRng,
   simulateRuns,
   starOdds,
@@ -12,9 +13,9 @@ import {
   type StarPrices,
 } from "..";
 
-const OFF = { starCatch: false, protect: false };
-const CATCH = { starCatch: true, protect: false };
-const PROTECT = { starCatch: false, protect: true };
+const OFF = { starCatch: false, protect: [] };
+const CATCH = { starCatch: true, protect: [] };
+const PROTECT = { starCatch: false, protect: PROTECTABLE_STARS };
 
 // The table from issue #33: [success, keep, drop, major failure] in % for n ★ → n+1 ★.
 const TABLE: [number, number, number, number][] = [
@@ -83,6 +84,36 @@ describe("starOdds", () => {
     expect(starOdds(15, PROTECT).drop).toBe(0);
     expect(starOdds(17, PROTECT)).toEqual(starOdds(17, OFF));
     expect(starOdds(11, PROTECT)).toEqual(starOdds(11, OFF));
+  });
+});
+
+describe("Protect per star", () => {
+  it("is 12–16 ★, each chosen separately", () => {
+    expect(PROTECTABLE_STARS).toEqual([12, 13, 14, 15, 16]);
+  });
+
+  it("only applies at the chosen stars", () => {
+    const some = { starCatch: false, protect: [15, 16] };
+    expect(starOdds(15, some).major).toBe(0);
+    expect(starOdds(16, some).major).toBe(0);
+    expect(starOdds(12, some)).toEqual(starOdds(12, OFF));
+    expect(starOdds(14, some)).toEqual(starOdds(14, OFF));
+    expect(attemptCost(16, prices, some)).toBe(3400);
+    expect(attemptCost(13, prices, some)).toBe(1400);
+  });
+
+  it("ignores stars outside 12–16", () => {
+    const outside = { starCatch: false, protect: [11, 17] };
+    expect(starOdds(17, outside)).toEqual(starOdds(17, OFF));
+    expect(attemptCost(17, prices, outside)).toBe(1800);
+  });
+
+  it("lands between no Protect and full Protect in expectation", () => {
+    const none = expectedToTarget(12, 17, prices, OFF);
+    const some = expectedToTarget(12, 17, prices, { starCatch: false, protect: [15, 16] });
+    const all = expectedToTarget(12, 17, prices, PROTECT);
+    expect(some.majorFailures).toBeLessThan(none.majorFailures);
+    expect(some.majorFailures).toBeGreaterThan(all.majorFailures);
   });
 });
 
@@ -157,7 +188,7 @@ describe("simulation", () => {
   it.each([
     ["0 → 12", 0, 12, OFF],
     ["10 → 17", 10, 17, OFF],
-    ["12 → 17 with Protect and Star Catch", 12, 17, { starCatch: true, protect: true }],
+    ["12 → 17 with Protect and Star Catch", 12, 17, { starCatch: true, protect: PROTECTABLE_STARS }],
     ["15 → 20", 15, 20, CATCH],
   ] as const)("mean converges to the exact expectation (%s)", (_name, from, to, opts) => {
     const exact = expectedToTarget(from, to, prices, opts);

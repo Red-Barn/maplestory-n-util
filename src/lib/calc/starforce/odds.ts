@@ -13,9 +13,15 @@ import {
 export type StarforceOptions = {
   /** success chance × 1.05 */
   starCatch: boolean;
-  /** Major Failure Protect at 12–16 ★ (no Major Failure, double price) */
-  protect: boolean;
+  /** Stars (12–16) where Major Failure Protect is used: no Major Failure, double price. */
+  protect: readonly number[];
 };
+
+/** Stars Major Failure Protect can be used at, each chosen separately. */
+export const PROTECTABLE_STARS: readonly number[] = Array.from(
+  { length: PROTECT_MAX_STAR - PROTECT_MIN_STAR + 1 },
+  (_, i) => PROTECT_MIN_STAR + i,
+);
 
 /** Price of one attempt at each star in NESO (key n = n ★ → n+1 ★), as in EnhancementPrices. */
 export type StarPrices = Record<number, number>;
@@ -24,7 +30,7 @@ export type StarPrices = Record<number, number>;
 export type Odds = { success: number; keep: number; drop: number; major: number };
 
 export const isProtected = (star: number, opts: StarforceOptions): boolean =>
-  opts.protect && star >= PROTECT_MIN_STAR && star <= PROTECT_MAX_STAR;
+  star >= PROTECT_MIN_STAR && star <= PROTECT_MAX_STAR && opts.protect.includes(star);
 
 /** The next attempt is a sure success after this many Drops in a row. */
 export const isGuaranteed = (drops: number): boolean => drops >= GUARANTEE_AFTER_DROPS;

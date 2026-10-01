@@ -1,14 +1,13 @@
 "use client";
 
 import type { Expected, StarforceOptions } from "@/lib/calc/starforce";
-import { count, neso } from "./format";
+import { count, neso, starList } from "./format";
 
 export type Combo = { opts: StarforceOptions; expected: Expected };
 
 const cell = "px-2 py-1.5 text-right tabular-nums";
-const onOff = (on: boolean) => (on ? "사용" : "–");
 
-/** Expected price, attempts and Major Failures for every Star Catch × Protect combination. */
+/** Expected price, attempts and Major Failures for Star Catch off/on × Protect none/the chosen stars. */
 export default function ResultTable(props: {
   combos: Combo[];
   selected: StarforceOptions;
@@ -31,17 +30,17 @@ export default function ResultTable(props: {
         </thead>
         <tbody>
           {props.combos.map(({ opts, expected }) => {
-            const selected = opts.starCatch === props.selected.starCatch && opts.protect === props.selected.protect;
+            const selected = opts.starCatch === props.selected.starCatch && opts.protect.join() === props.selected.protect.join();
             return (
               <tr
-                key={`${opts.starCatch}-${opts.protect}`}
+                key={`${opts.starCatch}-${opts.protect.join()}`}
                 onClick={() => props.onSelect(opts)}
                 className={`cursor-pointer border-b border-black/5 last:border-0 dark:border-white/10 ${
                   selected ? "bg-orange-500/10 font-medium" : "hover:bg-black/5 dark:hover:bg-white/5"
                 }`}
               >
-                <td className="px-2 py-1.5">{onOff(opts.starCatch)}</td>
-                <td className="px-2 py-1.5">{onOff(opts.protect)}</td>
+                <td className="px-2 py-1.5">{opts.starCatch ? "사용" : "–"}</td>
+                <td className="px-2 py-1.5">{opts.protect.length ? starList(opts.protect) : "–"}</td>
                 <td className={cell}>
                   {props.priced ? neso(expected.cost) : "–"}
                   {props.priced && expected.cost === cheapest && (

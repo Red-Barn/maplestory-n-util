@@ -13,6 +13,7 @@
 | Major Failure 결과 | 무조건 10성 | 이슈 #33 |
 | Star Catch | 성공 × 1.05 (성공이 오르면 Major Failure도 줄어듦) | 이슈 #33 |
 | Protect | 12~16성 Major Failure 0%(그만큼 Keep/Drop), 비용 2배 | 이슈 #33 |
+| Protect 성 선택 | 12~16성 각각 따로 사용 여부를 고른다 (`StarforceOptions.protect` = 사용할 성 목록) | 사용자 요청 2026-10-01 |
 | Drop 2연속 | 다음 강화 100% 성공. 성공·Keep·Major Failure 시 초기화 | 이슈 #33 |
 | Drop 연속 횟수에 11성 Drop 포함 | 포함한다 (12→11→10이면 10성에서 100%) | 사용자 답변 2026-09-30 |
 | 100% 성공 강화의 Protect 비용 | 붙지 않는다(1배) | 사용자 답변 2026-09-30 |
